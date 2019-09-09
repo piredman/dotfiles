@@ -2,13 +2,14 @@ function go {
     param ( [string] $key )
 
     $locations = @{
-        code = '/code';
-        fit  = '/code/GeoFIT';
-        sd   = '/code/GeoFIT/src/Fit/Shared/Data';
-        sdm  = '/code/GeoFIT/src/Fit/Shared/DataMigrator';
-        sod  = '/code/GeoFIT/src/Fit/ServiceOrders/Data';
-        sodm = '/code/GeoFIT/src/Fit/ServiceOrders/DataMigrator';
-        web  = '/code/GeoFIT/src/Fit/ServiceOrders/web/clientapp';
+        scripts = '/code/dotfiles/scripts';
+        code    = '/code';
+        fit     = '/code/GeoFIT';
+        sd      = '/code/GeoFIT/src/Fit/Shared/Data';
+        sdm     = '/code/GeoFIT/src/Fit/Shared/DataMigrator';
+        sod     = '/code/GeoFIT/src/Fit/ServiceOrders/Data';
+        sodm    = '/code/GeoFIT/src/Fit/ServiceOrders/DataMigrator';
+        web     = '/code/GeoFIT/src/Fit/ServiceOrders/web/clientapp';
     }
 
     if (-Not ($locations.ContainsKey($key))) {

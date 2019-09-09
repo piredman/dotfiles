@@ -24,5 +24,6 @@ function U {
 }
 
 # Set the default prompt theme
-$ThemeSettings.MyThemesLocation = "C:\code\dotfiles\scripts"
-Set-Theme mytheme
+# $ThemeSettings.MyThemesLocation = "C:\code\dotfiles\scripts"
+# Set-Theme mytheme
+Set-Theme Avit
