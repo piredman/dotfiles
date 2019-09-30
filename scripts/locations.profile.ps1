@@ -10,6 +10,7 @@ function go {
         sod     = '/code/GeoFIT/src/Fit/ServiceOrders/Data';
         sodm    = '/code/GeoFIT/src/Fit/ServiceOrders/DataMigrator';
         web     = '/code/GeoFIT/src/Fit/ServiceOrders/web/clientapp';
+        edrpg   = '/code/edrpg-app';
     }
 
     if (-Not ($locations.ContainsKey($key))) {
