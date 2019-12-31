@@ -32,7 +32,9 @@
         "<C-a>": false
     },
     "explorer.autoReveal": false,
-    "eslint.provideLintTask": true,
+    "eslint.lintTask.enable": true,
     "editor.tabSize": 2,
+    "editor.minimap.enabled": false,
+    "editor.codeLens": false,
     "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
 }

@@ -3,8 +3,8 @@ Import-Module -Name oh-my-posh
 
 # Alias
 function start-gitRebase {
-  Write-Host git fetch origin master -ForegroundColor DarkCyan
-  git fetch origin master
+  Write-Host git fetch origin master --prune -ForegroundColor DarkCyan
+  git fetch origin master --prune
 
   Write-Host git rebase origin master -ForegroundColor DarkCyan
   git rebase origin master
