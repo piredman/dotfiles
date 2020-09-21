@@ -1,16 +1,33 @@
 function go {
     param ( [string] $key )
 
-    $locations = @{
-        scripts = '/code/dotfiles/scripts';
-        code    = '/code';
-        fit     = '/code/GeoFIT';
-        sd      = '/code/GeoFIT/src/Fit/Shared/Data';
-        sdm     = '/code/GeoFIT/src/Fit/Shared/DataMigrator';
-        sod     = '/code/GeoFIT/src/Fit/ServiceOrders/Data';
-        sodm    = '/code/GeoFIT/src/Fit/ServiceOrders/DataMigrator';
-        web     = '/code/GeoFIT/src/Fit/ServiceOrders/web/clientapp';
-        edrpg   = '/code/edrpg-app';
+    $machine = $env:COMPUTERNAME
+
+    $locations = @{}
+    switch ($machine) {
+        'DESKTOP-6FOKVOL' {
+            $locations = @{
+                code    = 'f:\code'
+                scripts = 'F:\code\dotfiles\scripts'
+                edrpg   = 'F:\code\edrpg-app'
+                web     = 'F:\code\edrpg-app\web'
+                api     = 'F:\code\edrpg-app\api'
+            }
+        }
+        'WORK-MACHINE' {
+            $locations = @{                
+                code    = '/code';
+                scripts = '/code/dotfiles/scripts';
+                fit     = '/code/GeoFIT';
+                sd      = '/code/GeoFIT/src/Fit/Shared/Data';
+                sdm     = '/code/GeoFIT/src/Fit/Shared/DataMigrator';
+                sod     = '/code/GeoFIT/src/Fit/ServiceOrders/Data';
+                sodm    = '/code/GeoFIT/src/Fit/ServiceOrders/DataMigrator';
+                web     = '/code/GeoFIT/src/Fit/ServiceOrders/web/clientapp';
+                edrpg   = '/code/edrpg-app';
+            }
+        }
+        Default {}
     }
 
     if (-Not ($locations.ContainsKey($key))) {
