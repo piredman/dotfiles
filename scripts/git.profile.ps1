@@ -38,3 +38,10 @@ function start-gitBranch {
 }
 Set-Alias -Name gbranch -Value start-gitBranch
 Set-Alias -Name gb -Value start-gitBranch
+
+
+function start-gitAmend {
+  git commit --amend --date="$(date)"
+}
+Set-Alias -Name gAmend -Value start-gitAmend
+Set-Alias -Name ga -Value start-gitAmend

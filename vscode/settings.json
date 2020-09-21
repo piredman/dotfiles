@@ -1,38 +1,40 @@
 {
-    "mssql.connections": [
-        {
-            "connectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
-            "profileName": "Local",
-            "password": ""
-        },
-        {
-            "server": "FITDEV\\FITDEV",
-            "database": "",
-            "authenticationType": "Integrated",
-            "profileName": "fitDevDb",
-            "password": ""
-        },
-        {
-            "server": ".\\SQLEXPRESS",
-            "database": "",
-            "authenticationType": "Integrated",
-            "profileName": "sqlExpress.local",
-            "password": ""
-        }
-    ],
-    "files.autoSave": "off",
-    "editor.renderWhitespace": "boundary",
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "vim.handleKeys": {
-        "<C-f>": false,
-        "<C-c>": false,
-        "<C-v>": false,
-        "<C-x>": false,
-        "<C-h>": false,
-        "<C-a>": false
+  "mssql.connections": [
+    {
+      "connectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+      "profileName": "Local",
+      "password": ""
     },
-    "explorer.autoReveal": false,
-    "eslint.provideLintTask": true,
-    "editor.tabSize": 2,
-    "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+    {
+      "server": "FITDEV\\FITDEV",
+      "database": "",
+      "authenticationType": "Integrated",
+      "profileName": "fitDevDb",
+      "password": ""
+    },
+    {
+      "server": ".\\SQLEXPRESS",
+      "database": "",
+      "authenticationType": "Integrated",
+      "profileName": "sqlExpress.local",
+      "password": ""
+    }
+  ],
+  "files.autoSave": "off",
+  "editor.renderWhitespace": "boundary",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vim.handleKeys": {
+    "<C-f>": false,
+    "<C-c>": false,
+    "<C-v>": false,
+    "<C-x>": false,
+    "<C-h>": false,
+    "<C-a>": false
+  },
+  "explorer.autoReveal": false,
+  "eslint.provideLintTask": true,
+  "editor.tabSize": 2,
+  "editor.minimap.enabled": false,
+  "editor.codeLens": false,
+  "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
 }
