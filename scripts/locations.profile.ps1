@@ -5,7 +5,7 @@ function go {
 
     $locations = @{}
     switch ($machine) {
-        'DESKTOP-6FOKVOL' {
+        Default {
             $locations = @{
                 code    = 'f:\code'
                 scripts = 'F:\code\dotfiles\scripts'
@@ -14,20 +14,6 @@ function go {
                 api     = 'F:\code\edrpg-app\api'
             }
         }
-        'WMXL9171R0P' {
-            $locations = @{                
-                code    = '/code';
-                scripts = '/code/dotfiles/scripts';
-                fit     = '/code/GeoFIT';
-                sd      = '/code/GeoFIT/src/Fit/Shared/Data';
-                sdm     = '/code/GeoFIT/src/Fit/Shared/DataMigrator';
-                sod     = '/code/GeoFIT/src/Fit/ServiceOrders/Data';
-                sodm    = '/code/GeoFIT/src/Fit/ServiceOrders/DataMigrator';
-                web     = '/code/GeoFIT/src/Fit/ServiceOrders/web/clientapp';
-                edrpg   = '/code/edrpg-app';
-            }
-        }
-        Default {}
     }
 
     if (-Not ($locations.ContainsKey($key))) {

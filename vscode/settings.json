@@ -1,25 +1,4 @@
 {
-  "mssql.connections": [
-    {
-      "connectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
-      "profileName": "Local",
-      "password": ""
-    },
-    {
-      "server": "FITDEV\\FITDEV",
-      "database": "",
-      "authenticationType": "Integrated",
-      "profileName": "fitDevDb",
-      "password": ""
-    },
-    {
-      "server": ".\\SQLEXPRESS",
-      "database": "",
-      "authenticationType": "Integrated",
-      "profileName": "sqlExpress.local",
-      "password": ""
-    }
-  ],
   "files.autoSave": "off",
   "editor.renderWhitespace": "boundary",
   "typescript.updateImportsOnFileMove.enabled": "always",
