@@ -5,10 +5,9 @@ Import-Module -Name oh-my-posh
 function start-gitRebase {
   Write-Host git remote update origin --prune -ForegroundColor DarkCyan
   git remote update origin --prune
-
+  
   Write-Host git fetch origin master --prune -ForegroundColor DarkCyan
   git fetch origin master --prune
-
   Write-Host git rebase origin master -ForegroundColor DarkCyan
   git rebase origin master
 }
@@ -26,13 +25,13 @@ function start-gitPrune {
   git branch --merged | ? { $_[0] -ne '*' } | % { $_.trim() } | % { git branch -d $_ }
 }
 Set-Alias -Name gprune -Value start-gitPrune
-
+  
 function start-gitStatus {
   git status
 }
 Set-Alias -Name gstatus -Value start-gitStatus
 Set-Alias -Name gs -Value start-gitStatus
-
+  
 function start-gitBranch {
   git branch
 }

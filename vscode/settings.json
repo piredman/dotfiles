@@ -32,6 +32,7 @@
     "<C-a>": false
   },
   "explorer.autoReveal": false,
+  "eslint.provideLintTask": true,
   "eslint.lintTask.enable": true,
   "editor.tabSize": 2,
   "editor.minimap.enabled": false,
