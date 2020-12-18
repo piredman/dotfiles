@@ -1,1 +1,2 @@
 Capslock::Esc
+Esc::Capslock
