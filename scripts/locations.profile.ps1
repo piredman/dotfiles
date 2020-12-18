@@ -14,7 +14,7 @@ function go {
                 api     = 'F:\code\edrpg-app\api'
             }
         }
-        'WORK-MACHINE' {
+        'WMXL9171R0P' {
             $locations = @{                
                 code    = '/code';
                 scripts = '/code/dotfiles/scripts';
