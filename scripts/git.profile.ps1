@@ -1,15 +1,15 @@
 Import-Module -Name posh-git
-Import-Module -Name oh-my-posh
+oh-my-posh init pwsh | Invoke-Expression
 
 # Alias
-function start-gitRebase {
+function start-gitRebase($branch = 'master') {
   Write-Host git remote update origin --prune -ForegroundColor DarkCyan
   git remote update origin --prune
   
-  Write-Host git fetch origin master --prune -ForegroundColor DarkCyan
-  git fetch origin master --prune
-  Write-Host git rebase origin master -ForegroundColor DarkCyan
-  git rebase origin master
+  Write-Host git fetch origin $branch --prune -ForegroundColor DarkCyan
+  git fetch origin $branch --prune
+  Write-Host git rebase origin $branch -ForegroundColor DarkCyan
+  git rebase origin $branch
 }
 Set-Alias -Name grebase -Value start-gitRebase
 Set-Alias -Name gr -Value start-gitRebase

@@ -9,9 +9,6 @@ function go {
             $locations = @{
                 code    = 'f:\code'
                 scripts = 'F:\code\dotfiles\scripts'
-                edrpg   = 'F:\code\edrpg-app'
-                web     = 'F:\code\edrpg-app\web'
-                api     = 'F:\code\edrpg-app\api'
             }
         }
     }

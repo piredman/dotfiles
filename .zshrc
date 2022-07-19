@@ -35,9 +35,21 @@ git-prune() {
   git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d;
 }
 
+git-rebase() {
+    if [ -n "$1" ]
+    then
+      branch=$1
+    else
+      branch="main"
+    fi
+
+    git fetch origin $branch
+    git rebase origin/$branch
+}
+
 alias {gl,glog}=git-log
 alias {gp,gprune}=git-prune
 alias {gs,gstatus}="git status"
-alias {gr,grebase}="git fetch origin master; git rebase origin/master"
+alias {gr,grebase}=git-rebase
 alias {gb,gbranch}="git branch"
 alias gamend="git commit --amend --date=\"$(date)\""
