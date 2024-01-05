@@ -1,7 +1,7 @@
 {
+  "workbench.colorTheme": "Dracula",
   "files.autoSave": "off",
   "editor.renderWhitespace": "boundary",
-  "typescript.updateImportsOnFileMove.enabled": "always",
   "vim.handleKeys": {
     "<C-f>": false,
     "<C-c>": false,
@@ -11,10 +11,18 @@
     "<C-a>": false
   },
   "explorer.autoReveal": false,
-  "eslint.provideLintTask": true,
-  "eslint.lintTask.enable": true,
-  "editor.tabSize": 2,
-  "editor.minimap.enabled": false,
-  "editor.codeLens": false,
-  "terminal.integrated.shell.windows": "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+  "editor.tabSize": 4,
+  "editor.formatOnSave": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.inlineSuggest.enabled": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.advanced": {},
+  "editor.fontSize": 18
 }
