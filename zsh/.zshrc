@@ -133,7 +133,7 @@ go-location() {
     config)
       cd ~/.config ;;
     dotfiles)
-      cd ~/code/_settings/dotfiles ;;
+      cd ~/code/personal/dotfiles ;;
     internal)
       cd ~/code/internal-apps ;;
     *)
