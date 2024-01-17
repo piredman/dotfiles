@@ -10,6 +10,7 @@ return {
 		wk.register({
 			["<leader>"] = {
 				c = { name = "+code" },
+				d = { name = "+debug" },
 				e = { name = "+error" },
 				f = { name = "+file" },
 				g = { name = "+goto" },

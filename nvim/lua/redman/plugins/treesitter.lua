@@ -9,6 +9,8 @@ return {
 		config.setup({
 			ensure_installed = {
 				"lua",
+				"vimdoc",
+				"vim",
 				"bash",
 				"javascript",
 				"typescript",

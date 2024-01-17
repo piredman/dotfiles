@@ -1,15 +1,16 @@
-#!/bin/bash
+# home
+ln -s ~/code/personal/dotfiles/zsh/.zshrc ~/.zshrc
+ln -s ~/code/personal/dotfiles/tmux/.tmux.conf ~/.tmux.conf
 
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+# .config
+ln -s ~/code/personal/dotfiles/nvim ~/.config/nvim
 
-DOT_FOLDERS="zsh,tmux,nvim"
+mkdir ~/.config/skhd
+ln -s ~/code/personal/dotfiles/skhd/skhdrc ~/.config/skhd/skhdrc
 
-for folder in $(echo $DOT_FOLDERS | sed "s/,/ /g"); do
-	echo "[+] Folder :: $folder"
-	stow --ignore=README.md --ignore=LICENSE -t $HOME -D $folder
-	stow -v -t $HOME $folder
-done
+mkdir ~/.config/yabai
+ln -s ~/code/personal/dotfiles/yabai/yabairc ~/.config/yabai/yabairc
 
-# Reload shell once installed
-echo "[+] Reloading shell..."
-exec $SHELL -l
+# vscode
+ln -s ~/code/personal/dotfiles/vscode/settings.json "/Users/paulredman/Library/Application Support/Code/User/settings.json"
+ln -s ~/code/personal/dotfiles/vscode/keybindings.json "/Users/paulredman/Library/Application Support/Code/User/keybindings.json"

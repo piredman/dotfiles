@@ -1,18 +1,9 @@
 # dotfiles
 
-## Requirements
-
-The following programs are required to install the dotfiles:
-- stow
-
 ## Installation
 
-First, update the `install.sh` script with the list of folders to be installed. For example, the following line will install the zsh, tmux, and nvim folders.
-```bash
-DOT_FOLDERS="zsh,tmux,nvim"
-```
-
 To install the dotfiles, run the following commands:
+
 ```bash
 > ./install.sh
 ```

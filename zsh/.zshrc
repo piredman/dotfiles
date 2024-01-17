@@ -205,6 +205,7 @@ git-rebase() {
     git rebase origin/$branch
 }
 
+# Git
 alias {gl,glog}=git-log
 alias {gp,gprune}=git-prune
 alias {gs,gstatus}="git status"
@@ -212,10 +213,22 @@ alias {gr,grebase}=git-rebase
 alias {gb,gbranch}="git branch"
 alias {gw,gswitch}="git switch"
 alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
-alias go=go-location
+
+# azure
 alias use=use-azure-subscription
-alias reload="source ~/.zshrc"
+
+# locatons
+alias go=go-location
+
+# applications
 alias vim=nvim
+alias ls="eza"
+alias ll="eza -alh"
+alias tree="eza --tree"
+alias cat="bat"
+
+# utility
+alias reload="source ~/.zshrc"
 
 [ -f "/Users/paulredman/.ghcup/env" ] && source "/Users/paulredman/.ghcup/env" # ghcup-env
 export NVM_DIR="$HOME/.nvm"

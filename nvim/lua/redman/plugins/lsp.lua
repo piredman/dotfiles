@@ -38,6 +38,12 @@ return {
 			local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 			local on_attach = function(client, bufnr)
+				local function buf_set_option(...)
+					vim.api.nvim_buf_set_option(bufnr, ...)
+				end
+
+				buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
 				vim.keymap.set("n", "<leader>sr", "<cmd>Telescope lsp_references<CR>", {
 					desc = "Show LSP references",
 				})
@@ -80,48 +86,52 @@ return {
 			end
 
 			-- used to enable autocompletion (assign to every lsp server config)
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+			local capabilities = vim.tbl_deep_extend(
+				"force",
+				{},
+				vim.lsp.protocol.make_client_capabilities(),
+				cmp_nvim_lsp.default_capabilities() or {}
+			)
 
 			lspconfig.html.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 			})
 
 			lspconfig.cssls.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 			})
 
 			lspconfig.tsserver.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 			})
 
 			lspconfig.omnisharp.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 			})
 
 			lspconfig.graphql.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 				filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 			})
 
 			lspconfig.emmet_ls.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 				filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 			})
 
 			lspconfig.pyright.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 			})
 
 			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
+				capabilities = vim.deepcopy(capabilities),
 				on_attach = on_attach,
 				settings = { -- custom settings for lua
 					Lua = {
