@@ -1,14 +1,14 @@
 # -- Changing Window Focus --
 
 # change window focus within space
-alt - j : yabai -m window --focus south
-alt - k : yabai -m window --focus north
-alt - h : yabai -m window --focus west
-alt - l : yabai -m window --focus east
+alt - e : yabai -m window --focus north
+alt - f : yabai -m window --focus east
+alt - c : yabai -m window --focus south
+alt - s : yabai -m window --focus west
 
 #change focus between external displays (left and right)
-alt - s: yabai -m display --focus west
 alt - g: yabai -m display --focus east
+alt - a: yabai -m display --focus west
 
 # -- Modifying the Layout --
 
@@ -28,7 +28,7 @@ shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
 # -- Modifying Window Size --
 
 # maximize a window
-shift + alt - m : yabai -m window --toggle zoom-fullscreen
+alt - d : yabai -m window --toggle zoom-fullscreen
 
 # balance out tree of windows (resize to occupy same area)
 shift + alt - e : yabai -m space --balance
@@ -68,6 +68,6 @@ shift + alt - 7 : yabai -m window --space 7;
 # -- Starting/Stopping/Restarting Yabai --
 
 # stop/start/restart yabai
-ctrl + alt - q : yabai stop 
-ctrl + alt - s : yabai start 
-ctrl + alt - r : yabai restart 
+ctrl + alt - q : yabai --stop-service
+ctrl + alt - s : yabai --start-service
+ctrl + alt - r : yabai --restart-service
