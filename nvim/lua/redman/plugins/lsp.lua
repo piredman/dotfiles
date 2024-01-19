@@ -48,7 +48,7 @@ return {
 					desc = "Show LSP references",
 				})
 
-				vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {
+				vim.keymap.set("n", "gd", vim.lsp.buf.definition, {
 					desc = "Go to declaration",
 				})
 

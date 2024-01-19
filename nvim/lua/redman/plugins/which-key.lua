@@ -13,7 +13,7 @@ return {
 				d = { name = "+debug" },
 				e = { name = "+error" },
 				f = { name = "+file" },
-				g = { name = "+goto" },
+				g = { name = "+git" },
 				h = { name = "+harpoon" },
 				r = { name = "+restart" },
 				s = { name = "+show" },
