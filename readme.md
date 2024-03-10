@@ -1,5 +1,24 @@
 # dotfiles
 
+## Prerequisites
+
+### Terminal Tools
+
+- [zoxide (replacement for cd)](https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file#installation)
+- [eza (replacement for ls)](https://github.com/eza-community/eza/blob/main/INSTALL.md)
+- [bat (replacement for cat)](https://github.com/sharkdp/bat?tab=readme-ov-file#installation)
+- [ripgrep](https://github.com/BurntSushi/ripgrep#installation)
+
+### zsh Plugins
+- [zsh auto-suggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
+- [zsh syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh)
+
+### Tmux Plugin Manager
+- [Install](https://github.com/tmux-plugins/tpm)
+
+### Development tools
+- [nvm](https://github.com/nvm-sh/nvm)
+
 ## Installation
 
 To install the dotfiles, run the following commands:
@@ -8,7 +27,12 @@ To install the dotfiles, run the following commands:
 > ./install.sh
 ```
 
-### References:
+Restart the terminal
+- Open a `tmux` session
+- Run `<prefix>I` to install tmux plugins
+
+
+## References:
 
 Useful videos and blog posts.
 

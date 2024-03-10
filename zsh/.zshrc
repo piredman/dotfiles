@@ -133,9 +133,7 @@ go-location() {
     config)
       cd ~/.config ;;
     dotfiles)
-      cd ~/code/personal/dotfiles ;;
-    internal)
-      cd ~/code/internal-apps ;;
+      cd ~/dotfiles ;;
     *)
       echo 'unknown location';;
   esac
@@ -226,14 +224,17 @@ alias ls="eza"
 alias ll="eza -alh"
 alias tree="eza --tree"
 alias cat="bat"
+alias cd="z"
 
 # utility
 alias reload="source ~/.zshrc"
 
-[ -f "/Users/paulredman/.ghcup/env" ] && source "/Users/paulredman/.ghcup/env" # ghcup-env
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [ -d "$HOME/.nvm" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+eval "$(zoxide init zsh)"
