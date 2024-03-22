@@ -118,27 +118,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-go-location() {
-  if [ ! -n "$1" ]
-  then
-    echo 'command go requires location argument'
-    return
-  fi
-
-  case "$1" in
-    home)
-      cd ~/ ;;
-    code)
-      cd ~/code ;;
-    config)
-      cd ~/.config ;;
-    dotfiles)
-      cd ~/dotfiles ;;
-    *)
-      echo 'unknown location';;
-  esac
-}
-
 use-azure-subscription() {
   if [ ! -n "$1" ]
   then
@@ -215,9 +194,6 @@ alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
 # azure
 alias use=use-azure-subscription
 
-# locatons
-alias go=go-location
-
 # applications
 alias vim=nvim
 alias ls="eza"
@@ -225,6 +201,14 @@ alias ll="eza -alh"
 alias tree="eza --tree"
 alias cat="bat"
 alias cd="z"
+
+# nvim mason applications
+mason() {
+  local command="$1"
+  local file_path="$(pwd)/$2"
+  shift 2
+  (cd ~/.local/share/nvim/mason/bin && "./$command" "$file_path" "$@")
+}
 
 # utility
 alias reload="source ~/.zshrc"
