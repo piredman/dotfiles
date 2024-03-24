@@ -7,8 +7,8 @@ return {
     'MunifTanjim/nui.nvim',
   },
   config = function()
-    vim.keymap.set('n', '<leader>ue', ':Neotree filesystem toggle left<CR>', {
-      desc = '[u]i file [e]xplorer<CR>',
+    vim.keymap.set('n', '<leader>fe', ':Neotree filesystem toggle left<CR>', {
+      desc = '[f]ile [e]xplorer<CR>',
     })
   end,
 }
