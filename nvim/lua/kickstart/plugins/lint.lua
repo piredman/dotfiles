@@ -6,6 +6,10 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
+        javascript = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
         markdown = { 'markdownlint' },
       }
 
@@ -50,6 +54,8 @@ return {
           require('lint').try_lint()
         end,
       })
+
+      vim.keymap.set('n', '<leader>cl', lint.try_lint, { desc = '[C]ode [L]inting for current file' })
     end,
   },
 }

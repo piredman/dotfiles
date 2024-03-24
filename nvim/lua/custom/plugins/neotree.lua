@@ -8,7 +8,7 @@ return {
   },
   config = function()
     vim.keymap.set('n', '<leader>ue', ':Neotree filesystem toggle left<CR>', {
-      desc = 'Toggle file explorer',
+      desc = '[u]i file [e]xplorer<CR>',
     })
   end,
 }
