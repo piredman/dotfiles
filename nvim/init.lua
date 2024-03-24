@@ -157,12 +157,25 @@ vim.opt.scrolloff = 10
 -- turn off swapfile
 vim.opt.swapfile = false
 
+-- show vertical columns
+vim.opt.colorcolumn = '120,160'
+
+-- word wrapping and line breaks
+vim.opt.wrap = false -- don't wrap text by default, see keymap to toggle
+vim.opt.linebreak = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Paste over selection without yanking
+vim.keymap.set('x', '<leader>p', [["_dP]], { desc = 'Paste over selection without yanking' })
+
+-- Toogle wrap
+vim.keymap.set('n', '<leader>uw', '<cmd>set wrap!<CR>', { desc = '[u]i toggle text [w]rap' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
