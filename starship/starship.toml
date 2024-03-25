@@ -163,6 +163,12 @@ symbol = " "
 [zig]
 symbol = " "
 
+[env_var.DEVBOX_SHELL_ENABLED]
+disabled = false
+symbol = "📦"
+style = "bg:#212736"
+format = "[[ $symbol devbox ](fg:#769ff0 bg:#212736)]($style)"
+
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
 flamingo = "#f2cdcd"
