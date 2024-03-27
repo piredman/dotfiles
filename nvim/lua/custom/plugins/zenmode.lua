@@ -39,8 +39,8 @@ return {
       },
     }
 
-    vim.keymap.set('n', '<leader>uz', function()
+    vim.keymap.set('n', '<leader>wz', function()
       zen_mode.toggle()
-    end, { desc = '[u]i toggle [z]en mode' })
+    end, { desc = '[w]orkspace toggle [z]en mode' })
   end,
 }
