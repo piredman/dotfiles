@@ -103,6 +103,8 @@ alias ll="eza -alh"
 alias tree="eza --tree"
 alias cat="bat"
 alias cd="z"
+alias lg="lazygit"
+alias ld="lazydocker"
 
 # nvim mason applications
 mason() {

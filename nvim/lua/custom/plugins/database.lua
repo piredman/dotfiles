@@ -17,7 +17,8 @@ return {
     'kristijanhusak/vim-dadbod-completion',
   },
   config = function()
-    require('custom.config.dadbod').setup()
+    -- TODO: Enable database plugin once I can merge it with other cmp sources
+    -- require('custom.config.dadbod').setup()
 
     vim.keymap.set('n', '<leader>de', ':DBUIToggle<CR>', {
       desc = '[d]atabase [e]xplore',
