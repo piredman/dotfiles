@@ -1,0 +1,9 @@
+[user]
+	email = 454963+piredman@users.noreply.github.com
+	name = Paul Redman
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[core]
+	editor = nvim
