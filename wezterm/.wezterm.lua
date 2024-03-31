@@ -23,5 +23,4 @@ config.colors = {
 	background = "#1e1e1e",
 }
 
--- and finally, return the configuration to wezterm
 return config

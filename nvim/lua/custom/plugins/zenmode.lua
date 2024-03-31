@@ -1,5 +1,8 @@
 return {
   'folke/zen-mode.nvim',
+  dependencies = {
+    'folke/twilight.nvim',
+  },
   config = function()
     local zen_mode = require 'zen-mode'
     zen_mode.setup {
@@ -30,17 +33,9 @@ return {
         twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
         gitsigns = { enabled = false }, -- disables git signs
         tmux = { enabled = true }, -- disables the tmux statusline
-        -- TODO: Switch to wezterm and enable this
-        -- INFO: [Wezterm Integration](https://github.com/folke/zen-mode.nvim?tab=readme-ov-file#wezterm)
-        -- wezterm = {
-        --   enabled = true,
-        --   font = '+20', -- (10% increase per step)
-        -- },
       },
     }
 
-    vim.keymap.set('n', '<leader>wz', function()
-      zen_mode.toggle()
-    end, { desc = '[w]orkspace toggle [z]en mode' })
+    vim.keymap.set('n', '<leader>wz', ':ZenMode | PencilToggle<CR>', { desc = '[w]orkspace toggle [z]en mode' })
   end,
 }

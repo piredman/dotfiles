@@ -5,4 +5,5 @@
 return {
   -- tmux vim
   'christoomey/vim-tmux-navigator',
+  'preservim/vim-pencil',
 }
