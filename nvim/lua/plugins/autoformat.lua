@@ -30,11 +30,18 @@ return { -- Autoformat
       javascrptreact = { 'eslint_d' },
       typescriptreact = { 'eslint_d' },
       cs = { 'csharpier' },
+      sh = { 'shfmt' },
     },
     formatters = {
       csharpier = {
         command = 'dotnet-csharpier',
         args = { '--write-stdout' },
+      },
+      shfmt = {
+        -- shfmt command line options
+        -- https://github.com/mvdan/sh/blob/master/cmd/shfmt/shfmt.1.scd
+        command = 'shfmt',
+        args = { '-i', '4', '-ci' },
       },
     },
   },
