@@ -25,10 +25,10 @@ return { -- Autoformat
       yaml = { 'prettierd' },
       markdown = { 'prettierd' },
       graphql = { 'prettierd' },
-      javascript = { 'eslint_d' },
-      typescript = { 'eslint_d' },
-      javascrptreact = { 'eslint_d' },
-      typescriptreact = { 'eslint_d' },
+      javascript = { 'prettierd' },
+      typescript = { 'prettierd' },
+      javascrptreact = { 'prettierd' },
+      typescriptreact = { 'prettierd' },
       cs = { 'csharpier' },
       sh = { 'shfmt' },
     },
@@ -45,4 +45,8 @@ return { -- Autoformat
       },
     },
   },
+  config = function()
+    local conform = require 'conform'
+    vim.keymap.set('n', '<leader>cf', conform.format, { desc = '[c]ode [f]ormat current file' })
+  end,
 }
