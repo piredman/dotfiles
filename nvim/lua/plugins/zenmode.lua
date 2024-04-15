@@ -8,7 +8,7 @@ return {
     zen_mode.setup {
       window = {
         backdrop = 0.95,
-        width = 120, -- width of the Zen window
+        width = 80, -- width of the Zen window
         height = 1, -- height of the Zen window
         options = {
           signcolumn = 'no', -- disable signcolumn
