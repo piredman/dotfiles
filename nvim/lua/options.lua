@@ -77,3 +77,9 @@ vim.opt.colorcolumn = '120,160'
 -- word wrapping and line breaks
 vim.opt.wrap = false -- don't wrap text by default, see keymap to toggle
 vim.opt.linebreak = true
+
+-- tabs & indentation
+vim.opt.tabstop = 4 -- 4 spaces for tabs (prettier default)
+vim.opt.shiftwidth = 4 -- 4 spaces for indent width
+vim.opt.expandtab = true -- expand tab to spaces
+vim.opt.autoindent = true -- copy indent from current line when starting new one

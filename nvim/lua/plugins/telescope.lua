@@ -48,11 +48,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
       --
-      -- defaults = {
-      --   mappings = {
-      --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-      --   },
-      -- },
+      defaults = {
+        mappings = {
+          i = { 
+            -- ['<c-enter>'] = 'to_fuzzy_refine',
+            ['<c-d>'] = 'delete_buffer' 
+          },
+        },
+      },
       pickers = {
         find_files = {
           find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
