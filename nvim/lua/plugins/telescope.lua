@@ -49,10 +49,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
       --  All the info you're looking for is in `:help telescope.setup()`
       --
       defaults = {
+        path_display = { 'shorten' },
         mappings = {
-          i = { 
+          i = {
             -- ['<c-enter>'] = 'to_fuzzy_refine',
-            ['<c-d>'] = 'delete_buffer' 
+            ['<c-d>'] = 'delete_buffer'
           },
         },
       },

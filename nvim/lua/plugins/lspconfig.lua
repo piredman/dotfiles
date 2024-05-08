@@ -60,6 +60,12 @@ return { -- LSP Configuration & Plugins
         --  This is where a variable was first declared, or where a function is defined, etc.
         --  To jump back, press <C-t>.
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+        map('sgd', function ()
+          require('telescope.builtin').lsp_definitions({
+            jump_type = 'vsplit', reuse_win = true
+          })
+        end,
+        '[V]ertically split [G]oto [D]efinition')
 
         -- Find references for the word under your cursor.
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
