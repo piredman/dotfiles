@@ -8,3 +8,4 @@ ln -s ~/dotfiles/zsh/.zshrc ~/.zshrc
 ln -s ~/dotfiles/archlinux/hypr ~/.config/hypr
 ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/starship/starship.toml ~/.config/starship.toml
+ln -s ~/dotfiles/wofi ~/.config/wofi
