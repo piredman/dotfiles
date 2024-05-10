@@ -10,7 +10,13 @@ return {
     -- 'rcarriga/nvim-notify',
   },
   config = function()
-    require('noice').setup()
+    require('noice').setup({
+      routes = {{
+        view = "cmdline",
+        filter = { event = "msg_showmode" },
+      }
+    }})
+
     vim.keymap.set('n', '<leader>ud', ':NoiceDismiss<CR>', {
       desc = '[u]i [d]ismiss notifications<CR>',
     })

@@ -1,6 +1,14 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
 
+-- Start weztterm in fullscreen mode
+-- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
+local mux = wezterm.mux
+wezterm.on('gui-startup', function(cmd)
+  local tab, pane, window = mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
+
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
@@ -21,6 +29,13 @@ config.font_size = 16.0
 config.color_scheme = "Catppuccin Mocha"
 config.colors = {
 	background = "#1e1e1e",
+}
+
+config.window_padding = {
+	left = 0,
+	right = 0,
+	top = 0,
+	bottom = 0,
 }
 
 return config

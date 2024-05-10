@@ -98,8 +98,8 @@ return { -- Autocompletion
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
       },
       sources = {
-        { name = 'copilot' },
         { name = 'nvim_lsp' },
+        { name = 'copilot' },
         { name = 'luasnip' },
         { name = 'path' },
       },
