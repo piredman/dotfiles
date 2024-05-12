@@ -11,6 +11,20 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- Enable neovim to be the external editor for Godot, if the cwd has a project.godo file
+if vim.fn.filereadable(vim.fn.getcwd() .. '/project.godot') == 1 then
+  if vim.fn.has 'win32' == 1 then
+    -- Windows can't pipe so use localhost. Make sure this is configured in Godot.
+    addr = '127.0.0.1:6004'
+    vim.fn.serverstart(addr)
+  else
+    local pipepath = vim.fn.stdpath("cache") .. "/server.pipe"
+    if not vim.loop.fs_stat(pipepath) then
+      vim.fn.serverstart(pipepath)
+    end
+  end
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run

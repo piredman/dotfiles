@@ -18,6 +18,8 @@ return { -- Highlight, edit, and navigate code
       'dockerfile',
       'graphql',
       'sql',
+      'gdscript',
+      'godot_resource',
     },
     -- Autoinstall languages that are not installed
     auto_install = true,
