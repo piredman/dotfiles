@@ -33,6 +33,7 @@ return { -- Autocompletion
     --  into multiple repos for maintenance purposes.
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-path',
+    'hrsh7th/cmp-buffer',
     'zbirenbaum/copilot-cmp',
   },
   config = function()
@@ -104,5 +105,14 @@ return { -- Autocompletion
         { name = 'path' },
       },
     }
+
+    -- Setup up vim-dadbod
+    cmp.setup.filetype({ "sql" }, {
+      sources = {
+        { name = "vim-dadbod-completion" },
+        { name = "buffer" },
+      },
+    })
+
   end,
 }

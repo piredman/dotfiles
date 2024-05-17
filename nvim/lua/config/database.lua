@@ -10,6 +10,8 @@
 -- To set the `integratedSecurity` connection property and use a trusted
 -- connection, omit the user and password.
 
+--     sqlserver://localhost:443[;user=<user>][;...]
+
 return {
   'tpope/vim-dadbod',
   dependencies = {

@@ -44,3 +44,13 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- These mappings control the size of splits (height/width)
+vim.keymap.set("n", "<A-,>", "<c-w>5<")
+vim.keymap.set("n", "<A-.>", "<c-w>5>")
+vim.keymap.set("n", "<A-t>", "<C-W>+")
+vim.keymap.set("n", "<A-s>", "<C-W>-")
+
+-- Navigating tabs
+vim.keymap.set("n", "<left>", "gT")
+vim.keymap.set("n", "<right>", "gt")
