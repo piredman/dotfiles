@@ -15,8 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 if vim.fn.filereadable(vim.fn.getcwd() .. '/project.godot') == 1 then
   if vim.fn.has 'win32' == 1 then
     -- Windows can't pipe so use localhost. Make sure this is configured in Godot.
-    addr = '127.0.0.1:6004'
-    vim.fn.serverstart(addr)
+    vim.fn.serverstart('127.0.0.1:6004')
   else
     local pipepath = vim.fn.stdpath("cache") .. "/server.pipe"
     if not vim.loop.fs_stat(pipepath) then
