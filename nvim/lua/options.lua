@@ -83,3 +83,17 @@ vim.opt.tabstop = 4 -- 4 spaces for tabs (prettier default)
 vim.opt.shiftwidth = 4 -- 4 spaces for indent width
 vim.opt.expandtab = true -- expand tab to spaces
 vim.opt.autoindent = true -- copy indent from current line when starting new one
+
+vim.filetype.add {
+  pattern = {
+    ["[a-zA-z-_]+"] = {
+      function(path, bufnr)
+        local first_line = vim.api.nvim_buf_get_lines(0, 0, 1, false)[1]
+        if vim.regex([[^#!/usr/bin/env\s\+bun$]]):match_str(first_line) ~= nil then
+          return "javascript"
+        end
+      end,
+      { priority = math.huge },
+    }
+  }
+}

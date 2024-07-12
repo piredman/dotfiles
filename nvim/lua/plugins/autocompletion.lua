@@ -111,6 +111,7 @@ return { -- Autocompletion
     cmp.setup.filetype({ "sql" }, {
       sources = {
         { name = "vim-dadbod-completion" },
+        { name = 'copilot' },
         { name = "buffer" },
       },
     })

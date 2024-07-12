@@ -46,10 +46,10 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- These mappings control the size of splits (height/width)
-vim.keymap.set("n", "<A-,>", "<c-w>5<")
-vim.keymap.set("n", "<A-.>", "<c-w>5>")
-vim.keymap.set("n", "<A-t>", "<C-W>+")
-vim.keymap.set("n", "<A-s>", "<C-W>-")
+vim.keymap.set("n", "<M-,>", "<c-w>5<")
+vim.keymap.set("n", "<M-.>", "<c-w>5>")
+vim.keymap.set("n", "<M-t>", "<C-W>+")
+vim.keymap.set("n", "<M-s>", "<C-W>-")
 
 -- Navigating tabs
 vim.keymap.set("n", "<left>", "gT")
