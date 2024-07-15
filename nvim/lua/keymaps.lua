@@ -8,6 +8,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Paste over selection without yanking
 vim.keymap.set('x', '<leader>p', [["_dP]], { desc = 'Paste over selection without yanking' })
 
+-- Update entire file and replace spaces/tabs with tab options
+vim.keymap.set('n', '<leader>ct', '<cmd>%retab!<CR>', { desc = 'Update entire file and replace spaces/tabs with tab options' })
+
 -- Toogle wrap
 vim.keymap.set('n', '<leader>uw', '<cmd>set wrap!<CR>', { desc = '[u]i toggle text [w]rap' })
 

@@ -16,6 +16,7 @@ ln -s ~/dotfiles/archlinux/wofi ~/.config/wofi
 
 # .config (archlinux/x11/i3)
 ln -s ~/dotfiles/archlinux/i3 ~/.config/i3
+ln -s ~/doffiles/archlinux/i3/i3exit ~/bin/i3exit
 ln -s ~/dotfiles/archlinux/picom ~/.config/picom
 ln -s ~/dotfiles/archlinux/polybar ~/.config/polybar
 ln -s ~/dotfiles/archlinux/rofi ~/.config/rofi
