@@ -42,7 +42,10 @@ return { -- Autocompletion
     local luasnip = require 'luasnip'
     luasnip.config.setup {}
     local copilot = require 'copilot_cmp'
-    copilot.setup {}
+    copilot.setup({
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+    })
 
     cmp.setup {
       snippet = {
