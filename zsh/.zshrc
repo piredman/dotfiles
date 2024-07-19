@@ -92,6 +92,10 @@ alias {gr,grebase}=git-rebase
 alias {gb,gbranch}="git branch"
 alias {gw,gswitch}="git switch"
 alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
+alias gtl="git worktree list"
+alias gta="git worktree add"
+alias gtar="git worktree add"
+alias gtd="git worktree delete"
 
 # azure
 alias use=use-azure-subscription
