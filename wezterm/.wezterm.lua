@@ -21,6 +21,7 @@ config.enable_wayland = false
 config.enable_tab_bar = false
 
 config.window_background_opacity = 0.95
+config.macos_window_background_blur = 10
 -- config.text_background_opacity = 0.3
 
 config.font = wezterm.font("Hack Nerd Font", { bold = false, italic = false })

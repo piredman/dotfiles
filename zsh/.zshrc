@@ -102,8 +102,8 @@ alias use=use-azure-subscription
 
 # applications
 alias vim=nvim
-alias ls="eza"
-alias ll="eza -alh"
+alias ls="eza --icons=always"
+alias ll="eza -alh --icons=always"
 alias tree="eza --tree"
 alias cat="bat"
 alias cd="z"
