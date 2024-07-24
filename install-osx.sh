@@ -6,6 +6,7 @@ ln -s ~/code/personal/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
 # .config
 ln -s ~/code/personal/dotfiles/nvim ~/.config/nvim
 ln -s ~/code/personal/dotfiles/starship/starship.toml ~/.config/starship.toml
+ln -s ~/code/personal/dotfiles/yazi ~/.config/yazi
 
 # vscode
 ln -s ~/code/personal/dotfiles/vscode/settings.json "/Users/paulredman/Library/Application Support/Code/User/settings.json"
