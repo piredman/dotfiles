@@ -8,6 +8,7 @@ ln -s ~/dotfiles/archlinux/xorg/.xinitrc ~/.xinitrc
 # .config
 ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/starship/starship.toml ~/.config/starship.toml
+ln -s ~/dotfiles/yazi ~/.config/yazi
 
 # .config (archlinux/wayland/hyprland)
 ln -s ~/dotfiles/archlinux/hypr ~/.config/hypr
