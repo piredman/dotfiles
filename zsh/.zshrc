@@ -1,5 +1,5 @@
 # Include path to local bin directory
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/bin/netcoredbg:$PATH
 
 # Disable (devbox) prompt in devbox shell
 export DEVBOX_NO_PROMPT=1
@@ -17,33 +17,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
-# Azue cli functions
-use-azure-subscription() {
-  if [ ! -n "$1" ]
-  then
-    echo 'command use requires azure subscription argument'
-    return
-  fi
-
-  case "$1" in
-    labs)
-      echo 'az account set --subscription "DevFacto Labs"'
-      az account set --subscription "DevFacto Labs"
-      ;;
-    clients)
-      echo 'az account set --subscription "DevFacto Clients"'
-      az account set --subscription "DevFacto Clients"
-      ;;
-    prod)
-      echo 'az account set --subscription "DevFacto Production"'
-      az account set --subscription "DevFacto Production"
-      ;;
-    *)
-      echo 'unknown subscription'
-      ;;
-  esac
-}
 
 # Git functions
 configure-git() {
@@ -84,7 +57,7 @@ git-rebase() {
     git rebase origin/$branch
 }
 
-# Git
+# git
 alias {gl,glog}=git-log
 alias {gp,gprune}=git-prune
 alias {gs,gstatus}="git status"
@@ -96,9 +69,6 @@ alias gtl="git worktree list"
 alias gta="git worktree add"
 alias gtar="git worktree add"
 alias gtd="git worktree delete"
-
-# azure
-alias use=use-azure-subscription
 
 # applications
 alias vim=nvim

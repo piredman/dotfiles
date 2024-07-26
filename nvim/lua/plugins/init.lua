@@ -26,7 +26,7 @@ return {
   -- word wrap
   'preservim/vim-pencil',
 
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
 }

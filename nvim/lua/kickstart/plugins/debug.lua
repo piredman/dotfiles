@@ -22,8 +22,32 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    -- 'leoluz/nvim-dap-go',
+    -- 'leoluz/nvim-dap-go'
+    'piredman/nvim-dap-dotnet'
   },
+  keys = function(_, keys)
+    local dap = require 'dap'
+    local dapui = require 'dapui'
+
+    return {
+      -- Basic debugging keymaps, feel free to change to your liking!
+      { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
+      { '<F1>', dap.step_into, desc = 'Debug: Step Into' },
+      { '<F2>', dap.step_over, desc = 'Debug: Step Over' },
+      { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
+      { '<leader>b', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
+      {
+        '<leader>B',
+        function()
+          dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+        end,
+        desc = 'Debug: Set Breakpoint',
+      },
+      -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
+      { '<F7>', dapui.toggle, desc = 'Debug: See last session result.' },
+      unpack(keys),
+    }
+  end,
   config = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
@@ -31,8 +55,7 @@ return {
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
-      automatic_setup = true,
-      automatic_installation = false,
+      automatic_installation = true,
 
       -- You can provide additional configuration to the handlers,
       -- see mason-nvim-dap README for more information
@@ -42,20 +65,9 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'netcoredbg',
+        -- 'delve', -- golang
       },
     }
-
-    -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-    vim.keymap.set('n', '<leader>B', function()
-      dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end, { desc = 'Debug: Set Breakpoint' })
-    vim.keymap.set('n', '<leader>x', dap.clear_breakpoints, { desc = 'Debug: Clear Breakpoints' })
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -65,8 +77,6 @@ return {
       --    Don't feel like these are good choices.
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
       controls = {
-        element = "repl",
-        enabled = true,
         icons = {
           pause = '⏸',
           play = '▶',
@@ -79,130 +89,40 @@ return {
           disconnect = '⏏',
         },
       },
-      element_mappings = {},
-      expand_lines = true,
-      floating = {
-        border = "single",
-        mappings = {
-          close = { "q", "<Esc>" }
-        }
-      },
-      force_buffers = true,
-      layouts = { {
-          elements = { {
-              id = "scopes",
-              size = 0.25
-            }, {
-              id = "breakpoints",
-              size = 0.25
-            }, {
-              id = "stacks",
-              size = 0.25
-            }, {
-              id = "watches",
-              size = 0.25
-            } },
-          position = "left",
-          size = 40
-        }, {
-          elements = { {
-              id = "repl",
-              size = 0.5
-            }, {
-              id = "console",
-              size = 0.5
-            } },
-          position = "bottom",
-          size = 10
-        } },
-      mappings = {
-        edit = "e",
-        expand = { "<CR>", "<2-LeftMouse>" },
-        open = "o",
-        remove = "d",
-        repl = "r",
-        toggle = "t"
-      },
-      render = {
-        indent = 1,
-        max_value_lines = 100
-      }
     }
-
-    -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-    vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- dotnet
-    dap.adapters.coreclr = {
-      type = 'executable',
-      command = 'netcoredbg',
-      args = {'--interpreter=vscode'}
-    }
-
-      -- "name": ".NET Core Launch (api)",
-      -- "type": "coreclr",
-      -- "request": "launch",
-      -- "preLaunchTask": "build API",
-      -- "program": "${workspaceFolder}/cubi-api/bin/Debug/net8.0/cubi-api.dll",
-      -- "args": [], // Add "local" override the local database connection string with the one in appsettings.local.json
-      -- "cwd": "${workspaceFolder}/cubi-api",
-      -- "stopAtEntry": false,
-      -- "serverReadyAction": {
-      --   "action": "openExternally",
-      --   "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-      -- },
-      -- "env": {
-      --   "ASPNETCORE_ENVIRONMENT": "Development"
-      -- }
-
-      -- return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/net8.0/', 'file')
-
-    dap.configurations.cs = {
-      {
-        type = "coreclr",
-        name = "launch - netcoredbg",
-        request = "launch",
-        program = function()
-            return vim.fn.getcwd() .. '/bin/Debug/net8.0/cubi-api.dll'
-        end,
-        cwd = function()
-            return vim.fn.getcwd()
-        end,
-        stopAtEntry = false,
-        serverReadyAction = {
-          action = 'openExternally',
-          pattern = '\\bNow listening on:\\s+(https?://\\S+)',
-        },
-        env = {
-          ASPNETCORE_ENVIRONMENT = function()
-            return "Development"
-          end,
-          ASPNETCORE_URLS = function()
-            return "http://localhost:5050"
-          end,
-        },
-      },
-    }
+    require('nvim-dap-dotnet').setup({})
 
     -- GDScript
-    dap.adapters.godot = {
-      type = 'server',
-      host = '127.0.0.1',
-      port = 6006,
-    }
+    -- dap.adapters.godot = {
+    --   type = 'server',
+    --   host = '127.0.0.1',
+    --   port = 6006,
+    -- }
+    --
+    -- dap.configurations.gdscript = {
+    --   {
+    --     type = 'godot',
+    --     request = 'launch', -- either "launch" or "attach"
+    --     name = 'Launch Main Scene',
+    --     -- specific to gdscript
+    --     project = '${workspaceFolder}',
+    --   }
+    -- }
 
-    dap.configurations.gdscript = {
-      {
-        type = 'godot',
-        request = 'launch', -- either "launch" or "attach"
-        name = 'Launch Main Scene',
-        -- specific to gdscript
-        project = '${workspaceFolder}',
-      }
-    }
+    -- golang
+    -- require('dap-go').setup {
+    --   delve = {
+    --     -- On Windows delve must be run attached or it crashes.
+    --     -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
+    --     detached = vim.fn.has 'win32' == 0,
+    --   },
+    -- }
+
   end,
 }

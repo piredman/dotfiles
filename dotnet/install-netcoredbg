@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# This script is a work in progress
+
+
+# This script will get the latest version of netcoredbg from git, build, and install it in a locaton that neovim can find it.
+#
+# TODO
+# - Clone netcoredbg
+# - Build and install
+# - symlink to ~/bin
+#
+# Requirements
+# - git, cmake, make or ninja, clang, dotnet runtime, dotnet sdk
+
+set -e
+
+cd ~/.local/share/nvim
+
+mkdir build
+cd build
+
+CC=clang CXX=clang++ cmake ..
+
+make
+make install
