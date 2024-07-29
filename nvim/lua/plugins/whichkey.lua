@@ -7,15 +7,27 @@ return { -- Useful plugin to show you pending keybinds.
     -- Document existing key chains
     require('which-key').add
     {
-      { "<leader>c", group = "[C]ode" },
-      { "<leader>d", group = "[D]atabase" },
-      { "<leader>f", group = "[F]ile" },
-      { "<leader>g", group = "[G]it" },
-      { "<leader>h", group = "[H]arpoon" },
-      { "<leader>r", group = "[R]ename" },
-      { "<leader>s", group = "[S]earch" },
-      { "<leader>u", group = "[U]i" },
-      { "<leader>w", group = "[W]orkspace" },
+      { "<leader>c", group = "[c]ode",
+        {
+          "<leader>cc", group = "[c]opilot",
+        }
+      },
+      { "<leader>d", group = "[d]atabase" },
+      { "<leader>f", group = "[f]ile",
+        {
+          "<leader>fb", group = "[b]uffer",
+        }
+      },
+      { "<leader>g", group = "[g]it" },
+      { "<leader>h", group = "[h]arpoon" },
+      { "<leader>r", group = "[r]ename" },
+      { "<leader>s", group = "[s]earch" },
+      { "<leader>u", group = "[u]i" },
+      { "<leader>w", group = "[w]orkspace",
+        {
+          "<leader>wb", group = "[b]uffer",
+        }
+      },
     }
   end,
 }
