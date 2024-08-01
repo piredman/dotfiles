@@ -1,11 +1,18 @@
 # Include path to local bin directory
-export PATH=$HOME/bin:/usr/local/bin:$HOME/bin/netcoredbg:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Disable (devbox) prompt in devbox shell
 export DEVBOX_NO_PROMPT=1
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# dotnet debugger
+export PATH="$HOME/bin/netcoredbg:$PATH"
 
 # zsh plugins
 plugins=(
@@ -15,7 +22,6 @@ plugins=(
     zsh-syntax-highlighting
     web-search
 )
-
 source $ZSH/oh-my-zsh.sh
 
 # Git functions
@@ -64,6 +70,8 @@ alias {gs,gstatus}="git status"
 alias {gr,grebase}=git-rebase
 alias {gb,gbranch}="git branch"
 alias {gw,gswitch}="git switch"
+alias {gh,gstash}="git stash"
+alias {ghp,gpop}="git stash pop"
 alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
 alias gtl="git worktree list"
 alias gta="git worktree add"
@@ -79,6 +87,9 @@ alias cat="bat"
 alias cd="z"
 alias lg="lazygit"
 alias ld="lazydocker"
+
+# utility
+alias reload="source ~/.zshrc"
 
 # nvim mason applications
 mason() {
@@ -97,9 +108,6 @@ function yy() {
 	rm -f -- "$tmp"
 }
 
-# utility
-alias reload="source ~/.zshrc"
-
 # nvm
 if [ -d "$HOME/.nvm" ]; then
     export NVM_DIR="$HOME/.nvm"
@@ -112,3 +120,7 @@ eval "$(zoxide init zsh)"
 
 # start starship
 eval "$(starship init zsh)"
+
+# bun completions
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
