@@ -88,6 +88,13 @@ alias cd="z"
 alias lg="lazygit"
 alias ld="lazydocker"
 
+# linux only
+if uname -r | grep -q 'arch'; then
+  alias cpick="colorpicker --short --one-shot --preview | xclip -selection clipboard
+"
+  # alias cpick="colorpicker --short --one-shot --preview"
+fi
+
 # utility
 alias reload="source ~/.zshrc"
 

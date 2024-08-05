@@ -1,0 +1,9 @@
+[[manager.prepend_keymap]]
+on   = [ "g", "c" ]
+run  = "cd ~/code"
+desc = "Cd to ~/code"
+
+[[manager.prepend_keymap]]
+on   = [ "g", "g" ]
+run  = "cd ~/code/games"
+desc = "Cd to ~/code/games"
