@@ -225,5 +225,6 @@ return { -- LSP Configuration & Plugins
       gdscript_config.cmd = { 'nmap', 'localhost', os.getenv 'GDScript_Port' or '6005' }
     end
     require('lspconfig').gdscript.setup(gdscript_config)
+    require('lspconfig').jdtls.setup({})
   end,
 }
