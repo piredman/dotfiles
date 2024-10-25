@@ -196,6 +196,16 @@ mode "$mode_system" {
 }
 bindsym $mod+Start mode "$mode_system"
 
+# Godot window settings
+# TODO: How to only have the running game be in a floating window.
+
+# This will not float the main editor, but will float the running game and all editor "popups".
+# for_window [instance="Godot_Engine" class="^(?!Godot).*$"] floating enable
+# for_window [class="Godot"] floating disable
+
+# Also playing with moving the running game to a workspace
+# for_window [instance="Godot_Engine" class="^(?!Godot).*$"] move to workspace $ws9
+
 # Set colours to a more catppuccin scheme
 set $rosewater #f5e0dc
 set $flamingo  #f2cdcd
