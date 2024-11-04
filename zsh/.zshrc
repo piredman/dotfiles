@@ -14,6 +14,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # dotnet debugger
 export PATH="$HOME/bin/netcoredbg:$PATH"
 
+# go
+export PATH="/urs/local/go/bin:$PATH"
+
 # zsh plugins
 plugins=(
     git
