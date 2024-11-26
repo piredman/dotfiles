@@ -43,6 +43,7 @@ git-log() {
   git --no-pager log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%ae>%Creset' --abbrev-commit --max-count $count
 }
 
+# This will delete the local branches for which the remote tracking branches have been pruned. (Make sure you are on master branch!)
 git-prune() {
   git remote prune origin;
   git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d;
