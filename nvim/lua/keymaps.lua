@@ -57,3 +57,9 @@ vim.keymap.set("n", "<M-s>", "<C-W>-")
 -- Navigating tabs
 vim.keymap.set("n", "<left>", "gT")
 vim.keymap.set("n", "<right>", "gt")
+
+-- Lua execution
+vim.keymap.set("n", "<leader>R", "<cmd>source %<CR>") -- Source the current file
+vim.keymap.set("n", "<leader>X", ":luafile %<CR>")    -- Execute the current file with lua
+vim.keymap.set("n", "<leader>x", ":.lua<CR>")         -- Execute the current line with lua
+vim.keymap.set("v", "<leader>x", ":lua<CR>")          -- Execute the current selection with lua
