@@ -79,7 +79,6 @@ alias {ghp,gpop}="git stash pop"
 alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
 alias gtl="git worktree list"
 alias gta="git worktree add"
-alias gtar="git worktree add"
 alias gtd="git worktree delete"
 
 # applications
@@ -109,13 +108,19 @@ mason() {
   (cd ~/.local/share/nvim/mason/bin && "./$command" "$file_path" "$@")
 }
 
+# open yazi
 function yy() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+# aerospace(macos): list workspace applications & move to selection
+function sf() {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
 
 # nvm
