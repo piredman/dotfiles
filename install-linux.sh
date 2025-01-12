@@ -1,14 +1,15 @@
 # home
 ln -s ~/dotfiles/git/.gitconfig ~/.gitconfig
 ln -s ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
-ln -s ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
 ln -s ~/dotfiles/zsh/.zshrc ~/.zshrc
 ln -s ~/dotfiles/archlinux/xorg/.xinitrc ~/.xinitrc
 
 # .config
+ln -s ~/dotfiles/wezterm ~/.config/wezterm
 ln -s ~/dotfiles/nvim ~/.config/nvim
 ln -s ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 ln -s ~/dotfiles/yazi ~/.config/yazi
+ln -s ~/dotfiles/pulse ~/.config/pulse
 
 # .config (archlinux/wayland/hyprland)
 ln -s ~/dotfiles/archlinux/hypr ~/.config/hypr
