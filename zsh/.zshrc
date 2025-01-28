@@ -93,8 +93,9 @@ alias ld="lazydocker"
 
 # linux only
 if uname -r | grep -q 'arch'; then
-  alias cpick="colorpicker --short --one-shot --preview | xclip -selection clipboard"
-  # alias cpick="colorpicker --short --one-shot --preview"
+  alias ff="fastfetch"
+  alias stats="fastfetch"
+  alias ip="fastfetch -c ~/.config/fastfetch/ip.jsonc"
 fi
 
 # utility

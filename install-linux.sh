@@ -16,6 +16,7 @@ ln -s ~/dotfiles/archlinux/hypr ~/.config/hypr
 ln -s ~/dotfiles/archlinux/waybar ~/.config/waybar
 ln -s ~/dotfiles/archlinux/wofi ~/.config/wofi
 ln -s ~/dotfiles/archlinux/wlogout ~/.config/wlogout
+ln -s ~/dotfiles/archlinux/fastfetch ~/.config/fastfetch
 
 # .config (archlinux/x11/i3)
 ln -s ~/dotfiles/archlinux/i3 ~/.config/i3

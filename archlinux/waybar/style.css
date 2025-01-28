@@ -23,7 +23,7 @@ window#waybar {
     border: 3px solid @crust; 
     border-radius: 0px 20px 100px 0px;
     margin: 4px 4px 4px 6px;
-    padding: 0px 20px 0px 8px;
+    padding: 0px 15px 0px 8px;
 }
 
 #window {
@@ -42,6 +42,7 @@ window#waybar {
 }
 
 #workspaces button {
+    background: transparent;
     border-radius: 100px;
     color: @overlay0;
     margin: 0px 5px;
@@ -51,6 +52,11 @@ window#waybar {
 #workspaces button.active {
     border: 2px solid @sapphire;
     color: @sapphire
+}
+
+#workspaces button:hover {
+    color: @maroon;
+    border: 2px solid @maroon;
 }
 
 #workspaces button.urgent {
