@@ -3,19 +3,18 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: "MesloLGS Nerd Font Mono Bold", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Hack Nerd Font", Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: bold;
-    min-height: 0;
+https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E    min-height: 0;
 }
 
 window#waybar {
     background: transparent;
-    /* background-color: @crust; */
     color: @overlay0;
     transition-property: background-color;
     transition-duration: 0.1s;
-}
+https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E}
 
 #custom-os {
     background-color: @crust;
@@ -26,27 +25,23 @@ window#waybar {
     padding: 0px 15px 0px 8px;
 }
 
-#window {
+#window https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E{
     background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 50px;
+    border-radius: 100px 20px 100px 20px;
     margin: 4px;
-    padding: 0px 10px;
-    color: @text;
-}
 
-#workspaces {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 100px;
-    margin: 4px;
-    padding: 2px;
+    color: @text;
 }
 
 #workspaces button {
     background: transparent;
+    border: 2px solid @crust;
     border-radius: 100px;
-    color: @overlay0;
-    margin: 0px 5px;
-    padding: 0px 8px;
+    color: @crust;
+    margin: 5px;
+    padding: 0px 5px;
+    box-shadow: inherit;
+    text-shadow: inherit;
 }
 
 #workspaces button.active {
@@ -55,8 +50,8 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    color: @maroon;
     border: 2px solid @maroon;
+    color: @maroon;
 }
 
 #workspaces button.urgent {

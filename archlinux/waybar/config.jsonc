@@ -1,18 +1,18 @@
 {
   "position": "top",
-  "modules-left": ["custom/os", "hyprland/workspaces"],
-  "modules-center": ["hyprland/window"],
+  "modules-left": ["custom/os", "hyprland/window"],
+  "modules-center": ["hyprland/workspaces"],
   "modules-right": ["idle_inhibitor", "network", "pulseaudio", "clock"],
   "hyprland/workspaces": {
     "format": "{icon}",
     "format-icons": {
-      "terminal": "T",
-      "browser": "B",
-      "gamedev": "G",
-      "picture": "P",
-      "video": "V",
-      "audio": "A",
-      "notes": "N",
+      "terminal": "t",
+      "browser": "b",
+      "gamedev": "g",
+      "picture": "p",
+      "video": "v",
+      "audio": "a",
+      "notes": "n",
     }
     // "format-icons": {
     //   "terminal": " ",
