@@ -6,7 +6,15 @@
     font-family: "Hack Nerd Font", Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: bold;
-https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E    min-height: 0;
+    min-height: 0;
+}
+
+#window {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 100px 20px 100px 20px;
+    margin: 4px;
+    padding: 0px 15px;
+    color: @text;
 }
 
 window#waybar {
@@ -14,7 +22,11 @@ window#waybar {
     color: @overlay0;
     transition-property: background-color;
     transition-duration: 0.1s;
-https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E}
+}
+
+window#waybar.empty #window {  
+    background:none;  
+}
 
 #custom-os {
     background-color: @crust;
@@ -23,14 +35,6 @@ https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E}
     border-radius: 0px 20px 100px 0px;
     margin: 4px 4px 4px 6px;
     padding: 0px 15px 0px 8px;
-}
-
-#window https://youtu.be/hpwoGjpYygI?si=8OZT846wQg3E3H6E{
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 100px 20px 100px 20px;
-    margin: 4px;
-
-    color: @text;
 }
 
 #workspaces button {
