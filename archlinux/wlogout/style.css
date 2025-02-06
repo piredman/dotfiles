@@ -1,50 +1,64 @@
+@import "mocha.css";
+
 * {
-	background-image: none;
-	box-shadow: none;
+  font-family: "Hack Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+  background-image: none;
+  transition: 20ms;
+  box-shadow: none;
 }
 
 window {
-	background-color: rgba(12, 12, 12, 0.9);
+  /*opacity: 0.7;*/
+  background: none;
 }
 
 button {
-    border-radius: 0;
-    border-color: black;
-	text-decoration-color: #FFFFFF;
-    color: #FFFFFF;
-	background-color: #1E1E1E;
-	border-style: solid;
-	border-width: 1px;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 25%;
+  color: @lavender;
+  font-size: 23px;
+
+  margin: 120px 0px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20%;
+
+  background-color: @crust;
+  opacity: 0.8;
+  border: none;
+  border-radius: 0px;
+  transition: 0.15s ease-in-out all;
 }
 
-button:focus, button:active, button:hover {
-	background-color: #3700B3;
-	outline-style: none;
+button:hover {
+  color: @crust;
+  background-size: 45%;
+  background-color: @mauve;
+  margin: 75px 0px;
+  border-radius: 50px;
 }
+
+/* 
+----------------------------------------------------- 
+Buttons
+----------------------------------------------------- 
+*/
 
 #lock {
-    background-image: image(url("~/.config/wlogout/icons/lock.png"));
+  border-radius: 50px 0px 0px 50px;
+  background-image: image(url("icons/lock.png"));
 }
-
-#logout {
-    background-image: image(url("/usr/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
-}
-
-#suspend {
-    background-image: image(url("/usr/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
-}
-
-#hibernate {
-    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"), url("/usr/local/share/wlogout/icons/hibernate.png"));
-}
-
-#shutdown {
-    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
+#lock:hover {
+  border-radius: 50px;
 }
 
 #reboot {
-    background-image: image(url("/usr/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
+  background-image: image(url("icons/reboot.png"));
+}
+
+#shutdown {
+  border-radius: 0px 50px 50px 0px;
+  background-image: image(url("icons/shutdown.png"));
+}
+#shutdown:hover {
+  border-radius: 50px;
 }

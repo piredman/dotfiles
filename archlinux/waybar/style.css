@@ -1,66 +1,75 @@
-@import "mocha.css"; 
+@import "mocha.css";
 
 * {
-    border: none;
-    border-radius: 0;
-    font-family: "Hack Nerd Font", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "Hack Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  min-height: 0;
 }
 
 #window {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 100px 20px 100px 20px;
-    margin: 4px;
-    padding: 0px 15px;
-    color: @text;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 100px 20px 100px 20px;
+  margin: 4px;
+  padding: 0px 15px;
+  color: @text;
 }
 
 window#waybar {
-    background: transparent;
-    color: @overlay0;
-    transition-property: background-color;
-    transition-duration: 0.1s;
+  background: transparent;
+  color: @overlay0;
+  transition-property: background-color;
+  transition-duration: 0.1s;
 }
 
-window#waybar.empty #window {  
-    background:none;  
+window#waybar.empty #window {
+  background: none;
 }
 
 #custom-os {
-    background-color: @crust;
-    color: @lavender;
-    border: 3px solid @crust; 
-    border-radius: 0px 20px 100px 0px;
-    margin: 4px 4px 4px 6px;
-    padding: 0px 15px 0px 8px;
+  background-color: @crust;
+  color: @lavender;
+  border: 3px solid @crust;
+  border-radius: 0px 20px 100px 0px;
+  margin: 4px 4px 4px 6px;
+  padding: 0px 15px 0px 8px;
+}
+
+#custom-exit {
+  background-color: @crust;
+  color: @lavender;
+  border: 3px solid #20052a;
+  border-radius: 20px 0px 0px 100px;
+  margin: 4px 6px 4px 4px;
+  padding: 0px 8px 0px 12px;
 }
 
 #workspaces button {
-    background: transparent;
-    border: 2px solid @crust;
-    border-radius: 100px;
-    color: @crust;
-    margin: 5px;
-    padding: 0px 5px;
-    box-shadow: inherit;
-    text-shadow: inherit;
+  background: transparent;
+  border: 2px solid @crust;
+  border-radius: 100px;
+  color: @crust;
+  margin: 5px;
+  padding: 0px 5px;
+  box-shadow: inherit;
+  text-shadow: inherit;
 }
 
 #workspaces button.active {
-    border: 2px solid @sapphire;
-    color: @sapphire
+  border: 2px solid @sapphire;
+  color: @sapphire;
 }
 
 #workspaces button:hover {
-    border: 2px solid @maroon;
-    color: @maroon;
+  border: 2px solid @maroon;
+  color: @maroon;
 }
 
 #workspaces button.urgent {
-    border: 2px solid @red;
-    color: @redsapphire;
+  border: 2px solid @red;
+  color: @redsapphire;
 }
 
 #pulseaudio,
@@ -85,38 +94,37 @@ window#waybar.empty #window {
 }
 
 #clock {
-    color: @maroon;
-    border: 3px solid #20052a;
-    border-radius: 20px 0px 0px 100px;
-    background-color: @crust;
-    margin-right: 6px;
+  color: @maroon;
+  border: 3px solid #20052a;
+  border-radius: 20px 100px 20px 100px;
+  background-color: @crust;
 }
 
 #clock.date {
-    color: @mauve;
+  color: @mauve;
 }
 
 #pulseaudio {
-    color: @blue;
-    border: 3px solid #20052a;
-    border-radius: 20px 100px 20px 100px;
-    background-color: @crust;
+  color: @blue;
+  border: 3px solid #20052a;
+  border-radius: 20px 100px 20px 100px;
+  background-color: @crust;
 }
 
 #network {
-    color: @yellow;
-    border: 3px solid #20052a;
-    border-radius: 20px 100px 20px 100px;
-    background-color: @crust;
+  color: @yellow;
+  border: 3px solid #20052a;
+  border-radius: 20px 100px 20px 100px;
+  background-color: @crust;
 }
 
 #idle_inhibitor {
-    color: @green;
-    border: 3px solid #20052a;
-    border-radius: 20px 100px 20px 100px;
-    background-color: @crust;
+  color: @green;
+  border: 3px solid #20052a;
+  border-radius: 20px 100px 20px 100px;
+  background-color: @crust;
 }
 
 #idle_inhibitor.activated {
-    color: @red;
+  color: @red;
 }
