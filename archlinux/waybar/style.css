@@ -85,7 +85,8 @@ window#waybar.empty #window {
 #network,
 #mode,
 #idle_inhibitor,
-#scratchpad {
+#scratchpad,
+#custom-notification {
   margin: 4px 2px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -127,4 +128,11 @@ window#waybar.empty #window {
 
 #idle_inhibitor.activated {
   color: @red;
+}
+
+#custom-notification {
+  color: @lavender;
+  border: 3px solid #20052a;
+  border-radius: 20px 100px 20px 100px;
+  background-color: @crust;
 }

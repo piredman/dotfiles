@@ -6,13 +6,13 @@
 }
 {
     "label" : "reboot",
-    "action" : "sh ~/.config/wlogout/graceful-reboot.sh",
+    "action" : "reboot now",
     "text" : "Reboot",
     "keybind" : "r"
 }
 {
     "label" : "shutdown",
-    "action" : "sh ~/.config/wlogout/graceful-shutdown.sh",
+    "action" : "shutdown now",
     "text" : "Shutdown",
     "keybind" : "s"
 }

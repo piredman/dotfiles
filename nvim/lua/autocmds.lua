@@ -11,3 +11,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+-- Detect the shabang at the beginning of files to set the file type
+vim.cmd [[
+  augroup filetypedetect
+    au! BufRead,BufNewFile * if getline(1) =~ '^#!.*\\(bash\\|sh\\)' | set filetype=sh | endif
+  augroup END
+]]

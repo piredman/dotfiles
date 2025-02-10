@@ -18,9 +18,9 @@ vim.opt.rtp:prepend(lazypath)
 if vim.fn.filereadable(vim.fn.getcwd() .. '/project.godot') == 1 then
   if vim.fn.has 'win32' == 1 then
     -- Windows can't pipe so use localhost. Make sure this is configured in Godot.
-    vim.fn.serverstart('127.0.0.1:6004')
+    vim.fn.serverstart '127.0.0.1:6004'
   else
-    local pipepath = vim.fn.stdpath("cache") .. "/server.pipe"
+    local pipepath = vim.fn.stdpath 'cache' .. '/server.pipe'
     if not vim.loop.fs_stat(pipepath) then
       vim.fn.serverstart(pipepath)
     end
@@ -36,10 +36,11 @@ end
 --
 --  To update plugins you can run
 --    :Lazy update
-require('lazy').setup({
+require('lazy').setup {
   spec = {
-    { import = "plugins" }
-  }, {
+    { import = 'plugins' },
+  },
+  {
     ui = {
       -- If you are using a Nerd Font: set icons to an empty table which will use the
       -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
@@ -60,7 +61,7 @@ require('lazy').setup({
       },
     },
   },
-})
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
