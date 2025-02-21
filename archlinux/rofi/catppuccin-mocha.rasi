@@ -17,6 +17,7 @@ element-text, element-icon , mode-switcher {
 }
 
 window {
+    width: 900px;
     height: 360px;
     border: 3px;
     border-color: @border-col;
