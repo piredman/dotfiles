@@ -60,12 +60,12 @@ return { -- LSP Configuration & Plugins
         --  This is where a variable was first declared, or where a function is defined, etc.
         --  To jump back, press <C-t>.
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-        map('sgd', function ()
-          require('telescope.builtin').lsp_definitions({
-            jump_type = 'vsplit', reuse_win = true
-          })
-        end,
-        '[V]ertically split [G]oto [D]efinition')
+        map('sgd', function()
+          require('telescope.builtin').lsp_definitions {
+            jump_type = 'vsplit',
+            reuse_win = true,
+          }
+        end, '[V]ertically split [G]oto [D]efinition')
 
         -- Find references for the word under your cursor.
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -179,6 +179,7 @@ return { -- LSP Configuration & Plugins
       ts_ls = {},
       omnisharp = {},
       gopls = {},
+      ruby_lsp = {},
     }
 
     -- Ensure the servers and tools above are installed
@@ -225,6 +226,6 @@ return { -- LSP Configuration & Plugins
       gdscript_config.cmd = { 'nmap', 'localhost', os.getenv 'GDScript_Port' or '6005' }
     end
     require('lspconfig').gdscript.setup(gdscript_config)
-    require('lspconfig').jdtls.setup({})
+    require('lspconfig').jdtls.setup {}
   end,
 }

@@ -17,6 +17,12 @@ export PATH="$HOME/bin/netcoredbg:$PATH"
 # go
 export PATH="/urs/local/go/bin:$PATH"
 
+# ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
+
 # zsh plugins
 plugins=(
     git

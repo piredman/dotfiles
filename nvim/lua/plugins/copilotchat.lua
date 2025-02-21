@@ -1,78 +1,84 @@
 return {
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    'CopilotC-Nvim/CopilotChat.nvim',
+    branch = 'canary',
     dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+      { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
+      { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
     },
     opts = {
       debug = false,
     },
+    mappings = {
+      reset = {
+        normal = '<C-r>',
+        insert = '<C-r>',
+      },
+    },
     keys = {
       {
-        "<leader>cct",
+        '<leader>cct',
         function()
-          require("CopilotChat").toggle()
+          require('CopilotChat').toggle()
         end,
-        desc = "copilot: [t]oggle chat window",
+        desc = 'copilot: [t]oggle chat window',
       },
       {
-        "<leader>ccc",
+        '<leader>ccc',
         function()
-          local input = vim.fn.input("General Question: ")
-          if input ~= "" then
-            require("CopilotChat").ask(input)
+          local input = vim.fn.input 'General Question: '
+          if input ~= '' then
+            require('CopilotChat').ask(input)
           end
         end,
-        desc = "copilot: [c]hat",
+        desc = 'copilot: [c]hat',
       },
       {
-        "<leader>c",
+        '<leader>c',
         function()
-          local input = vim.fn.input("General Question: ")
-          if input ~= "" then
-            require("CopilotChat").ask(input)
+          local input = vim.fn.input 'General Question: '
+          if input ~= '' then
+            require('CopilotChat').ask(input)
           end
         end,
-        mode = { "v" },
-        desc = "copilot: [c]hat with selection",
+        mode = { 'v' },
+        desc = 'copilot: [c]hat with selection',
       },
       {
-        "<leader>ccb",
+        '<leader>ccb',
         function()
-          local input = vim.fn.input("Buffer Question: ")
-          if input ~= "" then
-            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+          local input = vim.fn.input 'Buffer Question: '
+          if input ~= '' then
+            require('CopilotChat').ask(input, { selection = require('CopilotChat.select').buffer })
           end
         end,
-        desc = "copilot: chat with current [b]uffer",
+        desc = 'copilot: chat with current [b]uffer',
       },
       {
-        "<leader>cca",
+        '<leader>cca',
         function()
-          local actions = require("CopilotChat.actions")
-          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+          local actions = require 'CopilotChat.actions'
+          require('CopilotChat.integrations.telescope').pick(actions.prompt_actions())
         end,
-        desc = "copilot: [a]ctions",
+        desc = 'copilot: [a]ctions',
       },
       {
-        "<leader>a",
+        '<leader>a',
         function()
-          local actions = require("CopilotChat.actions")
-          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+          local actions = require 'CopilotChat.actions'
+          require('CopilotChat.integrations.telescope').pick(actions.prompt_actions())
         end,
-        mode = { "v" },
-        desc = "copilot: [a]ctions with selection",
+        mode = { 'v' },
+        desc = 'copilot: [a]ctions with selection',
       },
       {
-        "<leader>cch",
+        '<leader>cch',
         function()
-          local actions = require("CopilotChat.actions")
-          require("CopilotChat.integrations.telescope").pick(actions.help_actions())
+          local actions = require 'CopilotChat.actions'
+          require('CopilotChat.integrations.telescope').pick(actions.help_actions())
         end,
-        desc = "copilot: [h]elp",
+        desc = 'copilot: [h]elp',
       },
-    }
+    },
   },
 }

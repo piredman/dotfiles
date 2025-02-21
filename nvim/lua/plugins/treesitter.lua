@@ -20,6 +20,7 @@ return { -- Highlight, edit, and navigate code
       'sql',
       'gdscript',
       'godot_resource',
+      'ruby',
     },
     -- Autoinstall languages that are not installed
     auto_install = true,
