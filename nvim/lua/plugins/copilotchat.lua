@@ -8,11 +8,11 @@ return {
     },
     opts = {
       debug = false,
-    },
-    mappings = {
-      reset = {
-        normal = '<C-r>',
-        insert = '<C-r>',
+      mappings = {
+        reset = {
+          normal = '<C-r>',
+          insert = '<C-r>',
+        },
       },
     },
     keys = {

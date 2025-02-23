@@ -52,7 +52,7 @@ mainbox {
     orientation:                 vertical;
     children:                    [ "inputbar" , "listbox" ];
     background-color:            transparent;
-    background-image:            url("~/Nextcloud/wallpaper/shaded.png", width);
+    background-image:            url("~/wallpaper/shaded.png", width);
 }
 
 
@@ -63,7 +63,7 @@ inputbar {
     padding:                     5em;
     children:                    [ "textbox-prompt-colon", "entry" ];
     background-color:            transparent;
-    // background-image:            url("~/Nextcloud/wallpaper/shaded.png", width);
+    // background-image:            url("~/wallpaper/shaded.png", width);
 }
 
 textbox-prompt-colon {
@@ -74,7 +74,7 @@ textbox-prompt-colon {
     text-color:                  @fg-col;
     border-radius:               2em 0em 0em 2em;
     background-color:            @bg-col;
-    // background-image:            url("~/Nextcloud/wallpaper/shaded.png", width);
+    // background-image:            url("~/wallpaper/shaded.png", width);
 }
 
 entry {
