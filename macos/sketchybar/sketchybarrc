@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+source "$CONFIG_DIR/colours.sh" # Loads all defined colors
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEM_DIR="$CONFIG_DIR/items"
+
+##### Bar Appearance #####
+# Configuring the general appearance of the bar.
+# These are only some of the options available. For all options see:
+# https://felixkratz.github.io/SketchyBar/config/bar
+# If you are looking for other colors, see the color picker:
+# https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
+
+sketchybar --hotload true
+
+bar_defaults=(
+    position=top
+    height=37
+    padding_left=10
+    padding_right=10
+    blur_radius=30
+    sticky=off
+    color=$BAR_COLOUR
+)
+sketchybar --bar "${bar_defaults[@]}"
+
+##### Changing Defaults #####
+# We now change some default values, which are applied to all further items.
+# For a full list of all available item properties see:
+# https://felixkratz.github.io/SketchyBar/config/items
+
+default=(
+    label.font="CaskaydiaCove Nerd Font:Bold:14.0"
+    label.color=$LABEL_COLOUR
+
+    icon.font="CaskaydiaCove Nerd Font:Bold:17.0"
+    icon.color=$ICON_COLOUR
+    icon.padding_right=5
+
+    background.color=$TRANPARENT
+    background.corner_radius=5
+    background.height=24
+
+    padding_left=5
+    padding_right=5
+)
+sketchybar --default "${default[@]}"
+
+##### Adding Left Items #####
+# We add some regular items to the left side of the bar, where
+# only the properties deviating from the current defaults need to be set
+
+source $ITEM_DIR/spaces.sh
+
+sketchybar --add item chevron left \
+    --set chevron icon= label.drawing=off \
+    --add item front_app left \
+    --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
+    --subscribe front_app front_app_switched
+
+##### Adding Right Items #####
+# In the same way as the left items we can add items to the right side.
+# Additional position (e.g. center) are available, see:
+# https://felixkratz.github.io/SketchyBar/config/items#adding-items-to-sketchybar
+
+# Some items refresh on a fixed cycle, e.g. the clock runs its script once
+# every 10s. Other items respond to events they subscribe to, e.g. the
+# volume.sh script is only executed once an actual change in system audio
+# volume is registered. More info about the event system can be found here:
+# https://felixkratz.github.io/SketchyBar/config/events
+
+sketchybar --add item clock right \
+    --set clock update_freq=10 icon= script="$PLUGIN_DIR/clock.sh" \
+    --add item volume right \
+    --set volume script="$PLUGIN_DIR/volume.sh" \
+    --subscribe volume volume_change \
+    --add item battery right \
+    --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+    --subscribe battery system_woke power_source_change
+
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --update

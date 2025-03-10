@@ -35,6 +35,7 @@ plugins=(
     docker
     zsh-autosuggestions
     zsh-syntax-highlighting
+    zsh-vi-mode
     web-search
 )
 source $ZSH/oh-my-zsh.sh
