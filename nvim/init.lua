@@ -16,14 +16,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Enable neovim to be the external editor for Godot, if the cwd has a project.godo file
 if vim.fn.filereadable(vim.fn.getcwd() .. '/project.godot') == 1 then
-  if vim.fn.has 'win32' == 1 then
-    -- Windows can't pipe so use localhost. Make sure this is configured in Godot.
-    vim.fn.serverstart '127.0.0.1:6004'
-  else
-    local pipepath = vim.fn.stdpath 'cache' .. '/server.pipe'
-    if not vim.loop.fs_stat(pipepath) then
-      vim.fn.serverstart(pipepath)
-    end
+  local pipepath = vim.fn.stdpath 'cache' .. '/server.pipe'
+  if not vim.loop.fs_stat(pipepath) then
+    vim.fn.serverstart(pipepath)
   end
 end
 
@@ -36,9 +31,24 @@ end
 --
 --  To update plugins you can run
 --    :Lazy update
+-- init.lua or plugins.lua
 require('lazy').setup {
   spec = {
-    { import = 'plugins' },
+    { import = 'plugins', cond = true },
+    {
+      import = 'plugins_terminal',
+      cond = function()
+        return not vim.g.vscode
+      end,
+      priority = 1000,
+    },
+    {
+      import = 'plugins_vscode',
+      cond = function()
+        return vim.g.vscode
+      end,
+      priority = 2000,
+    },
   },
   {
     ui = {

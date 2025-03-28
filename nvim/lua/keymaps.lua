@@ -49,17 +49,18 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- These mappings control the size of splits (height/width)
-vim.keymap.set("n", "<M-,>", "<c-w>5<")
-vim.keymap.set("n", "<M-.>", "<c-w>5>")
-vim.keymap.set("n", "<M-t>", "<C-W>+")
-vim.keymap.set("n", "<M-s>", "<C-W>-")
+vim.keymap.set('n', '<M-,>', '<c-w>5<')
+vim.keymap.set('n', '<M-.>', '<c-w>5>')
+vim.keymap.set('n', '<M-t>', '<C-W>+')
+vim.keymap.set('n', '<M-s>', '<C-W>-')
+vim.keymap.set('n', '<leader>;', '<cmd>vsplit<CR><C-w>h<C-^>')
 
 -- Navigating tabs
-vim.keymap.set("n", "<left>", "gT")
-vim.keymap.set("n", "<right>", "gt")
+vim.keymap.set('n', '<left>', 'gT')
+vim.keymap.set('n', '<right>', 'gt')
 
 -- Lua execution
-vim.keymap.set("n", "<leader>R", "<cmd>source %<CR>") -- Source the current file
-vim.keymap.set("n", "<leader>X", ":luafile %<CR>")    -- Execute the current file with lua
-vim.keymap.set("n", "<leader>x", ":.lua<CR>")         -- Execute the current line with lua
-vim.keymap.set("v", "<leader>x", ":lua<CR>")          -- Execute the current selection with lua
+vim.keymap.set('n', '<leader>R', '<cmd>source %<CR>') -- Source the current file
+vim.keymap.set('n', '<leader>X', ':luafile %<CR>') -- Execute the current file with lua
+vim.keymap.set('n', '<leader>x', ':.lua<CR>') -- Execute the current line with lua
+vim.keymap.set('v', '<leader>x', ':lua<CR>') -- Execute the current selection with lua

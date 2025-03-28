@@ -7,6 +7,8 @@ export DEVBOX_NO_PROMPT=1
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+export FZF_DEFAULT_COMMAND='fd'
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
