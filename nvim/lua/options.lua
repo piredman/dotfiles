@@ -25,9 +25,12 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+vim.schedule(function()
+  vim.opt.clipboard = 'unnamedplus'
+end)
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -68,6 +71,11 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+-- instead raise a dialog asking if you wish to save the current file(s)
+-- See `:help 'confirm'`
+vim.opt.confirm = true
+
 -- turn off swapfile
 vim.opt.swapfile = false
 
@@ -83,17 +91,3 @@ vim.opt.tabstop = 4 -- 4 spaces for tabs (prettier default)
 vim.opt.shiftwidth = 4 -- 4 spaces for indent width
 vim.opt.expandtab = true -- expand tab to spaces
 vim.opt.autoindent = true -- copy indent from current line when starting new one
-
-vim.filetype.add {
-  pattern = {
-    ["[a-zA-z-_]+"] = {
-      function(path, bufnr)
-        local first_line = vim.api.nvim_buf_get_lines(0, 0, 1, false)[1]
-        if vim.regex([[^#!/usr/bin/env\s\+bun$]]):match_str(first_line) ~= nil then
-          return "javascript"
-        end
-      end,
-      { priority = math.huge },
-    }
-  }
-}

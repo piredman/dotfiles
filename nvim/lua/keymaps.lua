@@ -15,12 +15,16 @@ vim.keymap.set('n', '<leader>ct', '<cmd>%retab!<CR>', { desc = 'Update entire fi
 vim.keymap.set('n', '<leader>uw', '<cmd>set wrap!<CR>', { desc = '[u]i toggle text [w]rap' })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump { count = -1, float = true }
+end, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump { count = 1, float = true }
+end, { desc = 'Go to next [D]iagnostic message' })
 
 -- Quickfix keymaps
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>Q', '<cmd>cclose<CR>', { desc = 'Close [Q]uickfix list' })
 vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix item' })
 vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix item' })
@@ -53,11 +57,7 @@ vim.keymap.set('n', '<M-,>', '<c-w>5<')
 vim.keymap.set('n', '<M-.>', '<c-w>5>')
 vim.keymap.set('n', '<M-t>', '<C-W>+')
 vim.keymap.set('n', '<M-s>', '<C-W>-')
-vim.keymap.set('n', '<leader>;', '<cmd>vsplit<CR><C-w>h<C-^>')
-
--- Navigating tabs
-vim.keymap.set('n', '<left>', 'gT')
-vim.keymap.set('n', '<right>', 'gt')
+vim.keymap.set('n', '<leader>;', '<cmd>vsplit<CR><C-w>h<C-^>', { desc = 'Open current and last buffer in vertical split' })
 
 -- Lua execution
 vim.keymap.set('n', '<leader>R', '<cmd>source %<CR>') -- Source the current file

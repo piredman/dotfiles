@@ -16,5 +16,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.cmd [[
   augroup filetypedetect
     au! BufRead,BufNewFile * if getline(1) =~ '^#!.*\\(bash\\|sh\\)' | set filetype=sh | endif
+    au! BufRead,BufNewFile * if getline(1) =~ '^#!.*\\(bun\\)' | set filetype=javascript | endif
   augroup END
 ]]

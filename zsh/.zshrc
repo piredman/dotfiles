@@ -1,6 +1,7 @@
 # Include path to local bin directory
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+
 # Disable (devbox) prompt in devbox shell
 export DEVBOX_NO_PROMPT=1
 
@@ -24,9 +25,8 @@ if uname -r | grep -q 'arch'; then
   export GEM_HOME="$(gem env user_gemhome)"
   export PATH="$PATH:$GEM_HOME/bin"
 fi
-if uname -r | grep -q 'darwin'; then # macos
+if uname | grep -q 'Darwin'; then # macos
   export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-  export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
   export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
   export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
 fi
