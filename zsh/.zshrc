@@ -1,24 +1,11 @@
 # Include path to local bin directory
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-
-# Disable (devbox) prompt in devbox shell
-export DEVBOX_NO_PROMPT=1
+export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Use fd as fzf default
 export FZF_DEFAULT_COMMAND='fd'
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# dotnet debugger
-export PATH="$HOME/bin/netcoredbg:$PATH"
-
-# go
-export PATH="/urs/local/go/bin:$PATH"
 
 # ruby
 if uname -r | grep -q 'arch'; then
@@ -38,8 +25,7 @@ plugins=(
     docker
     zsh-autosuggestions
     zsh-syntax-highlighting
-    zsh-vi-mode               # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#as-an-oh-my-zsh-custom-plugin
-    web-search
+    zsh-vi-mode
 )
 source $ZSH/oh-my-zsh.sh
 
@@ -143,19 +129,8 @@ function sf() {
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
 
-# nvm
-if [ -d "$HOME/.nvm" ]; then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-fi
-
 # start zoxide
 eval "$(zoxide init zsh)"
 
 # start starship
 eval "$(starship init zsh)"
-
-# bun completions
-[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
-

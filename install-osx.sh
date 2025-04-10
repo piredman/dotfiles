@@ -1,3 +1,8 @@
+# prerequisites
+# =============
+# 
+# wezterm, zsh, oh-my-zsh, CaskaydiaCove Nerd Font 
+
 # home
 ln -s ~/code/personal/dotfiles/zsh/.zshrc ~/.zshrc
 ln -s ~/code/personal/dotfiles/tmux/.tmux.conf ~/.tmux.conf
@@ -13,11 +18,3 @@ ln -s ~/code/personal/dotfiles/yazi ~/.config/yazi
 # vscode
 ln -s ~/code/personal/dotfiles/vscode/settings.json "/Users/paulredman/Library/Application Support/Code/User/settings.json"
 ln -s ~/code/personal/dotfiles/vscode/keybindings.json "/Users/paulredman/Library/Application Support/Code/User/keybindings.json"
-
-# icloud
-ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs/ ~/icloud
-ln -s ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/ ~/obsidian
-
-# fonts
-brew tap homebrew/cask-fonts
-brew install font-hack-nerd-font
