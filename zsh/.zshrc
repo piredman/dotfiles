@@ -38,10 +38,12 @@ plugins=(
     docker
     zsh-autosuggestions
     zsh-syntax-highlighting
-    zsh-vi-mode
+    zsh-vi-mode               # https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#as-an-oh-my-zsh-custom-plugin
     web-search
 )
 source $ZSH/oh-my-zsh.sh
+
+export EDITOR=nvim
 
 # Git functions
 configure-git() {
@@ -106,12 +108,13 @@ alias cat="bat"
 alias cd="z"
 alias lg="lazygit"
 alias ld="lazydocker"
+alias sdk="/home/redman/.local/share/Steam/steamapps/common/SteamOSDevkitClient/devkit-gui.sh"
 
 # linux only
 if uname -r | grep -q 'arch'; then
   alias ff="fastfetch"
   alias stats="fastfetch"
-  alias ip="fastfetch -c ~/.config/fastfetch/ip.jsonc"
+  alias ffip="fastfetch -c ~/.config/fastfetch/ip.jsonc"
 fi
 
 # utility

@@ -144,5 +144,24 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- TODO: Get gdscript debugger working
+    --
+    -- local dap = require("dap")
+    -- dap.adapters.godot = {
+    --     type = "server",
+    --     host = "127.0.0.1",
+    --     port = 6006,  -- Debug port (different from LSP port)
+    -- }
+    --
+    -- dap.configurations.gdscript = {
+    --     {
+    --         type = "godot",
+    --         request = "launch",
+    --         name = "Launch scene",
+    --         project = "${workspaceFolder}",
+    --         launch_scene = true,
+    --     },
+    -- }
   end,
 }

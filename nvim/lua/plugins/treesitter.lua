@@ -26,6 +26,7 @@ return {
         'sql',
         'gdscript',
         'godot_resource',
+        'gdshader',
         'ruby',
       },
       -- Autoinstall languages that are not installed
