@@ -24,6 +24,7 @@ config.window_background_opacity = 0.95
 config.macos_window_background_blur = 10
 -- config.text_background_opacity = 0.3
 
+config.adjust_window_size_when_changing_font_size = false
 config.font = wezterm.font_with_fallback({ "CaskaydiaCove Nerd Font", "Symbols Nerd Font", "Libertinus Math" })
 -- config.font = wezterm.font_with_fallback({ "Hack Nerd Font", "Symbols Nerd Font", "Libertinus Math" })
 config.font_size = 16.0
