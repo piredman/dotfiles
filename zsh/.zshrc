@@ -1,9 +1,9 @@
-# From kubecraft course: https://www.skool.com/kubecraft/classroom/61c1f6b7?md=9f9fb7421e0248478f157cf5b757c98f
+# ~~~~~~~~~~~~~~~ Path configuration ~~~~~~~~~~~~~~~~~~~~~~~~
 
 setopt extended_glob null_glob
 
 path=(
-  $PATH                         # Keep existing PATH entries
+  $path                         # Keep existing PATH entries
   $HOME/bin
   $HOME/.local/bin
   $HOME/.rd/bin                 # Rancher Desktop
@@ -15,8 +15,13 @@ path=(
 typeset -U path
 path=($^path(N-/))
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export PATH
+
+
+# ~~~~~~~~~~~~~~~ Environment Variables ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+export EDITOR=nvim
 
 # Use fd as fzf default
 export FZF_DEFAULT_COMMAND='fd'
@@ -35,6 +40,13 @@ export FZF_DEFAULT_COMMAND='fd'
 #   export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
 # fi
 
+
+# ~~~~~~~~~~~~~~~ oh-my-zsh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
 # zsh plugins
 plugins=(
     git
@@ -46,7 +58,9 @@ plugins=(
 )
 source $ZSH/oh-my-zsh.sh
 
-export EDITOR=nvim
+
+# ~~~~~~~~~~~~~~~ git configuraiton ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # Git functions
 configure-git() {
@@ -88,7 +102,6 @@ git-rebase() {
     git rebase origin/$branch
 }
 
-# git
 alias {gl,glog}=git-log
 alias {gp,gprune}=git-prune
 alias {gs,gstatus}="git status"
@@ -101,6 +114,10 @@ alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
 alias gtl="git worktree list"
 alias gta="git worktree add"
 alias gtd="git worktree delete"
+
+
+# ~~~~~~~~~~~~~~~ aliases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # applications
 alias vim=nvim
@@ -128,8 +145,12 @@ fi
 # utility
 alias reload="source ~/.zshrc"
 
+
+# ~~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 # nvim mason applications
-mason() {
+function mason() {
   local command="$1"
   local file_path="$(pwd)/$2"
   shift 2
@@ -150,6 +171,10 @@ function yy() {
 function sf() {
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
+
+
+# ~~~~~~~~~~~~~~~ sourcing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 # start zoxide
 eval "$(zoxide init zsh)"
