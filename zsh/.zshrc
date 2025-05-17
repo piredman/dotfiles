@@ -1,5 +1,19 @@
-# Include path to local bin directory
-export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
+# From kubecraft course: https://www.skool.com/kubecraft/classroom/61c1f6b7?md=9f9fb7421e0248478f157cf5b757c98f
+
+setopt extended_glob null_glob
+
+path=(
+  $PATH                         # Keep existing PATH entries
+  $HOME/bin
+  $HOME/.local/bin
+  $HOME/.rd/bin                 # Rancher Desktop
+  /usr/local/bin
+  /opt/homebrew/bin
+)
+
+# Remove duplicate entries and non-existent directories
+typeset -U path
+path=($^path(N-/))
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -7,17 +21,19 @@ export ZSH="$HOME/.oh-my-zsh"
 # Use fd as fzf default
 export FZF_DEFAULT_COMMAND='fd'
 
-# ruby
-if uname -r | grep -q 'arch'; then
-  export GEM_HOME="$(gem env user_gemhome)"
-  export PATH="$PATH:$GEM_HOME/bin"
-fi
-if uname | grep -q 'Darwin'; then # macos
-  export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-  export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
-  export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
-fi
+# Move ruby configuration into a devcontainer
+#
+# # ruby
+# if uname -r | grep -q 'arch'; then
+#   export GEM_HOME="$(gem env user_gemhome)"
+#   export PATH="$PATH:$GEM_HOME/bin"
+# fi
+# if uname | grep -q 'Darwin'; then # macos
+#   export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+#   export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+#   export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
+#   export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
+# fi
 
 # zsh plugins
 plugins=(
@@ -25,6 +41,7 @@ plugins=(
     docker
     zsh-autosuggestions
     zsh-syntax-highlighting
+    zsh-fzf-history-search
     zsh-vi-mode
 )
 source $ZSH/oh-my-zsh.sh
@@ -78,8 +95,8 @@ alias {gs,gstatus}="git status"
 alias {gr,grebase}=git-rebase
 alias {gb,gbranch}="git branch"
 alias {gw,gswitch}="git switch"
-alias {gh,gstash}="git stash"
-alias {ghp,gpop}="git stash pop"
+alias {gstash}="git stash"
+alias {gpop}="git stash pop"
 alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
 alias gtl="git worktree list"
 alias gta="git worktree add"
@@ -95,6 +112,11 @@ alias cd="z"
 alias lg="lazygit"
 alias ld="lazydocker"
 alias sdk="/home/redman/.local/share/Steam/steamapps/common/SteamOSDevkitClient/devkit-gui.sh"
+alias devpod="devpod-cli"
+
+# kubectl
+alias k="kubectl"
+alias kgp="kubectl get pods"
 
 # linux only
 if uname -r | grep -q 'arch'; then
