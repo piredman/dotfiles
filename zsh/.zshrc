@@ -2,8 +2,13 @@
 
 setopt extended_glob null_glob
 
+export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
+
 path=(
   $path                         # Keep existing PATH entries
+  /usr/bin
+  /usr/local/bin
+  /usr/local/sbin
   $HOME/bin
   $HOME/.local/bin
   $HOME/.rd/bin                 # Rancher Desktop
