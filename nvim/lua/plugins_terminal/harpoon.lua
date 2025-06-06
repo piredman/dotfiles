@@ -8,6 +8,17 @@ return {
       local mark = require 'harpoon.mark'
       local ui = require 'harpoon.ui'
 
+      require('harpoon').setup {
+        menu = {
+          width = (function()
+            local ok, width = pcall(function()
+              return vim.api.nvim_win_get_width(0) / 2
+            end)
+            return (ok and width > 0) and width or 60
+          end)(),
+        },
+      }
+
       vim.keymap.set('n', '<leader>hl', ui.toggle_quick_menu, { desc = '[h]arpoon [l]ist files' })
       vim.keymap.set('n', '<leader>ha', mark.add_file, { desc = '[h]arpoon [a]dd file' })
 

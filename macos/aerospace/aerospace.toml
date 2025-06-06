@@ -108,10 +108,11 @@ alt-slash = 'layout tiles horizontal vertical'
 alt-comma = 'layout accordion horizontal vertical'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
+# FIX: Using alt-h/j/k/l in neovim for harpoon. Need to find another binding for these.
+# alt-h = 'focus left'
+# alt-j = 'focus down'
+# alt-k = 'focus up'
+# alt-l = 'focus right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-shift-h = 'move left'
@@ -171,13 +172,12 @@ alt-shift-semicolon = 'mode service'
 [workspace-to-monitor-force-assignment]
 B = ['secondary', 'main']
 T = ['secondary', 'main']
-N = ['secondary', 'main']
+C = ['secondary', 'main']
 1 = ['secondary', 'main']
 2 = ['secondary', 'main']
 3 = ['secondary', 'main']
 4 = ['secondary', 'main']
 5 = ['secondary', 'main']
-C = ['built-in', 'main']
 6 = ['built-in', 'main']
 7 = ['built-in', 'main']
 8 = ['built-in', 'main']
@@ -186,15 +186,27 @@ C = ['built-in', 'main']
 
 # use `aerospace list-apps` to see ids for running applications
 [[on-window-detected]]
-if.app-id = 'com.microsoft.teams2'
+if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace 6'
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.Outlook'
+if.app-id = 'us.zoom.xos'
 run = 'move-node-to-workspace 7'
 
 [[on-window-detected]]
-if.app-id = 'app.zen-browser.zen'
+if.app-id = 'com.apple.finder'
+run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'move-node-to-workspace 9'
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser'
+run = 'move-node-to-workspace B'
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace B'
 
 [[on-window-detected]]
@@ -202,8 +214,12 @@ if.app-id = 'com.github.wez.wezterm'
 run = 'move-node-to-workspace T'
 
 [[on-window-detected]]
-if.app-id = 'md.obsidian'
-run = 'move-node-to-workspace N'
+if.app-id = 'com.todesktop.230313mzl4w4u92'
+run = 'move-node-to-workspace C'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace C'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes

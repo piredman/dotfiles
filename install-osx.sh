@@ -1,7 +1,7 @@
 # prerequisites
 # =============
-# 
-# wezterm, zsh, oh-my-zsh, CaskaydiaCove Nerd Font 
+#
+# wezterm, zsh, oh-my-zsh, CaskaydiaCove Nerd Font
 
 # home
 ln -s ~/code/personal/dotfiles/zsh/.zshrc ~/.zshrc
@@ -18,3 +18,6 @@ ln -s ~/code/personal/dotfiles/yazi ~/.config/yazi
 # vscode
 ln -s ~/code/personal/dotfiles/vscode/settings.json "/Users/paulredman/Library/Application Support/Code/User/settings.json"
 ln -s ~/code/personal/dotfiles/vscode/keybindings.json "/Users/paulredman/Library/Application Support/Code/User/keybindings.json"
+
+# scripts
+ln -s ~/code/personal/dotfiles/zsh/scripts ~/scripts

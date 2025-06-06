@@ -33,7 +33,8 @@ while IFS='|' read -r DISPLAY_ID NSSCREEN_ID AERO_ID AERO_NAME; do
             --add space space."$sid" left \
             --set space."$sid" "${space_props[@]}" \
             --set space."$sid" associated_space="$sid" \
-            --subscribe space."$sid" aerospace_workspace_change
+            --subscribe space."$sid" aerospace_workspace_change \
+            --subscribe space."$sid" mouse.clicked
     done
 done <"$temp_file"
 

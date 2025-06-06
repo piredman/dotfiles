@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
+local act = wezterm.action
 
 -- Start weztterm in fullscreen mode
 -- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
@@ -43,7 +44,22 @@ config.window_padding = {
 
 config.send_composed_key_when_left_alt_is_pressed = false
 config.send_composed_key_when_right_alt_is_pressed = false
+
 config.use_ime = false
 config.warn_about_missing_glyphs = false
+
+config.keys = {
+	-- Clears the scrollback and viewport, and then sends CTRL-L to ask the
+	-- shell to redraw its prompt
+	{
+		key = "C",
+		mods = "CTRL|SHIFT",
+		action = act.Multiple({
+			act.ClearScrollback("ScrollbackAndViewport"),
+			-- act.SendKey({ key = "A", mods = "CTRL" }),
+			-- act.SendKey({ key = "L", mods = "CTRL" }),
+		}),
+	},
+}
 
 return config

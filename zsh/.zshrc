@@ -1,56 +1,41 @@
 # ~~~~~~~~~~~~~~~ Path configuration ~~~~~~~~~~~~~~~~~~~~~~~~
 
 setopt extended_glob null_glob
+typeset -U path
 
-export PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH
+add_to_path() {
+    [[ $# -eq 0 ]] && return 0
+    local new_path="${1/#\~/$HOME}"
+    [[ -d "$new_path" ]] || return 1
+    path=("$new_path" $path)  # zsh array syntax
+}
 
-path=(
-  $path                         # Keep existing PATH entries
+my_paths=(
   /usr/bin
   /usr/local/bin
   /usr/local/sbin
   $HOME/bin
   $HOME/.local/bin
-  $HOME/.rd/bin                 # Rancher Desktop
-  /usr/local/bin
   /opt/homebrew/bin
+  /opt/homebrew/opt/{coreutils,findutils,gawk}/libexec/gnubin
 )
 
-# Remove duplicate entries and non-existent directories
-typeset -U path
-path=($^path(N-/))
+expanded_paths=(${my_paths/#\~/$HOME})
+path=(${^expanded_paths:A}(N-/) $path)
 
 export PATH
 
 
 # ~~~~~~~~~~~~~~~ Environment Variables ~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-export EDITOR=nvim
-
-# Use fd as fzf default
-export FZF_DEFAULT_COMMAND='fd'
-
-# Move ruby configuration into a devcontainer
-#
-# # ruby
-# if uname -r | grep -q 'arch'; then
-#   export GEM_HOME="$(gem env user_gemhome)"
-#   export PATH="$PATH:$GEM_HOME/bin"
-# fi
-# if uname | grep -q 'Darwin'; then # macos
-#   export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-#   export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
-#   export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
-#   export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
-# fi
+export EDITOR=nvim                          # neovim is the default editor
+export FZF_DEFAULT_COMMAND='fd'             # fd as fzf default
+[ -f ~/.env_vars ] && source ~/.env_vars
 
 
 # ~~~~~~~~~~~~~~~ oh-my-zsh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+add_to_path "$HOME/.oh-my-zsh"               # oh-my-zsh installation.
 
 # zsh plugins
 plugins=(
@@ -64,10 +49,16 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 
+# ~~~~~~~~~~~~~~~ rancher desktop ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if command -v rdctl &> /dev/null; then
+  add_to_path $HOME/.rd/bin
+  export LIMA_HOST_IP=192.168.5.2             # rancher desktop network settings
+fi
+
+
 # ~~~~~~~~~~~~~~~ git configuraiton ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-# Git functions
 configure-git() {
   git config --global pager.branch false
 }
@@ -119,6 +110,7 @@ alias gamend="git commit --amend --cleanup=strip --date=\"$(date)\""
 alias gtl="git worktree list"
 alias gta="git worktree add"
 alias gtd="git worktree delete"
+alias fsb="~/scripts/fsb"
 
 
 # ~~~~~~~~~~~~~~~ aliases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,9 +172,22 @@ function sf() {
 
 # ~~~~~~~~~~~~~~~ sourcing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+if command -v zoxide > /dev/null ; then
+  # start zoxide
+  eval "$(zoxide init zsh)"
+fi
 
-# start zoxide
-eval "$(zoxide init zsh)"
+if command -v starship > /dev/null ; then
+  # start starship
+  eval "$(starship init zsh)"
+fi
 
-# start starship
-eval "$(starship init zsh)"
+if command -v fnm > /dev/null ; then
+  # Switches to the correct node version when you enter a directory with a .node-version or .nvmrc file
+  eval "$(fnm env --use-on-cd)"
+fi
+
+if command -v asdf > /dev/null ; then
+  # enable asdf
+  . "$HOME/.asdf/asdf.sh"
+fi
