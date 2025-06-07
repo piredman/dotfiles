@@ -1,4 +1,4 @@
-# ~~~~~~~~~~~~~~~ Path configuration ~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ path configuration ~~~~~~~~~~~~~~~~~~~~~~~~
 
 setopt extended_glob null_glob
 typeset -U path
@@ -7,7 +7,7 @@ add_to_path() {
     [[ $# -eq 0 ]] && return 0
     local new_path="${1/#\~/$HOME}"
     [[ -d "$new_path" ]] || return 1
-    path=("$new_path" $path)  # zsh array syntax
+    path=("$new_path" $path)
 }
 
 my_paths=(
@@ -16,8 +16,6 @@ my_paths=(
   /usr/local/sbin
   $HOME/bin
   $HOME/.local/bin
-  /opt/homebrew/bin
-  /opt/homebrew/opt/{coreutils,findutils,gawk}/libexec/gnubin
 )
 
 expanded_paths=(${my_paths/#\~/$HOME})
@@ -26,34 +24,50 @@ path=(${^expanded_paths:A}(N-/) $path)
 export PATH
 
 
-# ~~~~~~~~~~~~~~~ Environment Variables ~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ environment variables ~~~~~~~~~~~~~~~~~~~~~~~~
+
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 export EDITOR=nvim                          # neovim is the default editor
 export FZF_DEFAULT_COMMAND='fd'             # fd as fzf default
+
 [ -f ~/.env_vars ] && source ~/.env_vars
+
+
+# ~~~~~~~~~~~~~~~ homebrew ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if [[ -d "/opt/homebrew" ]]; then
+  add_to_path /opt/homebrew/bin
+  add_to_path /opt/homebrew/opt/{coreutils,findutils,gawk}/libexec/gnubin
+fi
 
 
 # ~~~~~~~~~~~~~~~ oh-my-zsh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-add_to_path "$HOME/.oh-my-zsh"               # oh-my-zsh installation.
-
-# zsh plugins
-plugins=(
-    git
-    docker
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    zsh-fzf-history-search
-    zsh-vi-mode
-)
-source $ZSH/oh-my-zsh.sh
+if [[ -d "$HOME/.oh-my-zsh" ]]; then
+  plugins=(
+      git
+      docker
+      zsh-autosuggestions
+      zsh-syntax-highlighting
+      zsh-fzf-history-search
+      zsh-vi-mode
+  )
+  source $HOME/.oh-my-zsh/oh-my-zsh.sh
+fi
 
 
 # ~~~~~~~~~~~~~~~ rancher desktop ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-if command -v rdctl &> /dev/null; then
+if [[ -d "$HOME/.rd" ]]; then
   add_to_path $HOME/.rd/bin
-  export LIMA_HOST_IP=192.168.5.2             # rancher desktop network settings
+
+  if [[ "$(uname)" == "Darwin" ]]; then
+      export LIMA_HOST_IP=192.168.5.2
+  fi
 fi
 
 
@@ -115,8 +129,8 @@ alias fsb="~/scripts/fsb"
 
 # ~~~~~~~~~~~~~~~ aliases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 # applications
+alias v=nvim
 alias vim=nvim
 alias ls="eza --icons=always"
 alias ll="eza -alh --icons=always"
@@ -125,12 +139,9 @@ alias cat="bat"
 alias cd="z"
 alias lg="lazygit"
 alias ld="lazydocker"
-alias sdk="/home/redman/.local/share/Steam/steamapps/common/SteamOSDevkitClient/devkit-gui.sh"
+alias steamkit="$HOME/.local/share/Steam/steamapps/common/SteamOSDevkitClient/devkit-gui.sh"
+alias dp="devpod-cli"
 alias devpod="devpod-cli"
-
-# kubectl
-alias k="kubectl"
-alias kgp="kubectl get pods"
 
 # linux only
 if uname -r | grep -q 'arch'; then
@@ -145,17 +156,8 @@ alias reload="source ~/.zshrc"
 
 # ~~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-# nvim mason applications
-function mason() {
-  local command="$1"
-  local file_path="$(pwd)/$2"
-  shift 2
-  (cd ~/.local/share/nvim/mason/bin && "./$command" "$file_path" "$@")
-}
-
-# open yazi
 function yy() {
+  # open yazi
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
   yazi "$@" --cwd-file="$tmp"
   if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -164,10 +166,11 @@ function yy() {
   rm -f -- "$tmp"
 }
 
-# aerospace(macos): list workspace applications & move to selection
-function sf() {
+function select-workspace() {
+  # aerospace(macos): list workspace applications & move to selection
   aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
 }
+alias sw=select-workspace
 
 
 # ~~~~~~~~~~~~~~~ sourcing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
