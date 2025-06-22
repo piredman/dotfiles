@@ -133,8 +133,10 @@ alias fsb="~/scripts/fsb"
 alias v=nvim
 alias vim=nvim
 alias ls="eza --icons=always"
-alias ll="eza -alh --icons=always"
-alias tree="eza --tree"
+alias ll="eza -lh --icons=always --git"
+alias la="eza -lahr --icons=always --sort modified"
+alias lla="eza -lah --icons=always --git"
+alias lt="eza --tree"
 alias cat="bat"
 alias cd="z"
 alias lg="lazygit"
