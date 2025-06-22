@@ -1,5 +1,6 @@
 # ~~~~~~~~~~~~~~~ path configuration ~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 setopt extended_glob null_glob
 typeset -U path
 
@@ -24,20 +25,36 @@ path=(${^expanded_paths:A}(N-/) $path)
 export PATH
 
 
+# ~~~~~~~~~~~~~~~ history ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+
+
 # ~~~~~~~~~~~~~~~ environment variables ~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
-export EDITOR=nvim                          # neovim is the default editor
-export FZF_DEFAULT_COMMAND='fd'             # fd as fzf default
+if command -v nvim > /dev/null ; then
+  export EDITOR="nvim"
+  export VISUAL="nvim"
+fi
+
+if command -v fd > /dev/null ; then
+  export FZF_DEFAULT_COMMAND='fd'             # fd as fzf default
+fi
 
 [ -f ~/.env_vars ] && source ~/.env_vars
 
 
 # ~~~~~~~~~~~~~~~ homebrew ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 if [[ -d "/opt/homebrew" ]]; then
   add_to_path /opt/homebrew/bin
@@ -46,6 +63,7 @@ fi
 
 
 # ~~~~~~~~~~~~~~~ oh-my-zsh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
   plugins=(
@@ -62,6 +80,7 @@ fi
 
 # ~~~~~~~~~~~~~~~ rancher desktop ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 if [[ -d "$HOME/.rd" ]]; then
   add_to_path $HOME/.rd/bin
 
@@ -71,7 +90,17 @@ if [[ -d "$HOME/.rd" ]]; then
 fi
 
 
+# ~~~~~~~~~~~~~~~ ssh agent ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add ~/.ssh/id_ed25519 2>/dev/null
+fi
+
+
 # ~~~~~~~~~~~~~~~ git configuraiton ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 configure-git() {
   git config --global pager.branch false
@@ -129,6 +158,7 @@ alias fsb="~/scripts/fsb"
 
 # ~~~~~~~~~~~~~~~ aliases ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 # applications
 alias v=nvim
 alias vim=nvim
@@ -158,6 +188,7 @@ alias reload="source ~/.zshrc"
 
 # ~~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 function yy() {
   # open yazi
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
@@ -176,6 +207,7 @@ alias sw=select-workspace
 
 
 # ~~~~~~~~~~~~~~~ sourcing ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 if command -v zoxide > /dev/null ; then
   # start zoxide
