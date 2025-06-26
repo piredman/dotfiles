@@ -62,19 +62,13 @@ if [[ -d "/opt/homebrew" ]]; then
 fi
 
 
-# ~~~~~~~~~~~~~~~ oh-my-zsh ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~ Completion ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-if [[ -d "$HOME/.oh-my-zsh" ]]; then
-  plugins=(
-      git
-      docker
-      zsh-autosuggestions
-      zsh-syntax-highlighting
-      zsh-fzf-history-search
-      zsh-vi-mode
-  )
-  source $HOME/.oh-my-zsh/oh-my-zsh.sh
+autoload -Uz compinit && compinit
+
+if command -v fzf > /dev/null ; then
+  source <(fzf --zsh)
 fi
 
 
@@ -168,7 +162,6 @@ alias la="eza -lahr --icons=always --sort modified"
 alias lla="eza -lah --icons=always --git"
 alias lt="eza --tree"
 alias cat="bat"
-alias cd="z"
 alias lg="lazygit"
 alias ld="lazydocker"
 alias steamkit="$HOME/.local/share/Steam/steamapps/common/SteamOSDevkitClient/devkit-gui.sh"
@@ -210,12 +203,11 @@ alias sw=select-workspace
 
 
 if command -v zoxide > /dev/null ; then
-  # start zoxide
   eval "$(zoxide init zsh)"
+  alias cd="z"
 fi
 
 if command -v starship > /dev/null ; then
-  # start starship
   eval "$(starship init zsh)"
 fi
 
@@ -225,6 +217,34 @@ if command -v fnm > /dev/null ; then
 fi
 
 if command -v asdf > /dev/null ; then
-  # enable asdf
   . "$HOME/.asdf/asdf.sh"
 fi
+
+
+# ~~~~~~~~~~~~~~~ zsh plugins ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+if [ -d "$HOME/.zsh/zsh-vi-mode" ]; then
+  source ~/.zsh/zsh-vi-mode/zsh-vi-mode.zsh
+fi
+
+if [ -d "$HOME/.zsh/zsh-autosuggestions" ]; then
+  source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+if [ -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
+  source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [ -d "$HOME/.zsh/zsh-fzf-history-search" ]; then
+  source ~/.zsh/zsh-fzf-history-search/zsh-fzf-history-search.zsh
+fi
+
+zvm_after_init() {
+  if command -v fzf > /dev/null; then
+    source <(fzf --zsh)
+  fi
+}
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)

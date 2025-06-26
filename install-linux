@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+DOTFILES_DIR="$HOME/dotfiles"
+BACKUP_DIR="$HOME/backup"
+
+# Function to create symlink with backup
+create_symlink() {
+    local source="$1"
+    local target="$2"
+    local backup_subdir="$3"
+
+    # Check if symlink already exists and points to correct source
+    if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+        echo "Symlink already correct: $target -> $source"
+        return 0
+    fi
+
+    local backup_path="$BACKUP_DIR"
+    if [ -n "$backup_subdir" ]; then
+        backup_path="$BACKUP_DIR/$backup_subdir"
+    fi
+
+    # Create backup directory structure
+    mkdir -p "$backup_path"
+
+    # Check if target exists and backup
+    if [ -e "$target" ]; then
+        echo "Backing up: $target"
+        mv "$target" "$backup_path/"
+    fi
+
+    # Create parent directory for target if needed
+    mkdir -p "$(dirname "$target")"
+
+    # Create symlink
+    ln -s "$source" "$target"
+    echo "Symlink created: $target -> $source"
+}
+
+# Root files (no subdirectory)
+create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
+create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf" ""
+create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" ""
+
+# # Config files
+create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
+create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
+create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
+create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
+
+# Window manager files
+create_symlink "$DOTFILES_DIR/archlinux/hypr" "$HOME/.config/hypr" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/waybar" "$HOME/.config/waybar" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/wlogout" "$HOME/.config/wlogout" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/fastfetch" "$HOME/.config/fastfetch" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/rofi" "$HOME/.config/rofi" "window-manager"
+
+echo "All symlinks processed successfully!"
+
+# paru -S tmux starship wezterm yazi rofi wlogout fastfetch bat eza fd ripgrep fzf zoxide unzip
+# paru -S usbutils
+# paru -S ttf-nerd-fonts-symbols ttf-cascadia-code-nerd
+# paru -S waybar hyprpaper swaync hyprlock wl-clipboard pavucontrol
+# paru -S obsidian lazygit
+
+if [ ! -d "$HOME/.zsh/zsh-vi-mode" ]; then
+    git clone https://github.com/jeffreytse/zsh-vi-mode ~/.zsh/zsh-vi-mode
+fi
+
+if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+fi
+
+if [ ! -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
+fi
+
+if [ ! -d "$HOME/.zsh/zsh-fzf-history-search" ]; then
+    git clone https://github.com/joshskidmore/zsh-fzf-history-search ~/.zsh/zsh-fzf-history-search
+fi

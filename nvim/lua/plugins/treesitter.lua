@@ -28,6 +28,7 @@ return {
         'godot_resource',
         'gdshader',
         'ruby',
+        'regex',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
