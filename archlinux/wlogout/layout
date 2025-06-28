@@ -6,7 +6,7 @@
 }
 {
     "label" : "reboot",
-    "action" : "reboot now",
+    "action" : "reboot",
     "text" : "Reboot",
     "keybind" : "r"
 }

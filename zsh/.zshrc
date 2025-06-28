@@ -41,6 +41,10 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
+export LIB_DIR="$HOME/.local/lib/bash"
+export DOTFILES_DIR="$HOME/dotfiles"
+export BACKUP_DIR="$HOME/backup"
+
 if command -v nvim > /dev/null ; then
   export EDITOR="nvim"
   export VISUAL="nvim"

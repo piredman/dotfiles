@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+source "$LIB_DIR/utils"
+source "$LIB_DIR/packages"
+
+theme_packages=(
+    "unzip"
+    "p7zip"
+    "ark"
+    "archlinux-xdg-menu"
+)
+install_packages "${theme_packages[@]}"
+
+mkdir -p ~/.local/share/kio/servicemenus
+create_symlink "$DOTFILES_DIR/archlinux/extract-here.desktop" "$HOME/.local/share/kio/servicemenus/extract-here.desktop" ""
+chmod +x "$HOME/.local/share/kio/servicemenus/extract-here.desktop"
+XDG_MENU_PREFIX=arch- kbuildsycoca6

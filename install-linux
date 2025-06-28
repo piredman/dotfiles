@@ -1,41 +1,16 @@
 #!/usr/bin/env bash
 
+LIB_DIR="$HOME/.local/lib/bash"
 DOTFILES_DIR="$HOME/dotfiles"
 BACKUP_DIR="$HOME/backup"
 
-# Function to create symlink with backup
-create_symlink() {
-    local source="$1"
-    local target="$2"
-    local backup_subdir="$3"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/zsh/scripts/utils"
+source "$SCRIPT_DIR/archlinux/scripts/packages"
 
-    # Check if symlink already exists and points to correct source
-    if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
-        echo "Symlink already correct: $target -> $source"
-        return 0
-    fi
-
-    local backup_path="$BACKUP_DIR"
-    if [ -n "$backup_subdir" ]; then
-        backup_path="$BACKUP_DIR/$backup_subdir"
-    fi
-
-    # Create backup directory structure
-    mkdir -p "$backup_path"
-
-    # Check if target exists and backup
-    if [ -e "$target" ]; then
-        echo "Backing up: $target"
-        mv "$target" "$backup_path/"
-    fi
-
-    # Create parent directory for target if needed
-    mkdir -p "$(dirname "$target")"
-
-    # Create symlink
-    ln -s "$source" "$target"
-    echo "Symlink created: $target -> $source"
-}
+mkdir -p $LIB_DIR
+create_symlink "$DOTFILES_DIR/zsh/scripts/utils" "$LIB_DIR/utils" ""
+create_symlink "$DOTFILES_DIR/archlinux/scripts/packages" "$LIB_DIR/packages" ""
 
 # Root files (no subdirectory)
 create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
@@ -57,12 +32,6 @@ create_symlink "$DOTFILES_DIR/archlinux/rofi" "$HOME/.config/rofi" "window-manag
 
 echo "All symlinks processed successfully!"
 
-# paru -S tmux starship wezterm yazi rofi wlogout fastfetch bat eza fd ripgrep fzf zoxide unzip
-# paru -S usbutils
-# paru -S ttf-nerd-fonts-symbols ttf-cascadia-code-nerd
-# paru -S waybar hyprpaper swaync hyprlock wl-clipboard pavucontrol
-# paru -S obsidian lazygit
-
 if [ ! -d "$HOME/.zsh/zsh-vi-mode" ]; then
     git clone https://github.com/jeffreytse/zsh-vi-mode ~/.zsh/zsh-vi-mode
 fi
@@ -78,3 +47,36 @@ fi
 if [ ! -d "$HOME/.zsh/zsh-fzf-history-search" ]; then
     git clone https://github.com/joshskidmore/zsh-fzf-history-search ~/.zsh/zsh-fzf-history-search
 fi
+
+# Applications
+packages=(
+    "tmux"
+    "starship"
+    "wezterm"
+    "yazi"
+    "rofi"
+    "wlogout"
+    "fastfetch"
+    "bat"
+    "eza"
+    "fd"
+    "ripgrep"
+    "fzf"
+    "zoxide"
+    "unzip"
+    "usbutils"
+    "ttf-nerd-fonts-symbols"
+    "ttf-cascadia-code-nerd"
+    "waybar"
+    "hyprpaper"
+    "swaync"
+    "hyprlock"
+    "wl-clipboard"
+    "pavucontrol"
+    "obsidian"
+    "lazygit"
+    "godot"
+    "proton-pass-bin"
+    "proton-mail-bin"
+)
+install_packages "${packages[@]}"

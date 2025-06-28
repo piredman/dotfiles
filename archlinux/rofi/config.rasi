@@ -52,7 +52,7 @@ mainbox {
     orientation:                 vertical;
     children:                    [ "inputbar" , "listbox" ];
     background-color:            transparent;
-    background-image:            url("~/wallpaper/shaded.png", width);
+    background-image:            url("~/wallpaper/pastel-space.png", width);
 }
 
 

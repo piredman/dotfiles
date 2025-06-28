@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=application/zip;application/x-zip-compressed;application/x-rar;application/x-7z-compressed;application/x-tar;application/gzip;
+Actions=extractHere;extractTo;
+
+[Desktop Action extractHere]
+Name=Extract Here
+Name[en]=Extract Here
+Icon=archive-extract
+Exec=ark --batch --autodestination %f
+
+[Desktop Action extractTo]
+Name=Extract To...
+Name[en]=Extract To...
+Icon=archive-extract
+Exec=ark --extract-to %f

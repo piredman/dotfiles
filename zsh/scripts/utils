@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Function to create symlink with backup
+create_symlink() {
+    local source="$1"
+    local target="$2"
+    local backup_subdir="$3"
+
+    # Check if symlink already exists and points to correct source
+    if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+        echo "Symlink already correct: $target -> $source"
+        return 0
+    fi
+
+    local backup_path="$BACKUP_DIR"
+    if [ -n "$backup_subdir" ]; then
+        backup_path="$BACKUP_DIR/$backup_subdir"
+    fi
+
+    # Create backup directory structure
+    mkdir -p "$backup_path"
+
+    # Check if target exists and backup
+    if [ -e "$target" ]; then
+        echo "Backing up: $target"
+        mv "$target" "$backup_path/"
+    fi
+
+    # Create parent directory for target if needed
+    mkdir -p "$(dirname "$target")"
+
+    # Create symlink
+    ln -s "$source" "$target"
+    echo "Symlink created: $target -> $source"
+}
