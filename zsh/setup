@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+source "$LIB_DIR/utils"
+
+create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" ""
+
+if [ ! -d "$HOME/.zsh/zsh-vi-mode" ]; then
+    git clone https://github.com/jeffreytse/zsh-vi-mode $HOME/.zsh/zsh-vi-mode
+fi
+
+if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.zsh/zsh-autosuggestions
+fi
+
+if [ ! -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.zsh/zsh-syntax-highlighting
+fi
+
+if [ ! -d "$HOME/.zsh/zsh-fzf-history-search" ]; then
+    git clone https://github.com/joshskidmore/zsh-fzf-history-search $HOME/.zsh/zsh-fzf-history-search
+fi

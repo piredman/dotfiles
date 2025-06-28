@@ -12,6 +12,6 @@ theme_packages=(
 install_packages "${theme_packages[@]}"
 
 mkdir -p ~/.local/share/kio/servicemenus
-create_symlink "$DOTFILES_DIR/archlinux/extract-here.desktop" "$HOME/.local/share/kio/servicemenus/extract-here.desktop" ""
+create_symlink "$DOTFILES_DIR/archlinux/dolphin/extract-here.desktop" "$HOME/.local/share/kio/servicemenus/extract-here.desktop" ""
 chmod +x "$HOME/.local/share/kio/servicemenus/extract-here.desktop"
 XDG_MENU_PREFIX=arch- kbuildsycoca6

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source "$LIB_DIR/utils"
+source "$LIB_DIR/packages"
+
+packages=(
+    "rofi"
+    "wlogout"
+    "waybar"
+    "hyprpaper"
+    "swaync"
+    "hyprlock"
+    "wl-clipboard"
+    "pavucontrol"
+)
+install_packages "${packages[@]}"
+
+create_symlink "$DOTFILES_DIR/archlinux/hypr" "$HOME/.config/hypr" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/waybar" "$HOME/.config/waybar" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/wlogout" "$HOME/.config/wlogout" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/fastfetch" "$HOME/.config/fastfetch" "window-manager"
+create_symlink "$DOTFILES_DIR/archlinux/rofi" "$HOME/.config/rofi" "window-manager"
+
+run_script "$SCRIPT_DIR/archlinux/theme/setup"
+run_script "$SCRIPT_DIR/archlinux/dolphin/setup"
+
+hostname=$(hostnamectl hostname)
+config_dir="$HOME/.config/hypr"
+mkdir -p "$config_dir"
+echo "source = ~/.config/hypr/hosts/hyprland-${hostname}.conf" >"$config_dir/host-hyprland.conf"

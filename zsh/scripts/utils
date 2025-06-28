@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
-# Function to create symlink with backup
+run_script() {
+    local script_path="$1"
+    if [[ ! -f "$script_path" ]]; then
+        echo "Error: Script not found: $script_path" >&2
+        return 1
+    fi
+    chmod +x "$script_path" 2>/dev/null
+    "$script_path"
+}
+
 create_symlink() {
     local source="$1"
     local target="$2"

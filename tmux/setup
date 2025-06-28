@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source "$LIB_DIR/utils"
+source "$LIB_DIR/packages"
+
+install_packages "tmux"
+create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf" ""
+
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+fi

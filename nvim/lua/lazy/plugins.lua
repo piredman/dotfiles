@@ -12,22 +12,6 @@ require('lazy').setup {
   spec = {
     -- plugins that should always be enabled
     { import = 'plugins', cond = true },
-    -- plugins that should only be enabled inside the terminal
-    {
-      import = 'plugins_terminal',
-      cond = function()
-        return not vim.g.vscode
-      end,
-      priority = 1000,
-    },
-    -- plugins that should only be enabled inside vscode, or vscode based editors
-    {
-      import = 'plugins_vscode',
-      cond = function()
-        return vim.g.vscode
-      end,
-      priority = 2000,
-    },
   },
   {
     ui = {

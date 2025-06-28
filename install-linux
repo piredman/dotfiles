@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-LIB_DIR="$HOME/.local/lib/bash"
-DOTFILES_DIR="$HOME/dotfiles"
-BACKUP_DIR="$HOME/backup"
+export LIB_DIR="$HOME/.local/lib/bash"
+export DOTFILES_DIR="$HOME/dotfiles"
+export BACKUP_DIR="$HOME/backup"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/zsh/scripts/utils"
 source "$SCRIPT_DIR/archlinux/scripts/packages"
 
@@ -12,50 +12,12 @@ mkdir -p $LIB_DIR
 create_symlink "$DOTFILES_DIR/zsh/scripts/utils" "$LIB_DIR/utils" ""
 create_symlink "$DOTFILES_DIR/archlinux/scripts/packages" "$LIB_DIR/packages" ""
 
-# Root files (no subdirectory)
-create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
-create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf" ""
-create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" ""
-
-# # Config files
-create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
-create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
-create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
-create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
-
-# Window manager files
-create_symlink "$DOTFILES_DIR/archlinux/hypr" "$HOME/.config/hypr" "window-manager"
-create_symlink "$DOTFILES_DIR/archlinux/waybar" "$HOME/.config/waybar" "window-manager"
-create_symlink "$DOTFILES_DIR/archlinux/wlogout" "$HOME/.config/wlogout" "window-manager"
-create_symlink "$DOTFILES_DIR/archlinux/fastfetch" "$HOME/.config/fastfetch" "window-manager"
-create_symlink "$DOTFILES_DIR/archlinux/rofi" "$HOME/.config/rofi" "window-manager"
-
-echo "All symlinks processed successfully!"
-
-if [ ! -d "$HOME/.zsh/zsh-vi-mode" ]; then
-    git clone https://github.com/jeffreytse/zsh-vi-mode ~/.zsh/zsh-vi-mode
-fi
-
-if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
-fi
-
-if [ ! -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting
-fi
-
-if [ ! -d "$HOME/.zsh/zsh-fzf-history-search" ]; then
-    git clone https://github.com/joshskidmore/zsh-fzf-history-search ~/.zsh/zsh-fzf-history-search
-fi
-
-# Applications
 packages=(
-    "tmux"
+    "git"
+    "neovim"
     "starship"
     "wezterm"
     "yazi"
-    "rofi"
-    "wlogout"
     "fastfetch"
     "bat"
     "eza"
@@ -67,16 +29,25 @@ packages=(
     "usbutils"
     "ttf-nerd-fonts-symbols"
     "ttf-cascadia-code-nerd"
-    "waybar"
-    "hyprpaper"
-    "swaync"
-    "hyprlock"
-    "wl-clipboard"
-    "pavucontrol"
-    "obsidian"
     "lazygit"
+    "obsidian"
     "godot"
     "proton-pass-bin"
     "proton-mail-bin"
+    "mutt"
 )
 install_packages "${packages[@]}"
+
+# Root files (no subdirectory)
+create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
+run_script "$SCRIPT_DIR/zsh/setup"
+run_script "$SCRIPT_DIR/tmux/setup"
+
+# Config files
+create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
+create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
+create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
+create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
+
+# Hyprland
+run_script "$SCRIPT_DIR/archlinux/hypr/setup"
