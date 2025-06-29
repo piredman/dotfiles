@@ -35,6 +35,8 @@ packages=(
     "proton-pass-bin"
     "proton-mail-bin"
     "mutt"
+    "rancher-desktop"
+    "devpod-cli-bin"
 )
 install_packages "${packages[@]}"
 
@@ -49,5 +51,5 @@ create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
 create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
 create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
 
-# Hyprland
 run_script "$SCRIPT_DIR/archlinux/hypr/setup"
+run_script "$SCRIPT_DIR/devpod/setup"

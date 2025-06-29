@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+source "$LIB_DIR/utils"
+source "$LIB_DIR/packages"
+
+theme_packages=(
+    "devpod-cli-bin"
+)
+install_packages "${theme_packages[@]}"
+
+# create_symlink "$DOTFILES_DIR/archlinux/dolphin/extract-here.desktop" "$HOME/.local/share/kio/servicemenus/extract-here.desktop" ""
+
+devpod-cli ide use none
+devpod-cli context set-options -o DOTFILES_URL=git@github.com:piredman/devcontainer-dotfiles.git
+
+echo "You will need to add a provider, for example: devpod-cli provider add docker"
+
+# usage
+# --------------------------------------------
+# devpod-cli has been aliased to devpod and dp
+#
+# dp ide list
+# dp context options | grep dotfiles
+#
+# dp up . --recreate
