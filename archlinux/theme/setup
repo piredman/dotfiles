@@ -13,14 +13,11 @@ theme_packages=(
 )
 install_packages "${theme_packages[@]}"
 
-# Default GDK3 to dark mode
+# Gdk Theming
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface icon-theme 'breeze'
 gsettings set org.gnome.desktop.interface gtk-theme 'catppuccin-mocha-lavender-standard+default'
-gsettings set org.gnome.desktop.interface font-name 'CaskaydiaCove Nerd Font 10'
-
-# Default GDK4 to dark mode
-# env = GTK_THEME,adw-gtk3-dark
+gsettings set org.gnome.desktop.interface font-name 'JetBrains Mono 10'
 
 # Qt Theming
 create_symlink "$DOTFILES_DIR/archlinux/theme/qt5ct.conf" "$XDG_CONFIG_HOME/qt5ct/qt5ct.conf" "theme"

@@ -1,9 +1,6 @@
 return {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
-  -- tmux vim
-  'christoomey/vim-tmux-navigator',
-
   -- hex colour display
   {
     'catgoose/nvim-colorizer.lua',

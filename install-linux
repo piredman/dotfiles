@@ -13,6 +13,7 @@ create_symlink "$DOTFILES_DIR/zsh/scripts/utils" "$LIB_DIR/utils" ""
 create_symlink "$DOTFILES_DIR/archlinux/scripts/packages" "$LIB_DIR/packages" ""
 
 packages=(
+    "bind"
     "git"
     "neovim"
     "starship"
@@ -32,11 +33,13 @@ packages=(
     "lazygit"
     "obsidian"
     "godot"
+    "enpass-bin"
     "proton-pass-bin"
     "proton-mail-bin"
     "mutt"
     "rancher-desktop"
     "devpod-cli-bin"
+    "libreoffice-fresh"
 )
 install_packages "${packages[@]}"
 

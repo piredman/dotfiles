@@ -14,6 +14,7 @@
       "video": "v",
       "audio": "a",
       "notes": "n",
+      "communication": "c",
     }
   },
   "custom/os": {
