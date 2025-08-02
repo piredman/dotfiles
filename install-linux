@@ -12,6 +12,11 @@ mkdir -p $LIB_DIR
 create_symlink "$DOTFILES_DIR/zsh/scripts/utils" "$LIB_DIR/utils" ""
 create_symlink "$DOTFILES_DIR/archlinux/scripts/packages" "$LIB_DIR/packages" ""
 
+if ! run_script "$SCRIPT_DIR/archlinux/scripts/check-multilib"; then
+    run_sudo_script "$SCRIPT_DIR/archlinux/scripts/enable-multilib"
+    sudo pacman -Syy
+fi
+
 packages=(
     "bind"
     "git"
@@ -40,6 +45,9 @@ packages=(
     "rancher-desktop"
     "devpod-cli-bin"
     "libreoffice-fresh"
+    "hyprshot"
+    "tldr"
+    "steam"
 )
 install_packages "${packages[@]}"
 

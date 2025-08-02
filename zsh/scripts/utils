@@ -1,13 +1,29 @@
 #!/usr/bin/env bash
 
-run_script() {
+_execute_script() {
     local script_path="$1"
+    local use_sudo="$2"
+
     if [[ ! -f "$script_path" ]]; then
         echo "Error: Script not found: $script_path" >&2
         return 1
     fi
-    chmod +x "$script_path" 2>/dev/null
-    "$script_path"
+
+    if [[ ! -x "$script_path" ]]; then
+        chmod +x "$script_path" 2>/dev/null
+    fi
+
+    ${use_sudo:+sudo} "$script_path"
+}
+
+run_script() {
+    local script_path="$1"
+    _execute_script "$script_path" ""
+}
+
+run_sudo_script() {
+    local script_path="$1"
+    _execute_script "$script_path" "sudo"
 }
 
 create_symlink() {
@@ -17,7 +33,7 @@ create_symlink() {
 
     # Check if symlink already exists and points to correct source
     if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
-        echo "Symlink already correct: $target -> $source"
+        echo "✓ $target -> $source"
         return 0
     fi
 
@@ -40,5 +56,5 @@ create_symlink() {
 
     # Create symlink
     ln -s "$source" "$target"
-    echo "Symlink created: $target -> $source"
+    echo "✓ $target -> $source"
 }
