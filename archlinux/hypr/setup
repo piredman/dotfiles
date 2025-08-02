@@ -1,30 +1,23 @@
 #!/usr/bin/env bash
 
-source "$LIB_DIR/utils"
-source "$LIB_DIR/packages"
+source "$LIB_DIR/install-utils"
+source "$LIB_DIR/symlink-utils"
+source "$LIB_DIR/package-utils"
+source "$LIB_DIR/shell-utils"
 
-packages=(
-    "rofi"
-    "wlogout"
-    "waybar"
-    "hyprpaper"
-    "swaync"
-    "hyprlock"
-    "wl-clipboard"
-    "pavucontrol"
-)
+print_section "Installing Hyprland Packages"
+mapfile -t packages < <(load_package_config "$SCRIPT_DIR/install/config/hypr-packages.conf")
 install_packages "${packages[@]}"
 
+print_section "Configuring Hyprland"
 create_symlink "$DOTFILES_DIR/archlinux/hypr" "$HOME/.config/hypr" "window-manager"
 create_symlink "$DOTFILES_DIR/archlinux/waybar" "$HOME/.config/waybar" "window-manager"
 create_symlink "$DOTFILES_DIR/archlinux/wlogout" "$HOME/.config/wlogout" "window-manager"
 create_symlink "$DOTFILES_DIR/archlinux/fastfetch" "$HOME/.config/fastfetch" "window-manager"
 create_symlink "$DOTFILES_DIR/archlinux/rofi" "$HOME/.config/rofi" "window-manager"
 
-run_script "$SCRIPT_DIR/archlinux/theme/setup"
-run_script "$SCRIPT_DIR/archlinux/dolphin/setup"
-
 hostname=$(hostnamectl hostname)
 config_dir="$HOME/.config/hypr"
 mkdir -p "$config_dir"
 echo "source = ~/.config/hypr/hosts/hyprland-${hostname}.conf" >"$config_dir/host-hyprland.conf"
+print_success "Host-specific config: hyprland-${hostname}.conf"

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+load_package_config() {
+    local config_file="$1"
+    local packages=()
+    
+    if [[ ! -f "$config_file" ]]; then
+        echo "✗ Package config file not found: $config_file" >&2
+        return 1
+    fi
+    
+    while IFS= read -r line; do
+        # Skip empty lines and comments
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+        
+        # Trim whitespace and add to packages array
+        line=$(echo "$line" | xargs)
+        [[ -n "$line" ]] && packages+=("$line")
+    done < "$config_file"
+    
+    if [ ${#packages[@]} -eq 0 ]; then
+        echo "✗ No packages found in config file: $config_file" >&2
+        return 1
+    fi
+    
+    # Return packages as space-separated string
+    printf '%s\n' "${packages[@]}"
+}
+
+install_packages() {
+    local packages=("$@")
+    
+    if [ ${#packages[@]} -eq 0 ]; then
+        return 0
+    fi
+
+    for package in "${packages[@]}"; do
+        if ! paru -Qi "$package" &>/dev/null; then
+            print_step "Installing $package"
+            paru -S "$package" --noconfirm
+        else
+            print_success "$package"
+        fi
+    done
+}

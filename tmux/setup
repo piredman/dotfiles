@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-source "$LIB_DIR/utils"
-source "$LIB_DIR/packages"
+source "$LIB_DIR/install-utils"
+source "$LIB_DIR/symlink-utils"
+source "$LIB_DIR/package-utils"
 
+print_section "Configuring Tmux"
 install_packages "tmux"
 create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf" ""
 
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+    print_step "Installing tmux plugin manager"
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm" >/dev/null 2>&1
 fi

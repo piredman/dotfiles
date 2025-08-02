@@ -1,24 +1,19 @@
 #!/usr/bin/env bash
 
-source "$LIB_DIR/utils"
-source "$LIB_DIR/packages"
+source "$LIB_DIR/install-utils"
+source "$LIB_DIR/symlink-utils"
+source "$LIB_DIR/package-utils"
 
-theme_packages=(
-    "xdg-desktop-portal-gtk"
-    "catppuccin-gtk-theme-mocha"
-    "catppuccin-qt5ct-git"
-    "nwg-look"
-    "qt5ct"
-    "qt6ct"
-)
+print_section "Installing Theme Packages"
+mapfile -t theme_packages < <(load_package_config "$SCRIPT_DIR/install/config/theme-packages.conf")
 install_packages "${theme_packages[@]}"
 
-# Gdk Theming
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-gsettings set org.gnome.desktop.interface icon-theme 'breeze'
-gsettings set org.gnome.desktop.interface gtk-theme 'catppuccin-mocha-lavender-standard+default'
-gsettings set org.gnome.desktop.interface font-name 'JetBrains Mono 10'
+print_section "Configuring Theme"
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null
+gsettings set org.gnome.desktop.interface icon-theme 'breeze' 2>/dev/null
+gsettings set org.gnome.desktop.interface gtk-theme 'catppuccin-mocha-lavender-standard+default' 2>/dev/null
+gsettings set org.gnome.desktop.interface font-name 'JetBrains Mono 10' 2>/dev/null
+print_success "GTK theme preferences set"
 
-# Qt Theming
 create_symlink "$DOTFILES_DIR/archlinux/theme/qt5ct.conf" "$XDG_CONFIG_HOME/qt5ct/qt5ct.conf" "theme"
 create_symlink "$DOTFILES_DIR/archlinux/theme/qt6ct.conf" "$XDG_CONFIG_HOME/qt6ct/qt6ct.conf" "theme"

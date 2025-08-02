@@ -5,62 +5,48 @@ export DOTFILES_DIR="$HOME/dotfiles"
 export BACKUP_DIR="$HOME/backup"
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/zsh/scripts/utils"
-source "$SCRIPT_DIR/archlinux/scripts/packages"
+source "$SCRIPT_DIR/install/lib/install-utils"
+source "$SCRIPT_DIR/install/lib/symlink-utils"
+source "$SCRIPT_DIR/install/lib/package-utils"
+source "$SCRIPT_DIR/zsh/scripts/shell-utils"
 
-mkdir -p $LIB_DIR
-create_symlink "$DOTFILES_DIR/zsh/scripts/utils" "$LIB_DIR/utils" ""
-create_symlink "$DOTFILES_DIR/archlinux/scripts/packages" "$LIB_DIR/packages" ""
+check_prerequisites || exit 1
+validate_environment || exit 1
 
-if ! run_script "$SCRIPT_DIR/archlinux/scripts/check-multilib"; then
-    run_sudo_script "$SCRIPT_DIR/archlinux/scripts/enable-multilib"
-    sudo pacman -Syy
+print_section "Setting Up Library Links"
+create_symlink "$DOTFILES_DIR/install/lib/install-utils" "$LIB_DIR/install-utils" ""
+create_symlink "$DOTFILES_DIR/install/lib/symlink-utils" "$LIB_DIR/symlink-utils" ""
+create_symlink "$DOTFILES_DIR/install/lib/package-utils" "$LIB_DIR/package-utils" ""
+create_symlink "$DOTFILES_DIR/zsh/scripts/shell-utils" "$LIB_DIR/shell-utils" ""
+
+print_section "Configuring Pacman"
+if ! run_script "$SCRIPT_DIR/install/scripts/check-multilib" >/dev/null 2>&1; then
+    print_step "Enabling multilib repository"
+    run_sudo_script "$SCRIPT_DIR/install/scripts/enable-multilib" >/dev/null 2>&1
+    sudo pacman -Syy >/dev/null 2>&1
+    print_success "Multilib enabled"
+else
+    print_success "Multilib already enabled"
 fi
 
-packages=(
-    "bind"
-    "git"
-    "neovim"
-    "starship"
-    "wezterm"
-    "yazi"
-    "fastfetch"
-    "bat"
-    "eza"
-    "fd"
-    "ripgrep"
-    "fzf"
-    "zoxide"
-    "unzip"
-    "usbutils"
-    "ttf-nerd-fonts-symbols"
-    "ttf-cascadia-code-nerd"
-    "lazygit"
-    "obsidian"
-    "godot"
-    "enpass-bin"
-    "proton-pass-bin"
-    "proton-mail-bin"
-    "mutt"
-    "rancher-desktop"
-    "devpod-cli-bin"
-    "libreoffice-fresh"
-    "hyprshot"
-    "tldr"
-    "steam"
-)
+print_section "Installing Core Packages"
+mapfile -t packages < <(load_package_config "$SCRIPT_DIR/install/config/core-packages.conf")
 install_packages "${packages[@]}"
 
-# Root files (no subdirectory)
+print_section "Configuring Shell & Terminal"
 create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
 run_script "$SCRIPT_DIR/zsh/setup"
 run_script "$SCRIPT_DIR/tmux/setup"
 
-# Config files
+print_section "Configuring Applications"
 create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
 create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
 create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
 create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
 
 run_script "$SCRIPT_DIR/archlinux/hypr/setup"
+run_script "$SCRIPT_DIR/archlinux/theme/setup"
+run_script "$SCRIPT_DIR/archlinux/dolphin/setup"
 run_script "$SCRIPT_DIR/devpod/setup"
+
+print_section "Setup Complete"
