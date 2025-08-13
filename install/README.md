@@ -24,6 +24,20 @@ install/
 zsh/scripts/shell-utils           # General shell utilities (run_script function)
 ```
 
+## TODO
+
+- Automate enabling cups, check to see if it's already enabled and active, requires sudo
+
+```bash
+> sudo systemctl enable --now cups
+```
+
+- Run hp-setup. The command bellow uses interactive mode, the automation can't use this. It needs to select network printer mode. The printer will need to be online and attached to the network for this to work. It asked a lot of questions about the printer, might be manual.
+
+```bash
+> sudo hp-setup -i
+```
+
 ## Key Components
 
 ### Main Entry Point
@@ -81,4 +95,3 @@ zsh/scripts/shell-utils           # General shell utilities (run_script function
 - **Error handling** includes validation before execution
 - **Environment validation** runs once at start to avoid duplication
 - **Sequential execution** ensures clean, ordered console output
-
