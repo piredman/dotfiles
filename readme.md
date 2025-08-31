@@ -7,7 +7,7 @@ Modern, automated dotfiles for Arch Linux with Hyprland, Neovim, and developer t
 **Fresh Arch Linux Install (Bootstrap):**
 
 ```bash
-curl -fsSL https://github.com/piredman/dotfiles/raw/main/bootstrap | bash
+curl -fsSL https://raw.githubusercontent.com/piredman/dotfiles/master/bootstrap | bash
 ```
 
 **Existing System (Ongoing Configuration):**
@@ -70,7 +70,7 @@ See [`install/README.md`](install/README.md) for detailed technical documentatio
 
 | Platform   | Status           | Script             |
 | ---------- | ---------------- | ------------------ |
-| Arch Linux | ✅ Full Support  | `./setup`  |
+| Arch Linux | ✅ Full Support  | `./setup`          |
 | macOS      | 🚧 Basic Support | `./install-osx.sh` |
 
 ## Contributing

@@ -35,32 +35,32 @@ trap cleanup EXIT
 
 install_build_dependencies() {
     print_step "Installing build dependencies"
-    
-    local deps=("base-devel" "git" "rust")
+
+    local deps=("base-devel" "git")
     local missing=()
-    
+
     for dep in "${deps[@]}"; do
         if ! pacman -Qi "$dep" &>/dev/null; then
             missing+=("$dep")
         fi
     done
-    
+
     if [ ${#missing[@]} -gt 0 ]; then
         print_step "Installing missing dependencies: ${missing[*]}"
         sudo pacman -S --noconfirm "${missing[@]}"
     fi
-    
+
     print_success "Build dependencies ready"
 }
 
 build_and_install_paru() {
     print_step "Cloning paru repository"
     git clone "$PARU_REPO" "$BUILD_DIR" >/dev/null 2>&1
-    
+
     print_step "Building paru (this may take a few minutes)"
     cd "$BUILD_DIR"
-    makepkg -si --noconfirm >/dev/null 2>&1
-    
+    makepkg -si --noconfirm
+
     print_success "Paru installed successfully"
 }
 
@@ -83,12 +83,13 @@ main() {
         print_success "Paru already installed: $(paru --version | head -1)"
         return 0
     fi
-    
+
     print_step "Installing paru AUR helper"
-    
+
     install_build_dependencies
     build_and_install_paru
     verify_installation
 }
 
 main "$@"
+
