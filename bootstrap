@@ -1,0 +1,367 @@
+#!/usr/bin/env bash
+
+# =============================================================================
+# Bootstrap Script for Fresh Arch Linux Installation
+# =============================================================================
+# Usage: curl -fsSL https://github.com/piredman/dotfiles/raw/main/bootstrap | bash
+#
+# This script sets up a fresh Arch Linux system with:
+# - AUR helper (paru)
+# - System updates and essential packages
+# - User groups configuration  
+# - Dotfiles repository
+# - Hands off to main setup script
+# =============================================================================
+
+set -euo pipefail
+
+# =============================================================================
+# CONSTANTS
+# =============================================================================
+
+readonly DOTFILES_REPO="https://github.com/piredman/dotfiles.git"
+readonly DOTFILES_DIR="$HOME/dotfiles"
+readonly BOOTSTRAP_LOCK="$HOME/.dotfiles-bootstrap-complete"
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+print_banner() {
+    echo
+    echo "====================================================================="
+    echo "  Arch Linux Dotfiles Bootstrap"
+    echo "====================================================================="
+    echo
+}
+
+print_section() {
+    echo
+    echo "==> $1"
+}
+
+print_step() {
+    echo "  $1"
+}
+
+print_success() {
+    echo "  ✓ $1"
+}
+
+print_error() {
+    echo "  ✗ $1" >&2
+}
+
+print_warning() {
+    echo "  ⚠ $1" >&2
+}
+
+check_arch_linux() {
+    if [ ! -f /etc/arch-release ]; then
+        print_error "This script is designed for Arch Linux only"
+        exit 1
+    fi
+    print_success "Running on Arch Linux"
+}
+
+check_internet_connectivity() {
+    if ! ping -c 1 google.com >/dev/null 2>&1; then
+        print_error "No internet connectivity detected"
+        exit 1
+    fi
+    print_success "Internet connectivity confirmed"
+}
+
+check_prerequisites() {
+    print_section "Checking Prerequisites"
+    
+    check_arch_linux
+    check_internet_connectivity
+    
+    local missing_tools=()
+    local required_tools=("pacman" "sudo" "curl" "git")
+    
+    for tool in "${required_tools[@]}"; do
+        if ! command -v "$tool" &>/dev/null; then
+            missing_tools+=("$tool")
+        fi
+    done
+    
+    if [ ${#missing_tools[@]} -gt 0 ]; then
+        print_error "Missing required tools: ${missing_tools[*]}"
+        print_step "Please install with: sudo pacman -S ${missing_tools[*]}"
+        exit 1
+    fi
+    
+    print_success "All prerequisites available"
+}
+
+check_bootstrap_status() {
+    if [ -f "$BOOTSTRAP_LOCK" ]; then
+        print_warning "Bootstrap appears to have run before"
+        print_step "Lock file exists: $BOOTSTRAP_LOCK"
+        echo
+        read -p "Continue anyway? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_step "Bootstrap cancelled"
+            exit 0
+        fi
+    fi
+}
+
+update_system() {
+    print_section "Updating System"
+    
+    print_step "Updating package databases"
+    sudo pacman -Sy --noconfirm >/dev/null 2>&1
+    
+    print_step "Upgrading system packages (this may take a while)"
+    sudo pacman -Su --noconfirm >/dev/null 2>&1
+    
+    print_success "System updated"
+}
+
+install_essential_packages() {
+    print_section "Installing Essential Packages"
+    
+    local packages=(
+        "base-devel"
+        "git" 
+        "curl"
+        "unzip"
+        "wget"
+        "which"
+    )
+    
+    local to_install=()
+    for pkg in "${packages[@]}"; do
+        if ! pacman -Qi "$pkg" &>/dev/null; then
+            to_install+=("$pkg")
+        fi
+    done
+    
+    if [ ${#to_install[@]} -gt 0 ]; then
+        print_step "Installing: ${to_install[*]}"
+        sudo pacman -S --noconfirm "${to_install[@]}" >/dev/null 2>&1
+        print_success "Essential packages installed"
+    else
+        print_success "Essential packages already installed"
+    fi
+}
+
+install_paru() {
+    print_section "Installing AUR Helper (paru)"
+    
+    if command -v paru &>/dev/null; then
+        print_success "Paru already installed"
+        return 0
+    fi
+    
+    # Download and run paru installer temporarily
+    local temp_installer="/tmp/paru-installer-$$"
+    curl -fsSL "https://github.com/piredman/dotfiles/raw/main/install/bootstrap/paru-installer" > "$temp_installer"
+    chmod +x "$temp_installer"
+    "$temp_installer"
+    rm -f "$temp_installer"
+}
+
+setup_zsh_shell() {
+    print_section "Setting Up Zsh Shell"
+    
+    # Check if zsh is already the default shell
+    if [[ "$SHELL" == *"zsh"* ]]; then
+        print_success "Zsh already set as default shell"
+        return 0
+    fi
+    
+    # Install zsh if not present
+    if ! command -v zsh &>/dev/null; then
+        print_step "Installing zsh"
+        paru -S --noconfirm zsh >/dev/null 2>&1
+        print_success "Zsh installed"
+    else
+        print_success "Zsh already installed"
+    fi
+    
+    # Get zsh path
+    local zsh_path
+    zsh_path=$(command -v zsh)
+    
+    # Ensure zsh is in /etc/shells
+    if ! grep -q "^$zsh_path$" /etc/shells; then
+        print_step "Adding zsh to /etc/shells"
+        echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+        print_success "Zsh added to /etc/shells"
+    fi
+    
+    # Create minimal .zshrc to prevent first-run wizard
+    if [ ! -f "$HOME/.zshrc" ]; then
+        print_step "Creating minimal zsh configuration"
+        cat > "$HOME/.zshrc" << 'EOF'
+# Minimal zsh configuration to prevent first-run wizard
+# This will be replaced by dotfiles setup later
+autoload -U compinit && compinit
+EOF
+        print_success "Minimal zsh configuration created"
+    fi
+    
+    # Change default shell
+    print_step "Changing default shell to zsh"
+    chsh -s "$zsh_path" >/dev/null 2>&1
+    
+    # Update current session environment
+    export SHELL="$zsh_path"
+    
+    print_success "Zsh set as default shell"
+    print_warning "Zsh will be active for new login sessions"
+}
+
+enable_multilib() {
+    print_section "Configuring Pacman"
+    
+    if grep -q "^\[multilib\]" /etc/pacman.conf; then
+        print_success "Multilib already enabled"
+        return 0
+    fi
+    
+    print_step "Enabling multilib repository"
+    
+    # Download and run multilib enabler temporarily  
+    local temp_script="/tmp/enable-multilib-$$"
+    curl -fsSL "https://github.com/piredman/dotfiles/raw/main/install/scripts/enable-multilib" > "$temp_script"
+    chmod +x "$temp_script"
+    sudo "$temp_script" >/dev/null 2>&1
+    rm -f "$temp_script"
+    
+    print_step "Updating package databases"
+    sudo pacman -Syy >/dev/null 2>&1
+    
+    print_success "Multilib enabled"
+}
+
+setup_user_groups() {
+    print_section "Configuring User Groups"
+    
+    local groups=("video" "audio" "scanner" "storage" "optical")
+    local user="$USER"
+    
+    for group in "${groups[@]}"; do
+        if ! groups "$user" | grep -q "\b$group\b"; then
+            print_step "Adding user to group: $group"
+            sudo usermod -aG "$group" "$user"
+        fi
+    done
+    
+    print_success "User groups configured"
+    print_warning "You may need to log out and back in for group changes to take effect"
+}
+
+clone_dotfiles() {
+    print_section "Setting Up Dotfiles Repository"
+    
+    if [ -d "$DOTFILES_DIR" ]; then
+        print_step "Dotfiles directory exists, updating"
+        cd "$DOTFILES_DIR"
+        git pull >/dev/null 2>&1
+    else
+        print_step "Cloning dotfiles repository"
+        git clone "$DOTFILES_REPO" "$DOTFILES_DIR" >/dev/null 2>&1
+    fi
+    
+    chmod +x "$DOTFILES_DIR/setup"
+    
+    print_success "Dotfiles repository ready"
+}
+
+setup_directories() {
+    print_section "Creating Directory Structure"
+    
+    local dirs=(
+        "$HOME/.local/lib/bash"
+        "$HOME/.config" 
+        "$HOME/backup"
+    )
+    
+    for dir in "${dirs[@]}"; do
+        if [ ! -d "$dir" ]; then
+            print_step "Creating directory: $dir"
+            mkdir -p "$dir"
+        fi
+    done
+    
+    print_success "Directory structure created"
+}
+
+mark_bootstrap_complete() {
+    echo "Bootstrap completed: $(date)" > "$BOOTSTRAP_LOCK"
+    print_success "Bootstrap marked as complete"
+}
+
+run_main_setup() {
+    print_section "Running Main Setup"
+    
+    local setup_script="$DOTFILES_DIR/setup"
+    
+    if [ -f "$setup_script" ]; then
+        print_step "Executing main setup script"
+        cd "$DOTFILES_DIR"
+        "$setup_script"
+    else
+        print_error "Main setup script not found"
+        print_step "You can run it manually later with: cd ~/dotfiles && ./setup"
+        return 1
+    fi
+}
+
+print_completion() {
+    print_section "Bootstrap Complete!"
+    echo
+    echo "Your Arch Linux system has been bootstrapped with:"
+    echo "  ✓ System updates"
+    echo "  ✓ Essential packages and build tools"
+    echo "  ✓ AUR helper (paru)"
+    echo "  ✓ Zsh shell configuration"
+    echo "  ✓ Multilib repository"
+    echo "  ✓ User groups configuration"
+    echo "  ✓ Dotfiles repository"
+    echo "  ✓ Applications and configurations"
+    echo
+    echo "Next steps:"
+    echo "  • Log out and back in to activate zsh and group changes"
+    echo "  • Run 'cd ~/dotfiles && ./setup' to reconfigure anytime"
+    echo "  • Customize configurations in ~/dotfiles as needed"
+    echo
+}
+
+# =============================================================================
+# MAIN EXECUTION
+# =============================================================================
+
+main() {
+    print_banner
+    
+    check_prerequisites
+    check_bootstrap_status
+    
+    update_system
+    install_essential_packages
+    install_paru
+    setup_zsh_shell
+    enable_multilib
+    setup_user_groups
+    setup_directories
+    clone_dotfiles
+    
+    mark_bootstrap_complete
+    
+    if run_main_setup; then
+        print_completion
+    else
+        print_error "Main setup encountered issues, but bootstrap is complete"
+        exit 1
+    fi
+}
+
+# Run main function
+main "$@"

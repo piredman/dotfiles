@@ -43,7 +43,7 @@ zsh/scripts/shell-utils          # General shell utilities (run_script function)
 
 ### Main Entry Point
 
-- `install-linux` - Primary installation script that orchestrates the entire process
+- `setup` - Primary installation script that orchestrates the entire process
 
 ### Core Library Functions (`install/lib/install-utils`)
 

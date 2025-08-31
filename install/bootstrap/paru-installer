@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# =============================================================================
+# CONSTANTS
+# =============================================================================
+
+readonly PARU_REPO="https://aur.archlinux.org/paru.git"
+readonly BUILD_DIR="/tmp/paru-build-$$"
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+print_step() {
+    echo "  $1"
+}
+
+print_success() {
+    echo "  ✓ $1"
+}
+
+print_error() {
+    echo "  ✗ $1" >&2
+}
+
+cleanup() {
+    if [ -d "$BUILD_DIR" ]; then
+        rm -rf "$BUILD_DIR"
+    fi
+}
+
+trap cleanup EXIT
+
+install_build_dependencies() {
+    print_step "Installing build dependencies"
+    
+    local deps=("base-devel" "git" "rust")
+    local missing=()
+    
+    for dep in "${deps[@]}"; do
+        if ! pacman -Qi "$dep" &>/dev/null; then
+            missing+=("$dep")
+        fi
+    done
+    
+    if [ ${#missing[@]} -gt 0 ]; then
+        print_step "Installing missing dependencies: ${missing[*]}"
+        sudo pacman -S --noconfirm "${missing[@]}"
+    fi
+    
+    print_success "Build dependencies ready"
+}
+
+build_and_install_paru() {
+    print_step "Cloning paru repository"
+    git clone "$PARU_REPO" "$BUILD_DIR" >/dev/null 2>&1
+    
+    print_step "Building paru (this may take a few minutes)"
+    cd "$BUILD_DIR"
+    makepkg -si --noconfirm >/dev/null 2>&1
+    
+    print_success "Paru installed successfully"
+}
+
+verify_installation() {
+    if command -v paru &>/dev/null; then
+        print_success "Paru is available: $(paru --version | head -1)"
+        return 0
+    else
+        print_error "Paru installation failed"
+        return 1
+    fi
+}
+
+# =============================================================================
+# MAIN EXECUTION
+# =============================================================================
+
+main() {
+    if command -v paru &>/dev/null; then
+        print_success "Paru already installed: $(paru --version | head -1)"
+        return 0
+    fi
+    
+    print_step "Installing paru AUR helper"
+    
+    install_build_dependencies
+    build_and_install_paru
+    verify_installation
+}
+
+main "$@"

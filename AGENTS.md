@@ -2,7 +2,7 @@
 
 ## Build/Lint/Test Commands
 - No package.json - this is a dotfiles configuration repository
-- Install: `./install-linux` (Arch Linux) or `./install-osx.sh` (macOS)
+- Install: `./setup` (Arch Linux) or `./install-osx.sh` (macOS)
 - Lua formatting (Neovim config): `stylua nvim/` (follows .stylua.toml config)
 - No test suite - configurations are validated through installation
 - Package management: Uses `paru` (AUR helper) and `pacman` on Arch Linux

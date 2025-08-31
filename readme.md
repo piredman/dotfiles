@@ -4,10 +4,18 @@ Modern, automated dotfiles for Arch Linux with Hyprland, Neovim, and developer t
 
 ## Quick Start
 
-**Arch Linux:**
+**Fresh Arch Linux Install (Bootstrap):**
 
 ```bash
-./install-linux
+curl -fsSL https://github.com/piredman/dotfiles/raw/main/bootstrap | bash
+```
+
+**Existing System (Ongoing Configuration):**
+
+```bash
+git clone https://github.com/piredman/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./setup
 ```
 
 **macOS:**
@@ -62,7 +70,7 @@ See [`install/README.md`](install/README.md) for detailed technical documentatio
 
 | Platform   | Status           | Script             |
 | ---------- | ---------------- | ------------------ |
-| Arch Linux | ✅ Full Support  | `./install-linux`  |
+| Arch Linux | ✅ Full Support  | `./setup`  |
 | macOS      | 🚧 Basic Support | `./install-osx.sh` |
 
 ## Contributing
