@@ -43,3 +43,54 @@ install_packages() {
         fi
     done
 }
+
+update_package_list() {
+    print_step "Updating package list"
+    paru -Q > "$SCRIPT_DIR/install/packages.txt"
+    print_success "Package list updated"
+}
+
+load_group_config() {
+    local config_file="$1"
+    local groups=()
+    
+    if [[ ! -f "$config_file" ]]; then
+        echo "✗ Group config file not found: $config_file" >&2
+        return 1
+    fi
+    
+    while IFS= read -r line; do
+        # Skip empty lines and comments
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+        
+        # Trim whitespace and add to groups array
+        line=$(echo "$line" | xargs)
+        [[ -n "$line" ]] && groups+=("$line")
+    done < "$config_file"
+    
+    if [ ${#groups[@]} -eq 0 ]; then
+        echo "✗ No groups found in config file: $config_file" >&2
+        return 1
+    fi
+    
+    # Return groups as space-separated string
+    printf '%s\n' "${groups[@]}"
+}
+
+configure_user_groups() {
+    local groups=("$@")
+    
+    if [ ${#groups[@]} -eq 0 ]; then
+        return 0
+    fi
+
+    for group in "${groups[@]}"; do
+        if ! groups "$USER" | grep -q "\b$group\b"; then
+            print_step "Adding $USER to group: $group"
+            sudo usermod -aG "$group" "$USER"
+            print_success "Added to $group group"
+        else
+            print_success "$USER already in $group group"
+        fi
+    done
+}

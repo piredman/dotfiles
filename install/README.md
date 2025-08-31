@@ -8,20 +8,21 @@ A modular, well-organized installation system for Arch Linux dotfiles with robus
 
 ```
 install/
-├── lib/                           # Core utilities (sourced by all scripts)
-│   ├── install-utils             # Printing functions, prerequisites, environment validation
-│   ├── package-utils             # Package installation & config file loading
-│   └── symlink-utils             # Symlink creation and management
-├── scripts/                      # Standalone utility scripts
+├── lib/                         # Core utilities (sourced by all scripts)
+│   ├── install-utils            # Printing functions, prerequisites, environment validation
+│   ├── package-utils            # Package installation & config file loading
+│   └── symlink-utils            # Symlink creation and management
+├── scripts/                     # Standalone utility scripts
 │   ├── check-multilib           # Validates multilib repository
 │   └── enable-multilib          # Enables multilib repository
-└── config/                       # Package configuration files
-    ├── core-packages.conf       # Essential system packages
-    ├── hypr-packages.conf       # Hyprland window manager packages
-    ├── theme-packages.conf      # Theme and appearance packages
-    └── dolphin-packages.conf    # File manager packages
+├── config/                      # Package configuration files
+│   ├── core-packages.conf       # Essential system packages
+│   ├── hypr-packages.conf       # Hyprland window manager packages
+│   ├── theme-packages.conf      # Theme and appearance packages
+│   └── dolphin-packages.conf    # File manager packages
+└── packages.txt                 # List of all installed packages, output of `paru -Q`
 
-zsh/scripts/shell-utils           # General shell utilities (run_script function)
+zsh/scripts/shell-utils          # General shell utilities (run_script function)
 ```
 
 ## TODO

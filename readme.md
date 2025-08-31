@@ -1,49 +1,80 @@
-# dotfiles
+# Dotfiles
 
-## Prerequisites
+Modern, automated dotfiles for Arch Linux with Hyprland, Neovim, and developer tools.
 
-### Terminal Tools
+## Quick Start
 
-- [zoxide (replacement for cd)](https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file#installation)
-- [eza (replacement for ls)](https://github.com/eza-community/eza/blob/main/INSTALL.md)
-- [bat (replacement for cat)](https://github.com/sharkdp/bat?tab=readme-ov-file#installation)
-- [ripgrep](https://github.com/BurntSushi/ripgrep#installation)
-
-### zsh Plugins
-- [zsh auto-suggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#oh-my-zsh)
-- [zsh syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md#oh-my-zsh)
-
-### Tmux Plugin Manager
-- [Install](https://github.com/tmux-plugins/tpm)
-
-### Development tools
-- [nvm](https://github.com/nvm-sh/nvm)
-
-## Installation
-
-To install the dotfiles, run the following commands:
+**Arch Linux:**
 
 ```bash
-> ./install.sh
+./install-linux
 ```
 
-Restart the terminal
-- Open a `tmux` session
-- Run `<prefix>I` to install tmux plugins
+**macOS:**
 
+```bash
+./install-osx.sh
+```
 
-## References:
+## What's Included
 
-Useful videos and blog posts.
+### Window Manager & Desktop
 
-From Josean Martinez
-https://www.youtube.com/playlist?list=PLnu5gT9QrFg36OehOdECFvxFFeMHhb_07
-https://www.youtube.com/watch?v=CF1tMjvHDRA&list=PLnu5gT9QrFg36OehOdECFvxFFeMHhb_07&index=2
-https://www.josean.com/posts/terminal-setup
-https://github.com/josean-dev/dev-environment-files
-https://github.com/romkatv/powerlevel10k
-https://iterm2colorschemes.com/
+- **Hyprland** - Modern Wayland compositor
+- **Waybar** - Status bar with system info
+- **Rofi** - Application launcher and dmenu
+- **Dunst** - Notification daemon
+- **Catppuccin Mocha** - Consistent theming
 
-From ThePrimegen
-https://www.youtube.com/playlist?list=PLm323Lc7iSW_wuxqmKx_xxNtJC_hJbQ7R
-https://youtu.be/w7i4amO_zaE
+### Terminal & Shell
+
+- **Zsh** - Modern shell with plugins
+- **Starship** - Cross-platform prompt
+- **WezTerm** - GPU-accelerated terminal
+- **Tmux** - Terminal multiplexer
+
+### Development Tools
+
+- **Neovim** - Modern Vim with LSP support
+- **Git** - Version control configuration
+- **Yazi** - Modern file manager
+- **Developer utilities** - bat, eza, ripgrep, fzf, lazygit
+
+## System Requirements
+
+- **Arch Linux** (primary support)
+- **Paru** AUR helper
+- **Git** for repository cloning
+
+## Installation Details
+
+The installation system is fully automated and modular:
+
+- **Package management** - Organized by category in `install/config/`
+- **Configuration sync** - Automatic symlink management
+- **User groups** - Automatic addition to required system groups
+- **Error handling** - Prerequisite validation and clear progress feedback
+- **Package tracking** - Auto-generated `install/packages.txt`
+
+See [`install/README.md`](install/README.md) for detailed technical documentation.
+
+## Platform Support
+
+| Platform   | Status           | Script             |
+| ---------- | ---------------- | ------------------ |
+| Arch Linux | ✅ Full Support  | `./install-linux`  |
+| macOS      | 🚧 Basic Support | `./install-osx.sh` |
+
+## Contributing
+
+- Configuration follows existing patterns in each tool's directory
+- Shell scripts use 4 spaces, functions use snake_case
+- Lua code (Neovim) uses 2 spaces, follows .stylua.toml
+- See [`AGENTS.md`](AGENTS.md) for development guidelines
+
+## References
+
+Inspiration and learning resources:
+
+- [Josean Martinez Terminal Setup](https://www.josean.com/posts/terminal-setup)
+- [ThePrimeagen Neovim Setup](https://www.youtube.com/playlist?list=PLm323Lc7iSW_wuxqmKx_xxNtJC_hJbQ7R)

@@ -33,6 +33,10 @@ print_section "Installing Core Packages"
 mapfile -t packages < <(load_package_config "$SCRIPT_DIR/install/config/core-packages.conf")
 install_packages "${packages[@]}"
 
+print_section "Configuring User Groups"
+mapfile -t groups < <(load_group_config "$SCRIPT_DIR/install/config/groups.conf")
+configure_user_groups "${groups[@]}"
+
 print_section "Configuring Shell & Terminal"
 create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
 run_script "$SCRIPT_DIR/zsh/setup"
@@ -43,10 +47,14 @@ create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
 create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
 create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
 create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
+create_symlink "$DOTFILES_DIR/archlinux/xdg-desktop-portal" "$HOME/.config/xdg-desktop-portal" "config"
 
 run_script "$SCRIPT_DIR/archlinux/hypr/setup"
 run_script "$SCRIPT_DIR/archlinux/theme/setup"
 run_script "$SCRIPT_DIR/archlinux/dolphin/setup"
 run_script "$SCRIPT_DIR/devpod/setup"
+
+print_section "Updating Package List"
+update_package_list
 
 print_section "Setup Complete"
