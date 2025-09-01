@@ -13,7 +13,6 @@
 # - Hands off to main setup script
 # =============================================================================
 
-# sudo timeshift --restore --skip-grub --yes
 set -euo pipefail
 
 # =============================================================================
@@ -25,10 +24,15 @@ readonly USE_LOCAL_TESTING=true
 if [[ "$USE_LOCAL_TESTING" == "true" ]]; then
     # Run a http server in dotfiles directory for lan curl calls
     # server> python -m http.server 8000
-    # client> curl -fsSL "http://192.168.1.20:8000/bootstrap?t=$(date +%)" | bash
+    # client> curl -fsSL http://192.168.1.20:8000/bootstrap | bash
 
     # Run a git daemon in home directory (ie: ~/) for lan git calls
     # server> git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
+
+    # use timeshift to test without needing to reinstall arch.
+    # client> curl -fsSL http://192.168.1.20:8000/install/setup-timeshift | bash
+    # sudo timeshift --create --comment "clean install"
+    # sudo timeshift --restore --snapshot 0 --skip-grub --yes
 
     readonly BASE_URL="http://192.168.1.20:8000"
     readonly DOTFILES_REPO="git://192.168.1.20/dotfiles"
@@ -38,10 +42,6 @@ else
     readonly DOTFILES_REPO="$BASE_URL.git"
     readonly RAW_BASE_URL="$BASE_URL/raw/main"
 fi
-
-# Derived URLs
-readonly PARU_INSTALLER_URL="$RAW_BASE_URL/install/bootstrap/paru-installer"
-readonly MULTILIB_SCRIPT_URL="$RAW_BASE_URL/install/scripts/enable-multilib"
 
 # Other constants
 readonly DOTFILES_DIR="$HOME/dotfiles"
@@ -80,10 +80,8 @@ print_warning() {
     echo "  ⚠ $1" >&2
 }
 
-debug_run() {
-    local cmd="$*"
-    echo "  → $cmd" >&2
-    "$@"
+check_package_installed() {
+    pacman -Qi "$1" &>/dev/null
 }
 
 check_arch_linux() {
@@ -92,29 +90,6 @@ check_arch_linux() {
         exit 1
     fi
     print_success "Running on Arch Linux"
-}
-
-check_prerequisites() {
-    print_section "Checking Prerequisites"
-
-    check_arch_linux
-
-    local missing_tools=()
-    local required_tools=("pacman" "sudo" "curl" "git")
-
-    for tool in "${required_tools[@]}"; do
-        if ! command -v "$tool" &>/dev/null; then
-            missing_tools+=("$tool")
-        fi
-    done
-
-    if [ ${#missing_tools[@]} -gt 0 ]; then
-        print_error "Missing required tools: ${missing_tools[*]}"
-        print_step "Please install with: sudo pacman -S ${missing_tools[*]}"
-        exit 1
-    fi
-
-    print_success "All prerequisites available"
 }
 
 check_bootstrap_status() {
@@ -134,11 +109,8 @@ check_bootstrap_status() {
 update_system() {
     print_section "Updating System"
 
-    print_step "Updating package databases"
-    sudo pacman -Sy --noconfirm >/dev/null 2>&1
-
-    print_step "Upgrading system packages (this may take a while)"
-    sudo pacman -Su --noconfirm >/dev/null 2>&1
+    print_step "Updating package databases and upgrading system (this may take a while)"
+    sudo pacman -Syu --noconfirm >/dev/null 2>&1
 
     print_success "System updated"
 }
@@ -147,9 +119,9 @@ install_essential_packages() {
     print_section "Installing Essential Packages"
 
     local packages=(
-        "base-devel"
-        "git"
         "curl"
+        "git"
+        "base-devel"
         "unzip"
         "wget"
         "which"
@@ -157,7 +129,7 @@ install_essential_packages() {
 
     local to_install=()
     for pkg in "${packages[@]}"; do
-        if ! pacman -Qi "$pkg" &>/dev/null; then
+        if ! check_package_installed "$pkg"; then
             to_install+=("$pkg")
         fi
     done
@@ -179,12 +151,29 @@ install_paru() {
         return 0
     fi
 
-    # Download and run paru installer temporarily
-    local temp_installer="/tmp/paru-installer-$$"
-    curl -fsSL "$PARU_INSTALLER_URL" >"$temp_installer"
-    chmod +x "$temp_installer"
-    "$temp_installer"
-    rm -f "$temp_installer"
+    print_step "Installing paru AUR helper"
+
+    local PARU_REPO="https://aur.archlinux.org/paru.git"
+    local BUILD_DIR="/tmp/paru-build-$$"
+
+    # Build and install paru (dependencies already installed by install_essential_packages)
+    print_step "Cloning paru repository"
+    git clone "$PARU_REPO" "$BUILD_DIR" >/dev/null 2>&1
+
+    print_step "Building paru (this may take a few minutes)"
+    cd "$BUILD_DIR"
+    makepkg -si --noconfirm
+
+    # Cleanup
+    rm -rf "$BUILD_DIR"
+
+    # Verify installation
+    if command -v paru &>/dev/null; then
+        print_success "Paru installed successfully: $(paru --version | head -1)"
+    else
+        print_error "Paru installation failed"
+        return 1
+    fi
 }
 
 setup_zsh_shell() {
@@ -199,24 +188,21 @@ setup_zsh_shell() {
     # Install zsh if not present
     if ! command -v zsh &>/dev/null; then
         print_step "Installing zsh"
-        paru -S --noconfirm zsh >/dev/null 2>&1
+        sudo pacman -S --noconfirm zsh >/dev/null 2>&1
         print_success "Zsh installed"
     else
         print_success "Zsh already installed"
     fi
 
-    # Get zsh path
     local zsh_path
     zsh_path=$(command -v zsh)
 
-    # Ensure zsh is in /etc/shells
+    # Ensure zsh is in /etc/shells and create minimal config
     if ! grep -q "^$zsh_path$" /etc/shells; then
         print_step "Adding zsh to /etc/shells"
         echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
-        print_success "Zsh added to /etc/shells"
     fi
 
-    # Create minimal .zshrc to prevent first-run wizard
     if [ ! -f "$HOME/.zshrc" ]; then
         print_step "Creating minimal zsh configuration"
         cat >"$HOME/.zshrc" <<'EOF'
@@ -224,40 +210,52 @@ setup_zsh_shell() {
 # This will be replaced by dotfiles setup later
 autoload -U compinit && compinit
 EOF
-        print_success "Minimal zsh configuration created"
     fi
 
-    # Change default shell
-    print_step "Changing default shell to zsh"
+    # Change default shell and update environment
+    print_step "Setting zsh as default shell"
     sudo chsh -s "$zsh_path" "$USER"
-
-    # Update current session environment
     export SHELL="$zsh_path"
-    echo $SHELL
 
-    print_success "Zsh set as default shell"
+    print_success "Zsh configured as default shell"
     print_warning "Zsh will be active for new login sessions"
 }
 
 enable_multilib() {
-    print_section "Configuring Pacman"
+    print_section "Enabling Multilib Repository"
 
     if grep -q "^\[multilib\]" /etc/pacman.conf; then
         print_success "Multilib already enabled"
         return 0
     fi
 
-    print_step "Enabling multilib repository"
+    local PACMAN_CONF="/etc/pacman.conf"
 
-    # Download and run multilib enabler temporarily
-    local temp_script="/tmp/enable-multilib-$$"
-    curl -fsSL "$MULTILIB_SCRIPT_URL" >"$temp_script"
-    chmod +x "$temp_script"
-    sudo "$temp_script" >/dev/null 2>&1
-    rm -f "$temp_script"
+    print_step "Creating backup and enabling multilib"
+    sudo cp "$PACMAN_CONF" "${PACMAN_CONF}.backup.$(date +%Y%m%d_%H%M%S)"
 
-    print_step "Updating package databases"
-    sudo pacman -Syy >/dev/null 2>&1
+    # Enable multilib
+    if grep -q "^#\[multilib\]" "$PACMAN_CONF"; then
+        sudo sed -i '/^#\[multilib\]/,/^#Include = \/etc\/pacman.d\/mirrorlist/ {
+            s/^#\[multilib\]/[multilib]/
+            s/^#Include = \/etc\/pacman.d\/mirrorlist/Include = \/etc\/pacman.d\/mirrorlist/
+        }' "$PACMAN_CONF"
+    else
+        {
+            echo ""
+            echo "[multilib]"
+            echo "Include = /etc/pacman.d/mirrorlist"
+        } | sudo tee -a "$PACMAN_CONF" >/dev/null
+    fi
+
+    # Verify and update
+    if grep -q "^\[multilib\]" "$PACMAN_CONF"; then
+        print_step "Updating package databases"
+        sudo pacman -Syy >/dev/null 2>&1
+    else
+        print_error "Failed to enable multilib"
+        return 1
+    fi
 
     print_success "Multilib enabled"
 }
@@ -266,12 +264,11 @@ setup_user_groups() {
     print_section "Configuring User Groups"
 
     local groups=("video" "audio" "scanner" "storage" "optical")
-    local user="$USER"
 
     for group in "${groups[@]}"; do
-        if ! groups "$user" | grep -q "\b$group\b"; then
+        if ! groups "$USER" | grep -q "\b$group\b"; then
             print_step "Adding user to group: $group"
-            sudo usermod -aG "$group" "$user"
+            sudo usermod -aG "$group" "$USER"
         fi
     done
 
@@ -296,23 +293,31 @@ clone_dotfiles() {
     print_success "Dotfiles repository ready"
 }
 
-setup_directories() {
-    print_section "Creating Directory Structure"
+configure_hyprland_autoboot() {
+    print_section "Configuring Hyprland Auto-login"
 
-    local dirs=(
-        "$HOME/.local/lib/bash"
-        "$HOME/.config"
-        "$HOME/backup"
-    )
+    # Disable SDDM
+    print_step "Disabling SDDM"
+    sudo systemctl disable sddm >/dev/null 2>&1
+    print_success "SDDM disabled"
 
-    for dir in "${dirs[@]}"; do
-        if [ ! -d "$dir" ]; then
-            print_step "Creating directory: $dir"
-            mkdir -p "$dir"
-        fi
-    done
+    # Create systemd override directory
+    local override_dir="/etc/systemd/system/getty@tty1.service.d"
+    sudo mkdir -p "$override_dir"
 
-    print_success "Directory structure created"
+    # Create override.conf for auto-login
+    print_step "Configuring getty auto-login"
+    sudo tee "$override_dir/override.conf" >/dev/null <<EOF
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin $USER --noclear %I \$TERM
+EOF
+
+    # Reload systemd and enable getty@tty1
+    sudo systemctl daemon-reload
+    sudo systemctl enable getty@tty1 >/dev/null 2>&1
+
+    print_success "Auto-login configured for user '$USER'"
 }
 
 mark_bootstrap_complete() {
@@ -340,17 +345,18 @@ print_completion() {
     print_section "Bootstrap Complete!"
     echo
     echo "Your Arch Linux system has been bootstrapped with:"
-    echo "  ✓ System updates"
-    echo "  ✓ Essential packages and build tools"
-    echo "  ✓ AUR helper (paru)"
-    echo "  ✓ Zsh shell configuration"
-    echo "  ✓ Multilib repository"
-    echo "  ✓ User groups configuration"
-    echo "  ✓ Dotfiles repository"
-    echo "  ✓ Applications and configurations"
+    echo "  ✓ System updates and essential packages"
+    echo "  ✓ AUR helper (paru) and build tools"
+    echo "  ✓ Zsh shell as default with minimal config"
+    echo "  ✓ Multilib repository enabled"
+    echo "  ✓ User groups configured (video, audio, storage, etc.)"
+    echo "  ✓ Dotfiles repository cloned and setup script executed"
+    echo "  ✓ Hyprland auto-login configured (SDDM disabled)"
+    echo "  ✓ Directory structure and symlinks created"
     echo
-    echo "Next steps:"
-    echo "  • Log out and back in to activate zsh and group changes"
+    echo "System is ready! Next steps:"
+    echo "  • Reboot to activate auto-login and group changes"
+    echo "  • Hyprland will start automatically on login"
     echo "  • Run 'cd ~/dotfiles && ./setup' to reconfigure anytime"
     echo "  • Customize configurations in ~/dotfiles as needed"
     echo
@@ -362,8 +368,6 @@ print_completion() {
 
 main() {
     print_banner
-
-    check_prerequisites
     check_bootstrap_status
 
     update_system
@@ -371,10 +375,10 @@ main() {
     install_paru
     setup_zsh_shell
 
-    setup_directories
     enable_multilib
     setup_user_groups
     clone_dotfiles
+    configure_hyprland_autoboot
 
     mark_bootstrap_complete
 

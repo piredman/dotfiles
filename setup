@@ -48,6 +48,7 @@ create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
 create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
 create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
 create_symlink "$DOTFILES_DIR/archlinux/xdg-desktop-portal" "$HOME/.config/xdg-desktop-portal" "config"
+create_symlink "$DOTFILES_DIR/wallpaper" "$HOME/wallpaper" "config"
 
 run_script "$SCRIPT_DIR/archlinux/hypr/setup"
 run_script "$SCRIPT_DIR/archlinux/theme/setup"

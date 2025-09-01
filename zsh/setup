@@ -5,6 +5,7 @@ source "$LIB_DIR/symlink-utils"
 
 print_section "Configuring Zsh"
 create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc" ""
+create_symlink "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile" ""
 
 if [ ! -d "$HOME/.zsh/zsh-vi-mode" ]; then
     git clone https://github.com/jeffreytse/zsh-vi-mode $HOME/.zsh/zsh-vi-mode >/dev/null 2>&1

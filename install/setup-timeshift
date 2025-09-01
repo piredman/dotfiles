@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+
+# =============================================================================
+# Timeshift Configuration Script for Bootstrap Testing
+# =============================================================================
+# Usage: curl -fsSL https://github.com/piredman/dotfiles/raw/main/install/setup-timeshift | bash
+#
+# This script configures Timeshift for optimal bootstrap script testing:
+# - Enables btrfs mode for fast snapshots
+# - Includes /home directory in snapshots
+# - Verifies btrfs filesystem setup
+# =============================================================================
+
+set -euo pipefail
+
+# Run a http server in dotfiles directory for lan curl calls
+# server> python -m http.server 8000
+# client> curl -fsSL http://192.168.1.20:8000/install/setup-timeshift | bash
+
+# =============================================================================
+# FUNCTIONS
+# =============================================================================
+
+print_section() {
+    echo
+    echo "==> $1"
+}
+
+print_step() {
+    echo "  $1"
+}
+
+print_success() {
+    echo "  ✓ $1"
+}
+
+print_error() {
+    echo "  ✗ $1" >&2
+}
+
+print_warning() {
+    echo "  ⚠ $1" >&2
+}
+
+check_btrfs() {
+    print_section "Checking Filesystem"
+
+    if ! df -T / | grep -q btrfs; then
+        print_error "Root filesystem is not btrfs"
+        print_step "Current filesystem: $(df -T / | tail -1 | awk '{print $2}')"
+        print_step "This script requires btrfs for optimal snapshot performance"
+        exit 1
+    fi
+
+    print_success "Root filesystem is btrfs"
+}
+
+check_timeshift() {
+    print_section "Checking Timeshift"
+
+    if ! command -v timeshift &>/dev/null; then
+        print_error "Timeshift is not installed"
+        print_step "Install with: sudo pacman -S timeshift"
+        exit 1
+    fi
+
+    print_success "Timeshift is installed"
+
+    if [ ! -f /etc/timeshift/timeshift.json ]; then
+        print_warning "Timeshift not configured yet"
+        print_step "Run 'sudo timeshift-gtk' once to create initial config, then re-run this script"
+        exit 1
+    fi
+
+    print_success "Timeshift configuration exists"
+}
+
+install_jq() {
+    if ! command -v jq &>/dev/null; then
+        print_step "Installing jq for JSON manipulation"
+        sudo pacman -S --noconfirm jq >/dev/null 2>&1
+        print_success "jq installed"
+    else
+        print_success "jq already available"
+    fi
+}
+
+configure_timeshift() {
+    print_section "Configuring Timeshift for Bootstrap Testing"
+
+    print_step "Backing up current configuration"
+    sudo cp /etc/timeshift/timeshift.json /etc/timeshift/timeshift.json.backup.$(date +%Y%m%d_%H%M%S)
+
+    print_step "Enabling btrfs mode, including home directory, and disabling first-run wizard"
+    sudo jq '.btrfs_mode = "true" | .include_btrfs_home = "true" | .do_first_run = "false"' \
+        /etc/timeshift/timeshift.json >/tmp/timeshift.json &&
+        sudo mv /tmp/timeshift.json /etc/timeshift/timeshift.json
+
+    print_step "Auto-detecting and setting backup device"
+    local root_device=$(df --output=source / | tail -1)
+    sudo timeshift --snapshot-device "$root_device" >/dev/null 2>&1
+
+    print_success "Timeshift configured for bootstrap testing"
+}
+
+verify_configuration() {
+    print_section "Verifying Configuration"
+
+    local btrfs_mode=$(sudo jq -r '.btrfs_mode' /etc/timeshift/timeshift.json)
+    local include_home=$(sudo jq -r '.include_btrfs_home' /etc/timeshift/timeshift.json)
+    local do_first_run=$(sudo jq -r '.do_first_run' /etc/timeshift/timeshift.json)
+
+    if [ "$btrfs_mode" = "true" ]; then
+        print_success "btrfs_mode: enabled"
+    else
+        print_error "btrfs_mode: disabled"
+    fi
+
+    if [ "$include_home" = "true" ]; then
+        print_success "include_btrfs_home: enabled"
+    else
+        print_error "include_btrfs_home: disabled"
+    fi
+
+    if [ "$do_first_run" = "false" ]; then
+        print_success "do_first_run: disabled (no wizard)"
+    else
+        print_warning "do_first_run: enabled (will show wizard)"
+    fi
+}
+
+print_usage_info() {
+    print_section "Timeshift Ready for Bootstrap Testing!"
+    echo
+    echo "Your Timeshift is now configured for optimal bootstrap script testing:"
+    echo "  ✓ btrfs mode enabled (fast snapshots)"
+    echo "  ✓ /home directory included (complete environment capture)"
+    echo "  ✓ Efficient copy-on-write snapshots"
+    echo
+    echo "Testing workflow:"
+    echo "  # Create snapshot before testing"
+    echo "  sudo timeshift --create --comments 'Clean system before bootstrap'"
+    echo
+    echo "  # Run your bootstrap script"
+    echo "  curl -fsSL URL/bootstrap | bash"
+    echo
+    echo "  # Restore to clean state"
+    echo "  sudo timeshift --restore --snapshot 0 --skip-grub --yes"
+    echo "  sudo reboot"
+    echo
+    echo "List snapshots: sudo timeshift --list"
+    echo
+}
+
+# =============================================================================
+# MAIN EXECUTION
+# =============================================================================
+
+main() {
+    echo "====================================================================="
+    echo "  Timeshift Configuration for Bootstrap Testing"
+    echo "====================================================================="
+
+    check_btrfs
+    check_timeshift
+    install_jq
+    configure_timeshift
+    verify_configuration
+    print_usage_info
+}
+
+main "$@"
+
