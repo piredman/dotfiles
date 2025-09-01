@@ -1,0 +1,15 @@
+# Host-specific package configurations
+# Each host can define which package groups to install
+# Note: hyprland configuration is part of "core" section
+
+[hosts.power]
+packages = ["core", "comms", "dev", "gamedev", "gaming", "office"]
+
+[hosts.thinkmini]
+packages = ["core"]
+
+[hosts.zalman]
+packages = ["core", "comms", "streaming"]
+
+[default]
+packages = ["core"]

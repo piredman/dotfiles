@@ -3,33 +3,35 @@
 load_package_config() {
     local config_file="$1"
     local packages=()
-    
+
     if [[ ! -f "$config_file" ]]; then
         echo "✗ Package config file not found: $config_file" >&2
         return 1
     fi
-    
+
     while IFS= read -r line; do
         # Skip empty lines and comments
         [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-        
+
         # Trim whitespace and add to packages array
         line=$(echo "$line" | xargs)
         [[ -n "$line" ]] && packages+=("$line")
-    done < "$config_file"
-    
+    done <"$config_file"
+
     if [ ${#packages[@]} -eq 0 ]; then
         echo "✗ No packages found in config file: $config_file" >&2
         return 1
     fi
-    
-    # Return packages as space-separated string
+
+    echo "✓ Loaded ${#packages[@]} packages from $config_file" >&2
+
+    # Output data to stdout
     printf '%s\n' "${packages[@]}"
 }
 
 install_packages() {
     local packages=("$@")
-    
+
     if [ ${#packages[@]} -eq 0 ]; then
         return 0
     fi
@@ -46,51 +48,45 @@ install_packages() {
 
 update_package_list() {
     print_step "Updating package list"
-    paru -Q > "$SCRIPT_DIR/install/packages.txt"
+    paru -Q >"$SCRIPT_DIR/install/packages.txt"
     print_success "Package list updated"
 }
 
-load_group_config() {
-    local config_file="$1"
-    local groups=()
-    
-    if [[ ! -f "$config_file" ]]; then
-        echo "✗ Group config file not found: $config_file" >&2
+get_hostname_packages() {
+    echo "Loading hostname packages configuration..." >&2
+    local hostname=$(hostname)
+    local host_toml="$SCRIPT_DIR/install/config/host.toml"
+
+    print_step "Reading host config: $host_toml" >&2
+    if [[ ! -f "$host_toml" ]]; then
+        print_error "Host configuration file not found: $host_toml" >&2
         return 1
     fi
-    
-    while IFS= read -r line; do
-        # Skip empty lines and comments
-        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-        
-        # Trim whitespace and add to groups array
-        line=$(echo "$line" | xargs)
-        [[ -n "$line" ]] && groups+=("$line")
-    done < "$config_file"
-    
-    if [ ${#groups[@]} -eq 0 ]; then
-        echo "✗ No groups found in config file: $config_file" >&2
-        return 1
+
+    # Try host-specific config first
+    local packages=$(tomlq ".hosts.${hostname}.packages[]" "$host_toml" 2>/dev/null | tr '\n' ' ' | sed 's/"//g' || true)
+    echo "Found packages for host '$hostname': $packages" >&2
+
+    # Fall back to default if host not found
+    if [[ -z "$packages" ]]; then
+        packages=$(tomlq ".default.packages[]" "$host_toml" 2>/dev/null | tr '\n' ' ' | sed 's/"//g' || true)
+        if [[ -z "$packages" ]]; then
+            print_error "No configuration found for host '$hostname' and no default configuration" >&2
+            return 1
+        fi
+        echo "Using default packages: $packages" >&2
     fi
-    
-    # Return groups as space-separated string
-    printf '%s\n' "${groups[@]}"
+
+    # Output data to stdout
+    printf '%s\n' $packages
 }
 
-configure_user_groups() {
-    local groups=("$@")
-    
-    if [ ${#groups[@]} -eq 0 ]; then
-        return 0
-    fi
+should_run_section() {
+    local section="$1"
+    local packages=($(get_hostname_packages))
 
-    for group in "${groups[@]}"; do
-        if ! groups "$USER" | grep -q "\b$group\b"; then
-            print_step "Adding $USER to group: $group"
-            sudo usermod -aG "$group" "$USER"
-            print_success "Added to $group group"
-        else
-            print_success "$USER already in $group group"
-        fi
+    for package in "${packages[@]}"; do
+        [[ "$package" == "$section" ]] && return 0
     done
+    return 1
 }

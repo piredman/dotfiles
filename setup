@@ -19,41 +19,92 @@ create_symlink "$DOTFILES_DIR/install/lib/symlink-utils" "$LIB_DIR/symlink-utils
 create_symlink "$DOTFILES_DIR/install/lib/package-utils" "$LIB_DIR/package-utils" ""
 create_symlink "$DOTFILES_DIR/zsh/scripts/shell-utils" "$LIB_DIR/shell-utils" ""
 
-print_section "Configuring Pacman"
-if ! run_script "$SCRIPT_DIR/install/scripts/check-multilib" >/dev/null 2>&1; then
-    print_step "Enabling multilib repository"
-    run_sudo_script "$SCRIPT_DIR/install/scripts/enable-multilib" >/dev/null 2>&1
-    sudo pacman -Syy >/dev/null 2>&1
-    print_success "Multilib enabled"
+CURRENT_HOST=$(hostname)
+print_section "Configuring for host: $CURRENT_HOST"
+
+packages_to_install=($(get_hostname_packages))
+if [ $? -eq 0 ]; then
+    print_step "Package groups for this host: ${packages_to_install[*]}"
 else
-    print_success "Multilib already enabled"
+    print_error "Failed to load host configuration"
+    exit 1
 fi
 
-print_section "Installing Core Packages"
-mapfile -t packages < <(load_package_config "$SCRIPT_DIR/install/config/core-packages.conf")
-install_packages "${packages[@]}"
+# core start
+if should_run_section "core"; then
+    print_section "Installing Core Packages"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/core-packages.conf"))
+    install_packages "${packages[@]}"
 
-print_section "Configuring User Groups"
-mapfile -t groups < <(load_group_config "$SCRIPT_DIR/install/config/groups.conf")
-configure_user_groups "${groups[@]}"
+    print_section "Configuring Shell & Terminal"
+    create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
+    run_script "$SCRIPT_DIR/zsh/setup"
+    run_script "$SCRIPT_DIR/tmux/setup"
 
-print_section "Configuring Shell & Terminal"
-create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig" ""
-run_script "$SCRIPT_DIR/zsh/setup"
-run_script "$SCRIPT_DIR/tmux/setup"
+    print_section "Configuring Applications"
+    create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
+    create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
+    create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
+    create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
 
-print_section "Configuring Applications"
-create_symlink "$DOTFILES_DIR/wezterm" "$HOME/.config/wezterm" "config"
-create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim" "config"
-create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml" "config"
-create_symlink "$DOTFILES_DIR/yazi" "$HOME/.config/yazi" "config"
-create_symlink "$DOTFILES_DIR/archlinux/xdg-desktop-portal" "$HOME/.config/xdg-desktop-portal" "config"
-create_symlink "$DOTFILES_DIR/wallpaper" "$HOME/wallpaper" "config"
+    print_section "Configuring hyprland"
+    create_symlink "$DOTFILES_DIR/archlinux/xdg-desktop-portal" "$HOME/.config/xdg-desktop-portal" "config"
+    create_symlink "$DOTFILES_DIR/wallpaper" "$HOME/wallpaper" "config"
+    run_script "$SCRIPT_DIR/archlinux/hypr/setup"
+    run_script "$SCRIPT_DIR/archlinux/theme/setup"
+    run_script "$SCRIPT_DIR/archlinux/dolphin/setup"
+else
+    print_step "Skipping core configuration (not in package list for $CURRENT_HOST)"
+fi
 
-run_script "$SCRIPT_DIR/archlinux/hypr/setup"
-run_script "$SCRIPT_DIR/archlinux/theme/setup"
-run_script "$SCRIPT_DIR/archlinux/dolphin/setup"
-run_script "$SCRIPT_DIR/devpod/setup"
+if should_run_section "comms"; then
+    print_section "Configuring for comms"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/comms-packages.conf"))
+    install_packages "${packages[@]}"
+else
+    print_step "Skipping comms configuration (not in package list for $CURRENT_HOST)"
+fi
+
+if should_run_section "office"; then
+    print_section "Configuring for office"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/office-packages.conf"))
+    install_packages "${packages[@]}"
+else
+    print_step "Skipping office configuration (not in package list for $CURRENT_HOST)"
+fi
+
+if should_run_section "dev"; then
+    print_section "Configuring for development"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/dev-packages.conf"))
+    install_packages "${packages[@]}"
+    run_script "$SCRIPT_DIR/devpod/setup"
+else
+    print_step "Skipping development configuration (not in package list for $CURRENT_HOST)"
+fi
+
+if should_run_section "gamedev"; then
+    print_section "Configuring for game development"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/gamedev-packages.conf"))
+    install_packages "${packages[@]}"
+else
+    print_step "Skipping game development configuration (not in package list for $CURRENT_HOST)"
+fi
+
+if should_run_section "gaming"; then
+    print_section "Configuring for gaming"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/gaming-packages.conf"))
+    install_packages "${packages[@]}"
+else
+    print_step "Skipping gaming configuration (not in package list for $CURRENT_HOST)"
+fi
+
+if should_run_section "streaming"; then
+    print_section "Configuring for streaming"
+    packages=($(load_package_config "$SCRIPT_DIR/install/config/streaming-packages.conf"))
+    install_packages "${packages[@]}"
+else
+    print_step "Skipping streaming configuration (not in package list for $CURRENT_HOST)"
+fi
 
 print_section "Updating Package List"
 update_package_list

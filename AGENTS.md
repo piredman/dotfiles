@@ -16,6 +16,11 @@
 - Variables use UPPER_CASE for exports, lower_case for locals
 - Error handling with explicit checks and meaningful error messages
 - Source utility libraries from `install/lib/` and `zsh/scripts/`
+- **Command Substitution Guidelines**:
+  - **Use** `$(...)` for system commands (`hostname`, `tomlq`, etc.) and external tools
+  - **Avoid** `$(...)` for custom functions with debug output - use direct calls instead
+  - **Prefer** local variables over global variables when possible
+  - **Separate** debug messages (to stderr) from data output (to stdout) in custom functions
 
 ### Lua (Neovim config)
 - 2 spaces indentation (per .stylua.toml)

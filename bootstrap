@@ -24,15 +24,16 @@ readonly USE_LOCAL_TESTING=true
 if [[ "$USE_LOCAL_TESTING" == "true" ]]; then
     # Run a http server in dotfiles directory for lan curl calls
     # server> python -m http.server 8000
-    # client> curl -fsSL http://192.168.1.20:8000/bootstrap | bash
+    # client> curl -fsSL http://x.x.x.x:8000/bootstrap | bash
 
     # Run a git daemon in home directory (ie: ~/) for lan git calls
     # server> git daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
 
     # use timeshift to test without needing to reinstall arch.
-    # client> curl -fsSL http://192.168.1.20:8000/install/setup-timeshift | bash
-    # sudo timeshift --create --comment "clean install"
-    # sudo timeshift --restore --snapshot 0 --skip-grub --yes
+    # client> curl -fsSL http://x.x.x.x:8000/install/setup-timeshift | bash
+
+    # sudo timeshift --create --comments "clean install"
+    # sudo timeshift --restore --skip-grub --yes
 
     readonly BASE_URL="http://192.168.1.20:8000"
     readonly DOTFILES_REPO="git://192.168.1.20/dotfiles"
@@ -122,9 +123,12 @@ install_essential_packages() {
         "curl"
         "git"
         "base-devel"
+        "inetutils"
         "unzip"
         "wget"
         "which"
+        "jq"
+        "yq"
     )
 
     local to_install=()

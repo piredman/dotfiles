@@ -65,14 +65,18 @@ check_timeshift() {
     fi
 
     print_success "Timeshift is installed"
+}
+
+setup_timeshift_btrfs() {
+    print_section "Setting up Timeshift for btrfs"
 
     if [ ! -f /etc/timeshift/timeshift.json ]; then
-        print_warning "Timeshift not configured yet"
-        print_step "Run 'sudo timeshift-gtk' once to create initial config, then re-run this script"
-        exit 1
+        print_step "Running initial Timeshift btrfs setup"
+        sudo timeshift --btrfs >/dev/null 2>&1
+        print_success "Timeshift initialized with btrfs mode"
+    else
+        print_success "Timeshift configuration already exists"
     fi
-
-    print_success "Timeshift configuration exists"
 }
 
 install_jq() {
@@ -91,14 +95,10 @@ configure_timeshift() {
     print_step "Backing up current configuration"
     sudo cp /etc/timeshift/timeshift.json /etc/timeshift/timeshift.json.backup.$(date +%Y%m%d_%H%M%S)
 
-    print_step "Enabling btrfs mode, including home directory, and disabling first-run wizard"
-    sudo jq '.btrfs_mode = "true" | .include_btrfs_home = "true" | .do_first_run = "false"' \
+    print_step "Configuring home directory inclusion for backup and restore"
+    sudo jq '.include_btrfs_home_for_backup = "true" | .include_btrfs_home_for_restore = "true"' \
         /etc/timeshift/timeshift.json >/tmp/timeshift.json &&
         sudo mv /tmp/timeshift.json /etc/timeshift/timeshift.json
-
-    print_step "Auto-detecting and setting backup device"
-    local root_device=$(df --output=source / | tail -1)
-    sudo timeshift --snapshot-device "$root_device" >/dev/null 2>&1
 
     print_success "Timeshift configured for bootstrap testing"
 }
@@ -107,25 +107,32 @@ verify_configuration() {
     print_section "Verifying Configuration"
 
     local btrfs_mode=$(sudo jq -r '.btrfs_mode' /etc/timeshift/timeshift.json)
-    local include_home=$(sudo jq -r '.include_btrfs_home' /etc/timeshift/timeshift.json)
+    local include_backup=$(sudo jq -r '.include_btrfs_home_for_backup' /etc/timeshift/timeshift.json)
+    local include_restore=$(sudo jq -r '.include_btrfs_home_for_restore' /etc/timeshift/timeshift.json)
     local do_first_run=$(sudo jq -r '.do_first_run' /etc/timeshift/timeshift.json)
 
     if [ "$btrfs_mode" = "true" ]; then
-        print_success "btrfs_mode: enabled"
+        print_success "btrfs_mode: enabled (set by --btrfs)"
     else
         print_error "btrfs_mode: disabled"
     fi
 
-    if [ "$include_home" = "true" ]; then
-        print_success "include_btrfs_home: enabled"
+    if [ "$include_backup" = "true" ]; then
+        print_success "include_btrfs_home_for_backup: enabled"
     else
-        print_error "include_btrfs_home: disabled"
+        print_error "include_btrfs_home_for_backup: disabled"
+    fi
+
+    if [ "$include_restore" = "true" ]; then
+        print_success "include_btrfs_home_for_restore: enabled"
+    else
+        print_error "include_btrfs_home_for_restore: disabled"
     fi
 
     if [ "$do_first_run" = "false" ]; then
-        print_success "do_first_run: disabled (no wizard)"
+        print_success "do_first_run: disabled (set by --btrfs)"
     else
-        print_warning "do_first_run: enabled (will show wizard)"
+        print_warning "do_first_run: enabled"
     fi
 }
 
@@ -164,10 +171,10 @@ main() {
     check_btrfs
     check_timeshift
     install_jq
+    setup_timeshift_btrfs
     configure_timeshift
     verify_configuration
     print_usage_info
 }
 
 main "$@"
-
