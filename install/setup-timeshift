@@ -15,7 +15,7 @@ set -euo pipefail
 
 # Run a http server in dotfiles directory for lan curl calls
 # server> python -m http.server 8000
-# client> curl -fsSL http://192.168.1.20:8000/install/setup-timeshift | bash
+# client> curl -fsSL http://x.x.x.x:8000/install/setup-timeshift | bash
 
 # =============================================================================
 # FUNCTIONS

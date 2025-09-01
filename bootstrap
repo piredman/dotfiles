@@ -35,8 +35,8 @@ if [[ "$USE_LOCAL_TESTING" == "true" ]]; then
     # sudo timeshift --create --comments "clean install"
     # sudo timeshift --restore --skip-grub --yes
 
-    readonly BASE_URL="http://192.168.1.20:8000"
-    readonly DOTFILES_REPO="git://192.168.1.20/dotfiles"
+    readonly BASE_URL="http://x.x.x.x:8000"
+    readonly DOTFILES_REPO="git://x.x.x.x/dotfiles"
     readonly RAW_BASE_URL="$BASE_URL"
 else
     readonly BASE_URL="https://github.com/piredman/dotfiles"
