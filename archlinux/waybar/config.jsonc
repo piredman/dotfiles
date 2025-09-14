@@ -1,6 +1,5 @@
 {
   "position": "top",
-  "output": "DP-1",
   "modules-left": ["custom/os", "hyprland/window"],
   "modules-center": ["hyprland/workspaces"],
   "modules-right": ["idle_inhibitor", "network", "pulseaudio", "clock", "custom/notification", "custom/exit"],
