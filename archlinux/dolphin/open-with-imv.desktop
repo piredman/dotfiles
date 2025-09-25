@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=image/jpeg;image/png;image/gif;image/bmp;image/webp;image/tiff;image/svg+xml;image/x-icon;image/vnd.microsoft.icon;
+Actions=openWithImv;
+
+[Desktop Action openWithImv]
+Name=Open with imv
+Icon=image-x-generic
+Exec=imv %f

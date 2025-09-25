@@ -10,8 +10,15 @@ install_packages "${dolphin_packages[@]}"
 
 print_section "Configuring File Manager"
 mkdir -p ~/.local/share/kio/servicemenus
+
 create_symlink "$DOTFILES_DIR/archlinux/dolphin/extract-here.desktop" "$HOME/.local/share/kio/servicemenus/extract-here.desktop" ""
 chmod +x "$HOME/.local/share/kio/servicemenus/extract-here.desktop"
+
+create_symlink "$DOTFILES_DIR/archlinux/dolphin/open-with-nvim.desktop" "$HOME/.local/share/kio/servicemenus/open-with-nvim.desktop" ""
+chmod +x "$HOME/.local/share/kio/servicemenus/open-with-nvim.desktop"
+
+create_symlink "$DOTFILES_DIR/archlinux/dolphin/open-with-imv.desktop" "$HOME/.local/share/kio/servicemenus/open-with-imv.desktop" ""
+chmod +x "$HOME/.local/share/kio/servicemenus/open-with-imv.desktop"
 
 XDG_MENU_PREFIX=arch- kbuildsycoca6 >/dev/null 2>&1
 print_success "Rebuilding desktop database"

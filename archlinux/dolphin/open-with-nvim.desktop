@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;text/x-ini;application/x-wine-extension-ini;text/x-script;text/x-generic;application/toml;text/x-yaml;application/x-yaml;text/yaml;text/x-python;application/x-python;text/x-javascript;application/javascript;text/x-lua;text/x-go;text/x-csharp;application/x-csharp;text/x-rust;text/x-typescript;application/x-typescript;text/x-php;application/x-php;text/x-ruby;application/x-ruby;text/x-perl;application/x-perl;text/x-sql;application/x-sql;text/markdown;text/x-markdown;application/json;text/x-json;text/xml;application/xml;text/html;application/xhtml+xml;
+Actions=openWithNvim;
+
+[Desktop Action openWithNvim]
+Name=Open with Neovim
+Icon=nvim
+Exec=wezterm -e nvim %f
