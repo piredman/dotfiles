@@ -1,40 +1,42 @@
--- Pull in the wezterm API
 local wezterm = require("wezterm")
 local act = wezterm.action
-
--- Start weztterm in fullscreen mode
--- https://wezfurlong.org/wezterm/config/lua/gui-events/gui-startup.html
-local mux = wezterm.mux
-wezterm.on("gui-startup", function(cmd)
-	local tab, pane, window = mux.spawn_window(cmd or {})
-	window:gui_window():maximize()
-end)
-
--- This will hold the configuration.
 local config = wezterm.config_builder()
 
--- there is a bug in wayland currenlty, this must be set to false for wezterm to start at all
--- in hyprland. Once this is fixed, change back to true.
--- https://www.reddit.com/r/archlinux/comments/18rf5t1/psa_on_hyprland_wezterm_will_not_start_anymore
--- This setting is ignored in macos & windows, so safe to have in config for all platforms.
-config.enable_wayland = false
-
-config.enable_tab_bar = false
-
-config.window_background_opacity = 0.95
-config.macos_window_background_blur = 10
--- config.text_background_opacity = 0.3
-
-config.adjust_window_size_when_changing_font_size = false
-config.font = wezterm.font_with_fallback({ "CaskaydiaCove Nerd Font", "Symbols Nerd Font", "Libertinus Math" })
--- config.font = wezterm.font_with_fallback({ "Hack Nerd Font", "Symbols Nerd Font", "Libertinus Math" })
+-- font configuration
+config.font = wezterm.font_with_fallback({
+	"CaskaydiaCove Nerd Font",
+	"Symbols Nerd Font",
+	"Libertinus Math",
+})
 config.font_size = 16.0
 
+-- settings
+config.enable_tab_bar = false
+config.max_fps = 120
+config.animation_fps = 1
+config.window_background_opacity = 0.98
+config.enable_scroll_bar = false
+config.use_fancy_tab_bar = true
+config.term = "xterm-256color"
+config.warn_about_missing_glyphs = false
+config.enable_wayland = false
+config.front_end = "OpenGL"
+config.webgpu_power_preference = "HighPerformance"
+config.prefer_egl = true
+config.freetype_load_target = "Light"
+config.freetype_render_target = "HorizontalLcd"
+config.hide_tab_bar_if_only_one_tab = false
+config.send_composed_key_when_left_alt_is_pressed = false
+config.send_composed_key_when_right_alt_is_pressed = false
+config.use_ime = false
+
+-- colour scheme
 config.color_scheme = "Catppuccin Mocha"
 config.colors = {
 	background = "#1e1e1e",
 }
 
+-- appearance
 config.window_padding = {
 	left = 0,
 	right = 0,
@@ -42,12 +44,7 @@ config.window_padding = {
 	bottom = 0,
 }
 
-config.send_composed_key_when_left_alt_is_pressed = false
-config.send_composed_key_when_right_alt_is_pressed = false
-
-config.use_ime = false
-config.warn_about_missing_glyphs = false
-
+-- keybindings
 config.keys = {
 	-- Clears the scrollback and viewport, and then sends CTRL-L to ask the
 	-- shell to redraw its prompt
