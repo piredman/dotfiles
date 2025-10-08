@@ -287,6 +287,7 @@ return { -- LSP Configuration & Plugins
         'prettierd',
         'markdownlint',
         'shfmt',
+        'nixfmt',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -47,6 +47,7 @@ return { -- Autoformat
       typescriptreact = { 'prettierd' },
       ruby = { 'rubocop' },
       sh = { 'shfmt' },
+      nix = { 'nixfmt' },
     },
     formatters = {
       shfmt = {
