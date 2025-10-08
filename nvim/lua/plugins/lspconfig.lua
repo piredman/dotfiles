@@ -292,29 +292,29 @@ return { -- LSP Configuration & Plugins
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = {},
         automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            vim.lsp.config(server_name, server)
+            vim.lsp.enable(server_name)
           end,
         },
       }
 
-      -- Can't add 'gdscript' to servers because it is not listed in Mason.
-      require('lspconfig').gdscript.setup {
+      vim.lsp.config('gdscript', {
         capabilities = capabilities,
         settings = {},
         on_attach = function(client, bufnr)
-          vim.notify('lspconfig.gdscript LSP attached!', vim.log.levels.INFO)
+          vim.notify('gdscript LSP attached!', vim.log.levels.INFO)
         end,
-      }
-      require('lspconfig').jdtls.setup {}
+      })
+      vim.lsp.enable 'gdscript'
+
+      vim.lsp.config('jdtls', {})
+      vim.lsp.enable 'jdtls'
     end,
   },
 }
